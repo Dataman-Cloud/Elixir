@@ -3,7 +3,7 @@
     <header class="bread-header">
       <Breadcrumb/>
     </header>
-    <section>
+    <section class="main-content">
       <App-main/>
     </section>
   </div>
@@ -21,5 +21,16 @@
   }
 </script>
 <style scoped>
+  .bread-header {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    background: #2c867a;
+    line-height: 50px;
+    align-items: center;
+  }
 
+  .main-content{
+    padding: 20px;
+  }
 </style>
