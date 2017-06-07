@@ -1,23 +1,25 @@
 <template>
-    <div class="app-wrapper">
-        <div class="main-container">
-            <Breadcrumb/>
-            <App-main/>
-        </div>
-    </div>
+  <div class="app-wrapper">
+    <header class="bread-header">
+      <Breadcrumb/>
+    </header>
+    <section>
+      <App-main/>
+    </section>
+  </div>
 </template>
 
 <script>
-    import { Breadcrumb, AppMain } from './index'
+  import {Breadcrumb, AppMain} from './index'
 
-    export default {
-      name: 'layout',
-      components: {
-        Breadcrumb,
-        AppMain
-      }
+  export default {
+    name: 'layout',
+    components: {
+      Breadcrumb,
+      AppMain
     }
+  }
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
 
 </style>
