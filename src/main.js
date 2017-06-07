@@ -4,8 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+import './styles/theme/index.css'
 import 'font-awesome/css/font-awesome.min.css'
+import './styles/index.css' // 全局自定义的css样式
+import './styles/element-ui.css' // 覆盖 Element-UI 的样式
 
 Vue.config.productionTip = false
 

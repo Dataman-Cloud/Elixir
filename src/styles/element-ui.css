@@ -1,0 +1,4 @@
+/*覆盖 Element-UI 的样式*/
+.el-breadcrumb {
+  margin-left: 15px;
+}
