@@ -7,60 +7,78 @@
     </div>
 
     <el-table
-      :data="tableData"
+      :data="apps"
       highlight-current-row
+      v-loading="listLoading"
       @current-change="handleCurrentChange"
       style="width: 100%">
-      <el-table-column
-        property="name"
-        label="姓名"
-        width="120">
+      <el-table-column property="id" label="名称" width="150">
         <template scope="app">
-          <router-link :to="{name: '应用详情', params:{id : 1}}">{{app.row.name}}</router-link>
+          <router-link :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
         </template>
       </el-table-column>
       <el-table-column
-        property="date"
-        label="日期"
-        width="120">
+        property="labels.VCLUSTER"
+        label="所属集群">
       </el-table-column>
       <el-table-column
-        property="address"
-        label="地址">
+        property="instances"
+        label="实例个数">
+      </el-table-column>
+      <el-table-column
+        property=""
+        label="运行状态">
+      </el-table-column>
+      <el-table-column
+        property=""
+        label="健康状态">
+      </el-table-column>
+      <el-table-column label="更新时间" min-width="120">
+        <template scope="scope">
+          <span>{{scope.row.versionInfo.lastConfigChangeAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+        </template>
       </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+  import * as type from '@/store/app/mutations_types'
+
   export default {
     data () {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
+        listLoading: false,
         currentRow: null
       }
     },
-
+    computed: {
+      ...mapState({
+        apps (state) {
+          return state.app.apps.apps
+        },
+        total (state) {
+          return state.app.apps.total
+        }
+      })
+    },
     methods: {
       handleCurrentChange (val) {
         this.currentRow = val
+      },
+      listApp () {
+        return this.$store.dispatch(type.FETCH_APPS).then(() => {
+          this.listLoading = false
+        })
       }
+    },
+    mounted () {
+      this.listLoading = true
+      this.listApp()
+        .then(() => {
+          this.listLoading = false
+        })
     }
   }
 </script>

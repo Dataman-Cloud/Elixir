@@ -3,7 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 import ElementUI from 'element-ui'
+import * as filters from '@/filters'
 import './styles/theme/index.css'
 import 'font-awesome/css/font-awesome.min.css'
 import './styles/index.css' // 全局自定义的css样式
@@ -13,10 +15,16 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
+// 注册全局 Filters
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

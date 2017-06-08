@@ -4,8 +4,11 @@ import {Notification} from 'element-ui'
 import Layout from '@/views/layout/Layout'
 import AppBase from '@/views/app/index'
 import AppList from '@/views/app/list/List'
-import AppForm from '@/views/app/create/Create'
-import AppDetail from '@/views/app/detail/Detail'
+// import AppForm from '@/views/app/create/Create'
+// import AppDetail from '@/views/app/detail/Detail'
+
+const AppForm = () => import('../views/app/create/Create')
+const AppDetail = () => import('../views/app/detail/Detail')
 
 Vue.use(Router)
 
