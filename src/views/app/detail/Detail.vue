@@ -11,6 +11,8 @@
 </template>
 <script>
   import {Instance, Config, Other} from './tabs'
+  import store from '@/store'
+  import * as type from '@/store/app/mutations_types'
 
   export default {
     components: {
@@ -26,6 +28,15 @@
     methods: {
       tabChange (tab, event) {
         this.currentView = tab.name
+      }
+    },
+    beforeRouteEnter (to, from, next) {
+      store.dispatch(type.FETCH_APP, to.params.id)
+        .then(() => next())
+    },
+    watch: {
+      $route (to) {
+        this.$store.dispatch(type.FETCH_APP, this.$route.params.id)
       }
     }
   }
