@@ -18,6 +18,11 @@ dl {
   display: flex;
 }
 
+.btn-group {
+  display: flex;
+  margin-bottom: 10px;
+}
+
 .detail-config {
   padding-left: 15px;
   margin-top: 15px;

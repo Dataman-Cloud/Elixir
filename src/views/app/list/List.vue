@@ -1,9 +1,20 @@
 <template>
   <div>
     <div class="btn-group">
-      <router-link class="pan-btn pink-btn" to="/app/create">
-        <el-button type="primary">创建应用</el-button>
-      </router-link>
+      <el-button-group>
+        <router-link class="pan-btn pink-btn" to="/app/create">
+          <el-button type="primary"><i class="el-icon-plus"></i> 创建应用</el-button>
+        </router-link>
+        <el-button type="primary"><i class="el-icon-edit"></i> 扩展应用</el-button>
+        <el-button type="primary"><i class="el-icon-close"></i> 删除应用</el-button>
+        <el-button type="primary"><i class="fa fa-refresh"></i> 更新应用</el-button>
+        <el-button type="primary"><i class="fa fa-play-circle"></i> 启动 / 停止</el-button>
+      </el-button-group>
+
+      <el-button-group style="display: flex">
+        <el-input v-model="searchWord" placeholder="请输入内容"></el-input>
+        <el-button type="primary"><i class="fa fa-refresh"></i></el-button>
+      </el-button-group>
     </div>
 
     <el-table
@@ -50,7 +61,8 @@
     data () {
       return {
         listLoading: false,
-        currentRow: null
+        currentRow: null,
+        searchWord: ''
       }
     },
     computed: {
@@ -85,12 +97,6 @@
 
 <style scoped>
   .btn-group {
-    display: flex;
-    margin-bottom: 10px;
+    justify-content: space-between;
   }
-
-  .btn-group a:not(:first-child) {
-    margin: 0 5px;
-  }
-
 </style>

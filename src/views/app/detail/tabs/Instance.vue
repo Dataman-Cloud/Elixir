@@ -1,5 +1,14 @@
 <template>
   <div>
+    <div class="btn-group">
+      <el-button-group>
+        <el-button type="primary"><i class="el-icon-plus"></i> stdout 日志</el-button>
+        <el-button type="primary"><i class="el-icon-edit"></i> stderr 日志</el-button>
+      </el-button-group>
+
+      <el-button type="primary"><i class="fa fa-refresh"></i></el-button>
+    </div>
+
     <el-table
       :data="tasks"
       highlight-current-row
@@ -49,3 +58,8 @@
     }
   }
 </script>
+<style scoped>
+  .btn-group {
+    justify-content: space-between;
+  }
+</style>
