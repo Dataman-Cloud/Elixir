@@ -24,7 +24,7 @@ service.interceptors.request.use(
 
 // respone拦截器
 service.interceptors.response.use(
-  response => response,
+  response => response.data,
   error => {
     console.log('err' + error)// for debug
     Notification({
