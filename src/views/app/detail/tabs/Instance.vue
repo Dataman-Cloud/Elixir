@@ -31,7 +31,9 @@
 
   export default {
     data () {
-      return {}
+      return {
+        currentRow: null
+      }
     },
     computed: {
       ...mapState({
@@ -39,6 +41,11 @@
           return state.app.app.tasks
         }
       })
+    },
+    methods: {
+      handleCurrentChange (val) {
+        this.currentRow = val
+      }
     }
   }
 </script>
