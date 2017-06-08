@@ -10,3 +10,10 @@ export function listApp () {
   })
 }
 
+export function getApp (id) {
+  return fetch({
+    url: `v1/apps/${id}`,
+    method: 'get'
+  })
+}
+

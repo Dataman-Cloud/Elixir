@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import NProgress from 'nprogress' // Progress 进度条
+import 'nprogress/nprogress.css'// Progress 进度条 样式
 import {Notification} from 'element-ui'
 import Layout from '@/views/layout/Layout'
 import AppBase from '@/views/app/index'
 import AppList from '@/views/app/list/List'
-// import AppForm from '@/views/app/create/Create'
-// import AppDetail from '@/views/app/detail/Detail'
 
 const AppForm = () => import('../views/app/create/Create')
 const AppDetail = () => import('../views/app/detail/Detail')
@@ -43,6 +43,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   // 判断 Iframe 是否传入 userid, projectid
   if (to.query.userid && to.query.projectid) {
     localStorage.setItem('userid', to.query.userid)
@@ -51,12 +52,17 @@ router.beforeEach((to, from, next) => {
   if (localStorage.getItem('userid') && localStorage.getItem('projectid')) {
     next()
   } else {
+    NProgress.done()
     Notification({
       title: '警告',
       message: '无法获取 userid 或 projectid',
       type: 'error'
     })
   }
+})
+
+router.afterEach(() => {
+  NProgress.done() // 结束Progress
 })
 
 export default router

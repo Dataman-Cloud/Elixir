@@ -14,7 +14,7 @@
       style="width: 100%">
       <el-table-column property="id" label="名称" width="150">
         <template scope="app">
-          <router-link :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
+          <router-link :to="{name: '应用详情', params:{id : app.row.id.substr(1)}}">{{app.row.id}}</router-link>
         </template>
       </el-table-column>
       <el-table-column

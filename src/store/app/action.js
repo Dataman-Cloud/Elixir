@@ -11,5 +11,12 @@ export default {
         context.commit(type.FETCH_APPS, data.data)
         return data
       })
+  },
+  [type.FETCH_APP] (context, id) {
+    return api.getApp(id)
+      .then(data => {
+        context.commit(type.FETCH_APP, data.data)
+        return data
+      })
   }
 }

@@ -8,7 +8,8 @@ const state = {
   apps: {
     apps: [],
     total: 0
-  }
+  },
+  app: {}
 }
 
 export default {
