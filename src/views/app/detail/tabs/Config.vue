@@ -43,21 +43,21 @@
     <dl class="detail-config">
       <dt>端口映射</dt>
       <dd>
-        <template v-if="app.container.docker.portMappings">
-          <el-table :data="app.container.docker.portMappings" style="width: 100%;">
-            <el-table-column prop="containerPort" label="应用端口" width="100"></el-table-column>
-            <el-table-column prop="protocol" label="协议" width="100"></el-table-column>
-            <el-table-column prop="hostPort" label="映射端口" width="100"></el-table-column>
+        <template v-if="app.container.docker.portMappings.length">
+          <el-table :data="app.container.docker.portMappings" stripe style="width: 100%;">
+            <el-table-column prop="containerPort" label="应用端口" width="200"></el-table-column>
+            <el-table-column prop="protocol" label="协议" width="200"></el-table-column>
           </el-table>
         </template>
         <span v-else>-</span>
       </dd>
     </dl>
+
     <dl class="detail-config">
       <dt>健康检查</dt>
       <dd>
         <template v-if="app.healthChecks.length">
-          <el-table :data="app.healthChecks" style="width: 100%;">
+          <el-table :data="app.healthChecks" stripe style="width: 100%;">
             <el-table-column prop="protocol" label="协议"></el-table-column>
             <el-table-column prop="gracePeriodSeconds" label="宽限时间" width="100"></el-table-column>
             <el-table-column prop="intervalSeconds" label="检查间隔" width="100"></el-table-column>
@@ -65,6 +65,46 @@
             <el-table-column prop="maxConsecutiveFailures" label="最多持续失败次数" width="150"></el-table-column>
             <el-table-column prop="ignoreHttp1xx" label="端口类型" width="100"></el-table-column>
             <el-table-column prop="portIndex" label="端口号" width="80"></el-table-column>
+          </el-table>
+        </template>
+        <span v-else>-</span>
+      </dd>
+    </dl>
+
+    <dl class="detail-config">
+      <dt>存储挂载路径</dt>
+      <dd>
+        <template v-if="app.container.volumes.length">
+          <el-table :data="app.container.volumes" stripe style="width: 100%;">
+            <el-table-column prop="hostPath" show-overflow-tooltip label="主机路径" width="150"></el-table-column>
+            <el-table-column prop="containerPath" show-overflow-tooltip label="容器路径" width="150"></el-table-column>
+            <el-table-column prop="mode" label="模式" width="100"></el-table-column>
+          </el-table>
+        </template>
+        <span v-else>-</span>
+      </dd>
+    </dl>
+
+    <dl class="detail-config">
+      <dt>环境变量</dt>
+      <dd>
+        <template v-if="app.envs.length">
+          <el-table :data="app.envs" stripe style="width: 100%;">
+            <el-table-column prop="key" show-overflow-tooltip label="KEY" width="200"></el-table-column>
+            <el-table-column prop="value" show-overflow-tooltip label="VALUE" width="200"></el-table-column>
+          </el-table>
+        </template>
+        <span v-else>-</span>
+      </dd>
+    </dl>
+
+    <dl class="detail-config">
+      <dt>Docker 参数</dt>
+      <dd>
+        <template v-if="app.container.docker.parameters.length">
+          <el-table :data="app.container.docker.parameters" stripe style="width: 100%;">
+            <el-table-column prop="key" show-overflow-tooltip label="KEY" width="200"></el-table-column>
+            <el-table-column prop="value" show-overflow-tooltip label="VALUE" width="200"></el-table-column>
           </el-table>
         </template>
         <span v-else>-</span>

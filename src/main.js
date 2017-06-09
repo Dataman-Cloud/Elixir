@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
+import lodash from '@/utils/lodash'
 import * as filters from '@/filters'
 import './styles/theme/index.css'
 import 'font-awesome/css/font-awesome.min.css'
@@ -14,6 +15,7 @@ import './styles/element-ui.css' // 覆盖 Element-UI 的样式
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
+Vue.use(lodash)
 
 // 注册全局 Filters
 Object.keys(filters).forEach(key => {

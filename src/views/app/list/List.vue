@@ -20,6 +20,7 @@
     <el-table
       :data="apps"
       highlight-current-row
+      stripe
       v-loading="listLoading"
       @current-change="handleCurrentChange"
       style="width: 100%">
