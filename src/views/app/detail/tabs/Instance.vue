@@ -11,6 +11,7 @@
 
     <el-table
       :data="tasks"
+      stripe
       highlight-current-row
       @current-change="handleCurrentChange"
       style="width: 100%">
