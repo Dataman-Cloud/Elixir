@@ -22,7 +22,7 @@
         this.$refs.dialog.open()
       },
       confirm: function () {
-        this.$emit('ok', this.form)
+        this.$emit('ok')
         this.dialogVisible = false
       }
     }
