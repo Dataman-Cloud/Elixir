@@ -17,8 +17,6 @@
       </el-button-group>
     </div>
 
-    <confirm-dialog @ok="deleteOk" ref="confirmDialog"></confirm-dialog>
-
     <extend-dialog @ok="extendOk" ref="extendDialog"></extend-dialog>
 
     <el-table
@@ -60,15 +58,14 @@
 
 <script>
   import {mapState} from 'vuex'
+  import Confirm from '@/utils/confirm'
   import ExtendDialog from '@/views/app/modals/ExtendDialog'
-  import ConfirmDialog from '@/components/ConfirmDialog'
   import * as type from '@/store/app/mutations_types'
   import * as app from '@/api/app'
 
   export default {
     components: {
-      ExtendDialog,
-      ConfirmDialog
+      ExtendDialog
     },
     data () {
       return {
@@ -97,14 +94,18 @@
         })
       },
       openDelete () {
-        this.currentRow ? this.$refs.confirmDialog.open('确定删除该应用吗?') : this.$notify({message: '尚未选中应用'})
-      },
-      deleteOk () {
-        app.deleteApp(this.currentRow.id.substr(1))
-          .then(() => {
-            this.$notify({message: '删除成功'})
-            this.$store.dispatch(type.FETCH_APPS)
-          })
+        if (this.currentRow) {
+          Confirm.open(`确认删除 ${this.currentRow.id.substr(1)} 应用?`)
+            .then(() => {
+              app.deleteApp(this.currentRow.id.substr(1))
+                .then(() => {
+                  this.$notify({message: '删除成功'})
+                  this.$store.dispatch(type.FETCH_APPS)
+                })
+            })
+        } else {
+          this.$notify({message: '尚未选中应用'})
+        }
       },
       openExtend () {
         this.currentRow ? this.$refs.extendDialog.open(this.currentRow) : this.$notify({message: '尚未选中应用'})
