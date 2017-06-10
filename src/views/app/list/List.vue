@@ -8,7 +8,8 @@
         <el-button type="primary" @click="openExtend()"><i class="el-icon-edit"></i> 扩展应用</el-button>
         <el-button type="primary" @click="openDelete()"><i class="el-icon-close"></i> 删除应用</el-button>
         <el-button type="primary"><i class="fa fa-refresh"></i> 更新应用</el-button>
-        <el-button type="primary"><i class="fa fa-play-circle"></i> 启动 / 停止</el-button>
+        <el-button type="primary" @click="reverse('start')"><i class="fa fa-play"></i> 启动</el-button>
+        <el-button type="primary" @click="reverse('stop')"><i class="fa fa-stop"></i> 停止</el-button>
       </el-button-group>
 
       <el-button-group style="display: flex">
@@ -40,11 +41,10 @@
         label="实例个数">
       </el-table-column>
       <el-table-column
-        property=""
+        property="appruntatus"
         label="运行状态">
       </el-table-column>
       <el-table-column
-        property=""
         label="健康状态">
       </el-table-column>
       <el-table-column label="更新时间" min-width="120">
@@ -91,6 +91,8 @@
       listApp () {
         return this.$store.dispatch(type.FETCH_APPS).then(() => {
           this.listLoading = false
+        }).catch(() => {
+          this.listLoading = false
         })
       },
       openDelete () {
@@ -112,6 +114,20 @@
       },
       extendOk (res) {
         console.log('myu', res)
+      },
+      reverse (action) {
+        if (this.currentRow) {
+          Confirm.open(`确认${action === 'start' ? '启动' : '停止'} ${this.currentRow.id.substr(1)} 应用?`)
+            .then(() => {
+              app[action](this.currentRow.id.substr(1))
+                .then(() => {
+                  this.$notify({message: `${action === 'start' ? '启动' : '停止'}成功`})
+                  this.$store.dispatch(type.FETCH_APPS)
+                })
+            })
+        } else {
+          this.$notify({message: '尚未选中应用'})
+        }
       }
     },
     mounted () {

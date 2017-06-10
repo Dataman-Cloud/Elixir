@@ -6,4 +6,4 @@ export {default as Instance} from './Instance'
 
 export {default as Config} from './Config'
 
-export {default as Other} from './Other'
+export {default as Debug} from './Debug'
