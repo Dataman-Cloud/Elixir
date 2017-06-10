@@ -17,3 +17,10 @@ export function getApp (id) {
   })
 }
 
+export function deleteApp (id) {
+  return fetch({
+    url: `v1/apps/${id}`,
+    method: 'delete'
+  })
+}
+
