@@ -24,3 +24,17 @@ export function deleteApp (id) {
   })
 }
 
+export function start (id) {
+  return fetch({
+    url: `v1/apps/${id}/start`,
+    method: 'put'
+  })
+}
+
+export function stop (id) {
+  return fetch({
+    url: `v1/apps/${id}/stop`,
+    method: 'put'
+  })
+}
+
