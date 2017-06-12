@@ -5,9 +5,9 @@
         <router-link class="pan-btn pink-btn" to="/app/create">
           <el-button type="primary"><i class="el-icon-plus"></i> 创建应用</el-button>
         </router-link>
-        <el-button type="primary" @click="openExtend()"><i class="el-icon-edit"></i> 扩展应用</el-button>
-        <el-button type="primary" @click="openDelete()"><i class="el-icon-close"></i> 删除应用</el-button>
-        <el-button type="primary" @click="updateApp()"><i class="fa fa-refresh"></i> 更新应用</el-button>
+        <el-button type="primary" @click="openExtend"><i class="el-icon-edit"></i> 扩展应用</el-button>
+        <el-button type="primary" @click="openDelete"><i class="el-icon-close"></i> 删除应用</el-button>
+        <el-button type="primary" @click="updateApp"><i class="fa fa-refresh"></i> 更新应用</el-button>
         <el-button type="primary" @click="reverse('start')"><i class="fa fa-play"></i> 启动</el-button>
         <el-button type="primary" @click="reverse('stop')"><i class="fa fa-stop"></i> 停止</el-button>
       </el-button-group>
