@@ -7,7 +7,7 @@
         </router-link>
         <el-button type="primary" @click="openExtend()"><i class="el-icon-edit"></i> 扩展应用</el-button>
         <el-button type="primary" @click="openDelete()"><i class="el-icon-close"></i> 删除应用</el-button>
-        <el-button type="primary"><i class="fa fa-refresh"></i> 更新应用</el-button>
+        <el-button type="primary" @click="updateApp()"><i class="fa fa-refresh"></i> 更新应用</el-button>
         <el-button type="primary" @click="reverse('start')"><i class="fa fa-play"></i> 启动</el-button>
         <el-button type="primary" @click="reverse('stop')"><i class="fa fa-stop"></i> 停止</el-button>
       </el-button-group>
@@ -94,6 +94,13 @@
         }).catch(() => {
           this.listLoading = false
         })
+      },
+      updateApp () {
+        if (this.currentRow) {
+          this.$router.push({name: '更新应用', params: {id: this.currentRow.id.substr(1)}})
+        } else {
+          this.$notify({message: '尚未选中应用'})
+        }
       },
       openDelete () {
         if (this.currentRow) {
