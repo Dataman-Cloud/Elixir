@@ -5,7 +5,8 @@
     </el-form-item>
     <el-form-item label="集群">
       <el-select v-model="selectCluster" placeholder="请选择集群" @visible-change="openClusters">
-        <el-option v-for="cluster in clusters" :key="cluster.id" :label="cluster.clusterLabel" :value="cluster.clusterLabel"></el-option>
+        <el-option v-for="cluster in clusters" :key="cluster.id" :label="cluster.clusterLabel"
+                   :value="cluster.clusterLabel"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="镜像地址">
@@ -113,21 +114,21 @@
       addConfig (configName) {
         const config = this._.merge({}, appUtil.DYNAMIC_CONFIG)
 
-        if (this.form[configName]) {
-          this.form[configName].push(config[configName])
+        if (this.form.container.docker[configName]) {
+          this.form.container.docker[configName].push(config[configName])
         } else if (this.form.container[configName]) {
           this.form.container[configName].push(config[configName])
         } else {
-          this.form.container[configName].docker.push(config[configName])
+          this.form[configName].push(config[configName])
         }
       },
       removeConfig (index, configName) {
-        if (this.form[configName]) {
-          this.form[configName].splice(index, 1)
+        if (this.form.container.docker[configName]) {
+          this.form.container.docker[configName].splice(index, 1)
         } else if (this.form.container[configName]) {
           this.form.container[configName].splice(index, 1)
         } else {
-          this.form.container[configName].splice(index, 1)
+          this.form[configName].splice(index, 1)
         }
       }
     },
@@ -166,8 +167,8 @@
   }
 </script>
 <style scoped>
-  .spec .el-row .el-col-6{
-    padding: 0!important;
+  .spec .el-row .el-col-6 {
+    padding: 0 !important;
     margin-right: 20px;
   }
 </style>
