@@ -21,8 +21,8 @@
         <el-radio label="HOST">HOST 模式</el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item label="容器规格">
-      <el-row :gutter="20">
+    <el-form-item label="容器规格" class="spec">
+      <el-row :gutter="12">
         <el-col :span="6">
           <el-input v-model.number="form.cpus">
             <template slot="prepend">CPU</template>
@@ -156,4 +156,8 @@
   }
 </script>
 <style scoped>
+  .spec .el-row .el-col-6{
+    padding: 0!important;
+    margin-right: 20px;
+  }
 </style>
