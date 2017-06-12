@@ -36,3 +36,31 @@ export const APP_BASE = {
   labels: {},
   tasks: []
 }
+
+export const DYNAMIC_CONFIG = {
+  envs: {
+    key: '',
+    value: ''
+  },
+  parameters: {
+    key: '',
+    value: ''
+  },
+  healthChecks: {
+    protocol: 'TCP',
+    gracePeriodSeconds: '',
+    intervalSeconds: '',
+    timeoutSeconds: '',
+    maxConsecutiveFailures: '',
+    ifPortIndex: 1
+  },
+  portMapping: {
+    containerPort: '',
+    protocol: 'tcp'
+  },
+  volumes: {
+    containerPath: '',
+    hostPath: '',
+    mode: 'RW'
+  }
+}
