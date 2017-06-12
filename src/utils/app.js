@@ -53,7 +53,8 @@ export const DYNAMIC_CONFIG = {
     intervalSeconds: '',
     timeoutSeconds: '',
     maxConsecutiveFailures: '',
-    ifPortIndex: null
+    ifPortIndex: null,
+    ignoreHttp1xx: false
   },
   portMappings: {
     containerPort: '',

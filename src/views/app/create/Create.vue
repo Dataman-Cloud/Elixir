@@ -125,6 +125,11 @@
                 <template slot="prepend">端口号</template>
               </el-input>
             </el-col>
+            <el-col :span="3">
+              <template>
+                <el-checkbox v-model="healthCheck.ignoreHttp1xx">忽略HTTP返回码100~199</el-checkbox>
+              </template>
+            </el-col>
             <el-button @click.prevent="removeConfig(index, 'healthChecks')"><i class="el-icon-delete"></i></el-button>
           </el-row>
         </el-form-item>
@@ -168,6 +173,11 @@
             </el-col>
             <el-button @click.prevent="removeConfig(index, 'envs')"><i class="el-icon-delete"></i></el-button>
           </el-row>
+        </el-form-item>
+        <el-form-item label="命令">
+          <el-input v-model="form.cmd">
+            <template slot="prepend">输入需要运行的命令</template>
+          </el-input>
         </el-form-item>
       </el-collapse-item>
     </el-collapse>
