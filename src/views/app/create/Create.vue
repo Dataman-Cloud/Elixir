@@ -39,6 +39,33 @@
       <el-input v-model.number="form.instances"></el-input>
       <el-checkbox v-model="single">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox>
     </el-form-item>
+    <el-form-item label="挂载路径">
+      <el-button type="primary" @click="addVolumes">添加挂在路径</el-button>
+    </el-form-item>
+
+    <el-form-item v-for="(volume, index) in form.container.volumes"
+                  :key="index">
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-input v-model="volume.containerPath">
+            <template slot="prepend">containerPath</template>
+          </el-input>
+        </el-col>
+        <el-col :span="6">
+          <el-input v-model="volume.hostPath">
+            <template slot="prepend">hostPath</template>
+          </el-input>
+        </el-col>
+        <el-col :span="4">
+          <el-select v-model="volume.mode">
+            <el-option value="RW">RW</el-option>
+            <el-option value="RD">RD</el-option>
+          </el-select>
+        </el-col>
+        <el-button @click.prevent="removeVolume(index)"><i class="el-icon-delete"></i></el-button>
+      </el-row>
+    </el-form-item>
+
     <el-form-item>
       <el-button type="primary" @click="onSubmit">立即创建</el-button>
       <el-button>取消</el-button>
@@ -82,6 +109,16 @@
       },
       onSubmit () {
         console.log(this.form)
+      },
+      addVolumes () {
+        this.form.container.volumes.push({
+          containerPath: '',
+          hostPath: '',
+          mode: 'RW'
+        })
+      },
+      removeVolume (index) {
+        this.form.container.volumes.splice(index, 1)
       }
     },
     mounted () {
