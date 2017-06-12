@@ -38,3 +38,10 @@ export function stop (id) {
   })
 }
 
+export function extend (id, instances) {
+  return fetch({
+    url: `v1/apps/${id}`,
+    method: 'put',
+    data: instances
+  })
+}
