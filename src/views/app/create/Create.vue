@@ -5,7 +5,8 @@
     </el-form-item>
     <el-form-item label="集群">
       <el-select v-model="selectCluster" placeholder="请选择集群" @visible-change="openClusters">
-        <el-option v-for="cluster in clusters" :label="cluster.clusterLabel" :value="cluster.clusterLabel"></el-option>
+        <el-option v-for="cluster in clusters" :key="cluster.id" :label="cluster.clusterLabel"
+                   :value="cluster.clusterLabel"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="镜像地址">
@@ -40,7 +41,7 @@
       <el-checkbox v-model="single">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox>
     </el-form-item>
     <el-form-item label="挂载路径">
-      <el-button type="primary" @click="addVolumes">添加挂在路径</el-button>
+      <el-button type="primary" @click="addConfig('volumes')">添加挂在路径</el-button>
     </el-form-item>
 
     <el-form-item v-for="(volume, index) in form.container.volumes"
@@ -62,7 +63,7 @@
             <el-option value="RD">RD</el-option>
           </el-select>
         </el-col>
-        <el-button @click.prevent="removeVolume(index)"><i class="el-icon-delete"></i></el-button>
+        <el-button @click.prevent="removeConfig(index, 'volumes')"><i class="el-icon-delete"></i></el-button>
       </el-row>
     </el-form-item>
 
@@ -110,15 +111,25 @@
       onSubmit () {
         console.log(this.form)
       },
-      addVolumes () {
-        this.form.container.volumes.push({
-          containerPath: '',
-          hostPath: '',
-          mode: 'RW'
-        })
+      addConfig (configName) {
+        const config = this._.merge({}, appUtil.DYNAMIC_CONFIG)
+
+        if (this.form.container.docker[configName]) {
+          this.form.container.docker[configName].push(config[configName])
+        } else if (this.form.container[configName]) {
+          this.form.container[configName].push(config[configName])
+        } else {
+          this.form[configName].push(config[configName])
+        }
       },
-      removeVolume (index) {
-        this.form.container.volumes.splice(index, 1)
+      removeConfig (index, configName) {
+        if (this.form.container.docker[configName]) {
+          this.form.container.docker[configName].splice(index, 1)
+        } else if (this.form.container[configName]) {
+          this.form.container[configName].splice(index, 1)
+        } else {
+          this.form[configName].splice(index, 1)
+        }
       }
     },
     mounted () {
@@ -156,8 +167,8 @@
   }
 </script>
 <style scoped>
-  .spec .el-row .el-col-6{
-    padding: 0!important;
+  .spec .el-row .el-col-6 {
+    padding: 0 !important;
     margin-right: 20px;
   }
 </style>
