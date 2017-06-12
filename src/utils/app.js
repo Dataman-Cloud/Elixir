@@ -54,7 +54,7 @@ export const DYNAMIC_CONFIG = {
     maxConsecutiveFailures: '',
     ifPortIndex: null
   },
-  portMapping: {
+  portMappings: {
     containerPort: '',
     protocol: 'tcp'
   },
