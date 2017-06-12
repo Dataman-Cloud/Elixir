@@ -67,6 +67,70 @@
       </el-row>
     </el-form-item>
 
+    <el-collapse accordion class="advance">
+      <el-collapse-item>
+        <template slot="title">
+          高级设置
+        </template>
+        <el-form-item label="健康检查">
+          <el-button type="primary" @click="addConfig('healthChecks')">添加健康检查</el-button>
+        </el-form-item>
+        <el-form-item v-for="(healthCheck, index) in form.healthChecks"
+                      :key="index" class="healthCheck">
+          <el-row :gutter="20">
+            <el-col :span="2">
+              <el-select v-model="healthCheck.protocol">
+                <el-option value="TCP">TCP</el-option>
+                <el-option value="HTTP">HTTP</el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="3" v-if="healthCheck.protocol === 'HTTP'">
+              <el-input v-model="healthCheck.path">
+                <template slot="prepend">路径</template>
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-input v-model="healthCheck.gracePeriodSeconds">
+                <template slot="prepend">宽限时间(秒)</template>
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-input v-model="healthCheck.intervalSeconds">
+                <template slot="prepend">检查间隔(秒)</template>
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-input v-model="healthCheck.timeoutSeconds">
+                <template slot="prepend">检查超时(秒)</template>
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-input v-model="healthCheck.maxConsecutiveFailures">
+                <template slot="prepend">最多失败次数</template>
+              </el-input>
+            </el-col>
+            <el-col :span="3">
+              <el-select v-model="healthCheck.ifPortIndex">
+                <el-option v-if="form.container.docker.network === 'BRIDGE'" label="端口组索引" :value="0">端口组索引</el-option>
+                <el-option v-if="form.container.docker.network === 'HOST'" label="端口号" :value="1">端口号</el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="3" v-if="healthCheck.ifPortIndex === 0">
+              <el-input v-model="healthCheck.portIndex">
+                <template slot="prepend">端口组索引</template>
+              </el-input>
+            </el-col>
+            <el-col :span="3" v-if="healthCheck.ifPortIndex === 1">
+              <el-input v-model="healthCheck.port">
+                <template slot="prepend">端口号</template>
+              </el-input>
+            </el-col>
+            <el-button @click.prevent="removeConfig(index, 'healthChecks')"><i class="el-icon-delete"></i></el-button>
+          </el-row>
+        </el-form-item>
+      </el-collapse-item>
+    </el-collapse>
+
     <el-form-item>
       <el-button type="primary" @click="onSubmit">立即创建</el-button>
       <el-button>取消</el-button>
@@ -170,5 +234,15 @@
   .spec .el-row .el-col-6 {
     padding: 0 !important;
     margin-right: 20px;
+  }
+
+  .healthCheck .el-row .el-col {
+    margin-bottom: 10px;
+    padding: 0 !important;
+    margin-right: 20px;
+  }
+
+  .advance {
+    margin-bottom: 20px;
   }
 </style>
