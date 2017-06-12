@@ -17,6 +17,7 @@ export function transformEnvtoArray (env = {}) {
 export const APP_BASE = {
   cpus: 0.01,
   mem: 16,
+  envs: [],
   env: {},
   container: {
     docker: {

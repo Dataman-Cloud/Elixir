@@ -41,7 +41,7 @@
       <el-checkbox v-model="single">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox>
     </el-form-item>
     <el-form-item label="挂载路径">
-      <el-button type="primary"  size="small" @click="addConfig('volumes')">添加挂在路径</el-button>
+      <el-button type="primary" size="small" @click="addConfig('volumes')">添加挂在路径</el-button>
     </el-form-item>
 
     <el-form-item v-for="(volume, index) in form.container.volumes"
@@ -73,7 +73,7 @@
           高级设置
         </template>
         <el-form-item label="健康检查">
-          <el-button type="primary" size="small"  @click="addConfig('healthChecks')">添加健康检查</el-button>
+          <el-button type="primary" size="small" @click="addConfig('healthChecks')">添加健康检查</el-button>
         </el-form-item>
         <el-form-item v-for="(healthCheck, index) in form.healthChecks"
                       :key="index" class="healthCheck">
@@ -147,6 +147,26 @@
               </el-select>
             </el-col>
             <el-button @click.prevent="removeConfig(index, 'portMappings')"><i class="el-icon-delete"></i></el-button>
+          </el-row>
+        </el-form-item>
+
+        <el-form-item label="环境变量">
+          <el-button type="primary" size="small" @click="addConfig('envs')">添加环境变量</el-button>
+        </el-form-item>
+        <el-form-item v-for="(env, index) in form.envs"
+                      :key="index" class="healthCheck">
+          <el-row :gutter="12">
+            <el-col :span="4">
+              <el-input v-model="env.key">
+                <template slot="prepend">Key</template>
+              </el-input>
+            </el-col>
+            <el-col :span="3">
+              <el-input v-model="env.value">
+                <template slot="prepend">Value</template>
+              </el-input>
+            </el-col>
+            <el-button @click.prevent="removeConfig(index, 'envs')"><i class="el-icon-delete"></i></el-button>
           </el-row>
         </el-form-item>
       </el-collapse-item>
