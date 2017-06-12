@@ -4,7 +4,7 @@
       <el-input v-model="form.id"></el-input>
     </el-form-item>
     <el-form-item label="集群">
-      <el-select v-model="selectCluster" placeholder="请选择集群" @visible-change="openClusters">
+      <el-select v-model="selectCluster" placeholder="请选择集群" @visible-change="openClusters" @change="clusterChange">
         <el-option v-for="cluster in clusters" :key="cluster.id" :label="cluster.clusterLabel"
                    :value="cluster.clusterLabel"></el-option>
       </el-select>
@@ -90,22 +90,22 @@
               </el-input>
             </el-col>
             <el-col :span="4">
-              <el-input v-model="healthCheck.gracePeriodSeconds">
+              <el-input v-model.number="healthCheck.gracePeriodSeconds">
                 <template slot="prepend">宽限时间(秒)</template>
               </el-input>
             </el-col>
             <el-col :span="4">
-              <el-input v-model="healthCheck.intervalSeconds">
+              <el-input v-model.number="healthCheck.intervalSeconds">
                 <template slot="prepend">检查间隔(秒)</template>
               </el-input>
             </el-col>
             <el-col :span="4">
-              <el-input v-model="healthCheck.timeoutSeconds">
+              <el-input v-model.number="healthCheck.timeoutSeconds">
                 <template slot="prepend">检查超时(秒)</template>
               </el-input>
             </el-col>
             <el-col :span="4">
-              <el-input v-model="healthCheck.maxConsecutiveFailures">
+              <el-input v-model.number="healthCheck.maxConsecutiveFailures">
                 <template slot="prepend">最多失败次数</template>
               </el-input>
             </el-col>
@@ -116,12 +116,12 @@
               </el-select>
             </el-col>
             <el-col :span="3" v-if="healthCheck.ifPortIndex === 0">
-              <el-input v-model="healthCheck.portIndex">
+              <el-input v-model.number="healthCheck.portIndex">
                 <template slot="prepend">端口组索引</template>
               </el-input>
             </el-col>
             <el-col :span="3" v-if="healthCheck.ifPortIndex === 1">
-              <el-input v-model="healthCheck.port">
+              <el-input v-model.number="healthCheck.port">
                 <template slot="prepend">端口号</template>
               </el-input>
             </el-col>
@@ -136,7 +136,7 @@
                       :key="index" class="healthCheck">
           <el-row :gutter="12">
             <el-col :span="4">
-              <el-input v-model="portMapping.containerPort">
+              <el-input v-model.number="portMapping.containerPort">
                 <template slot="prepend">容器端口</template>
               </el-input>
             </el-col>
@@ -213,6 +213,10 @@
             })
         }
       },
+      clusterChange (cluster) {
+        let clusterIndex = this.form.constraints.findIndex(item => item[0] === 'vcluster')
+        this.form.constraints[clusterIndex][2] = cluster
+      },
       onSubmit () {
         console.log(this.form)
       },
@@ -243,7 +247,7 @@
           .then(data => {
             this.form = data.data
             this.form.envs = appUtil.transformEnvtoArray(this.form.env)
-            this.selectCluster = this.form.constraints.filter(item => item[0] === 'vcluster')[0][2]
+            this.selectCluster = this.form.constraints.find(item => item[0] === 'vcluster')[2]
             this.single = this.form.constraints.some(item => item[0] === 'hostname')
           })
 
