@@ -38,7 +38,7 @@
     </el-form-item>
     <el-form-item label="容器个数">
       <el-input v-model.number="form.instances"></el-input>
-      <el-checkbox v-model="single">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox>
+      <el-checkbox v-model="single" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox>
     </el-form-item>
     <el-form-item label="挂载路径">
       <el-button type="primary" size="small" @click="addConfig('volumes')">添加挂在路径</el-button>
@@ -227,6 +227,9 @@
         let clusterIndex = this.form.constraints.findIndex(item => item[0] === 'vcluster')
         this.form.constraints[clusterIndex][2] = cluster
       },
+      uniqueHostname (flag) {
+        console.log(flag)
+      },
       onSubmit () {
         console.log(this.form)
       },
@@ -255,7 +258,7 @@
       if (this.$route.meta.update) {
         fetchApp.getApp(this.$route.params.id)
           .then(data => {
-            this.form = data.data
+            this.form = this._.merge({}, appUtil.APP_BASE, data.data)
             this.form.envs = appUtil.transformEnvtoArray(this.form.env)
             this.selectCluster = this.form.constraints.find(item => item[0] === 'vcluster')[2]
             this.single = this.form.constraints.some(item => item[0] === 'hostname')
@@ -273,7 +276,7 @@
 
           Promise.all([getApp, listCluster]).then(results => {
             next(vm => {
-              vm.form = results[0].data
+              vm.form = vm._.merge({}, appUtil.APP_BASE, results[0].data)
               vm.form.envs = appUtil.transformEnvtoArray(vm.form.env)
               vm.selectCluster = vm.form.constraints.filter(item => item[0] === 'vcluster')[0][2]
               vm.single = vm.form.constraints.some(item => item[0] === 'hostname')
