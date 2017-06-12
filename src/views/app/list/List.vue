@@ -120,7 +120,8 @@
         this.currentRow ? this.$refs.extendDialog.open(this.currentRow) : this.$notify({message: '尚未选中应用'})
       },
       extendOk (res) {
-        console.log('myu', res)
+        app.extend(this.currentRow.id.substr(1), res)
+          .then(data => this.$store.dispatch(type.FETCH_APPS))
       },
       reverse (action) {
         if (this.currentRow) {
