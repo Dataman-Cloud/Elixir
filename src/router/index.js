@@ -28,6 +28,7 @@ export const constantRouterMap = [
         children: [
           {path: 'list', component: AppList, name: '应用列表'},
           {path: 'create', component: AppForm, name: '创建应用'},
+          {path: 'update/:id', component: AppForm, name: '更新应用', meta: {update: true}},
           {path: 'detail/:id', component: AppDetail, name: '应用详情'}
         ]
       }

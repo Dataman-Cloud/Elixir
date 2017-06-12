@@ -15,15 +15,23 @@ export function transformEnvtoArray (env = {}) {
 }
 
 export const APP_BASE = {
+  cpus: 0.01,
+  mem: 16,
   env: {},
   container: {
     docker: {
+      network: 'BRIDGE',
       parameters: [],
       portMappings: []
     },
     volumes: []
   },
-  constraints: [],
+  constraints: [
+    [
+      'vcluster',
+      'LIKE'
+    ]
+  ],
   healthChecks: [],
   labels: {},
   tasks: []
