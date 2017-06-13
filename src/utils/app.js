@@ -19,6 +19,10 @@ export function transformEnvtoArray (env = {}) {
   return res
 }
 
+export function transformHealthChecks (healthChecks = [], networkMode = 'BRIDGE') {
+  return healthChecks.map(health => _.omit(health, networkMode === 'BRIDGE' ? 'port' : 'portIndex'))
+}
+
 export const APP_BASE = {
   cpus: 0.01,
   mem: 16,
@@ -41,7 +45,7 @@ export const APP_BASE = {
   ],
   healthChecks: [],
   labels: {},
-  cmd: ''
+  cmd: null
 }
 
 export const DYNAMIC_CONFIG = {
@@ -59,7 +63,8 @@ export const DYNAMIC_CONFIG = {
     intervalSeconds: '',
     timeoutSeconds: '',
     maxConsecutiveFailures: '',
-    ifPortIndex: null,
+    port: '',
+    portIndex: '',
     ignoreHttp1xx: false
   },
   portMappings: {
