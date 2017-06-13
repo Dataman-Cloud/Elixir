@@ -1,15 +1,15 @@
 <template>
-  <el-form ref="form" :model="form" label-width="80px">
-    <el-form-item label="应用名称">
+  <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-form-item label="应用名称" prop="id">
       <el-input v-model="form.id"></el-input>
     </el-form-item>
-    <el-form-item label="集群">
-      <el-select v-model="selectCluster" placeholder="请选择集群" @visible-change="openClusters" @change="clusterChange">
+    <el-form-item label="集群" prop="selectCluster">
+      <el-select v-model="form.selectCluster" placeholder="请选择集群" @visible-change="openClusters" @change="clusterChange">
         <el-option v-for="cluster in clusters" :key="cluster.id" :label="cluster.clusterLabel"
                    :value="cluster.clusterLabel"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="镜像地址">
+    <el-form-item label="镜像地址" prop="container.docker.image">
       <div>
         <el-input v-model="form.container.docker.image"></el-input>
         <span>镜像格式: [registry-url]/[namespace]/[image]:[tag]</span>
@@ -25,20 +25,24 @@
     <el-form-item label="容器规格" class="spec">
       <el-row :gutter="12">
         <el-col :span="6">
-          <el-input v-model.number="form.cpus">
-            <template slot="prepend">CPU</template>
-          </el-input>
+          <el-form-item prop="cpus">
+            <el-input step="0.01" type="number" v-model.number="form.cpus">
+              <template slot="prepend">CPU</template>
+            </el-input>
+          </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-input v-model.number="form.mem">
-            <template slot="prepend">内 存</template>
-          </el-input>
+          <el-form-item prop="mem">
+            <el-input type="number" v-model.number="form.mem">
+              <template slot="prepend">内 存</template>
+            </el-input>
+          </el-form-item>
         </el-col>
       </el-row>
     </el-form-item>
-    <el-form-item label="容器个数">
-      <el-input v-model.number="form.instances"></el-input>
-      <el-checkbox v-model="single" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox>
+    <el-form-item label="容器个数" prop="instances">
+      <el-input type="number" v-model.number="form.instances"></el-input>
+      <el-checkbox v-model="form.single" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox>
     </el-form-item>
     <el-form-item label="挂载路径">
       <el-button type="primary" size="small" @click="addConfig('volumes')">添加挂在路径</el-button>
@@ -48,14 +52,27 @@
                   :key="index">
       <el-row :gutter="20">
         <el-col :span="6">
-          <el-input v-model="volume.containerPath">
-            <template slot="prepend">containerPath</template>
-          </el-input>
+          <el-form-item
+            :prop="'container.volumes.' + index + '.containerPath'"
+            :key="volume.index"
+            :rules="[
+                       { required: true, message: '容器路径不能为空' }
+                    ]">
+            <el-input v-model="volume.containerPath">
+              <template slot="prepend">容器路径</template>
+            </el-input>
+          </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-input v-model="volume.hostPath">
-            <template slot="prepend">hostPath</template>
-          </el-input>
+          <el-form-item :prop="'container.volumes.' + index + '.hostPath'"
+                        :key="volume.index"
+                        :rules="[
+                                { required: true, message: '主机路径不能为空' }
+                            ]">
+            <el-input v-model="volume.hostPath">
+              <template slot="prepend">主机路径</template>
+            </el-input>
+          </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-select v-model="volume.mode">
@@ -85,45 +102,99 @@
               </el-select>
             </el-col>
             <el-col :span="3" v-if="healthCheck.protocol === 'HTTP'">
-              <el-input v-model="healthCheck.path">
-                <template slot="prepend">路径</template>
-              </el-input>
+              <el-form-item :prop="'healthChecks.' + index + '.path'"
+                            :key="index"
+                            :rules="[
+                                { required: true, message: '路径不能为空' }
+                            ]">
+                <el-input v-model="healthCheck.path">
+                  <template slot="prepend">路径</template>
+                </el-input>
+              </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-input v-model.number="healthCheck.gracePeriodSeconds">
-                <template slot="prepend">宽限时间(秒)</template>
-              </el-input>
+              <el-form-item :prop="'healthChecks.' + index + '.gracePeriodSeconds'"
+                            :key="index"
+                            :rules="[
+                                { required: true, message: '宽限时间不能为空' },
+                                { type: 'integer', min: 1, message: '宽限时间为正整数' }
+                            ]">
+                <el-input type="number" v-model.number="healthCheck.gracePeriodSeconds">
+                  <template slot="prepend">宽限时间(秒)</template>
+                </el-input>
+              </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-input v-model.number="healthCheck.intervalSeconds">
-                <template slot="prepend">检查间隔(秒)</template>
-              </el-input>
+              <el-form-item :prop="'healthChecks.' + index + '.intervalSeconds'"
+                            :key="index"
+                            :rules="[
+                                { required: true, message: '检查间隔不能为空' },
+                                { type: 'integer', min: 1, message: '检查间隔为正整数' }
+                            ]">
+                <el-input type="number" v-model.number="healthCheck.intervalSeconds">
+                  <template slot="prepend">检查间隔(秒)</template>
+                </el-input>
+              </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-input v-model.number="healthCheck.timeoutSeconds">
-                <template slot="prepend">检查超时(秒)</template>
-              </el-input>
+              <el-form-item :prop="'healthChecks.' + index + '.timeoutSeconds'"
+                            :key="index"
+                            :rules="[
+                                { required: true, message: '检查超时时间不能为空' },
+                                { type: 'integer', min: 1, message: '检查超时时间为正整数' }
+                            ]">
+                <el-input type="number" v-model.number="healthCheck.timeoutSeconds">
+                  <template slot="prepend">检查超时(秒)</template>
+                </el-input>
+              </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-input v-model.number="healthCheck.maxConsecutiveFailures">
-                <template slot="prepend">最多失败次数</template>
-              </el-input>
+              <el-form-item :prop="'healthChecks.' + index + '.maxConsecutiveFailures'"
+                            :key="index"
+                            :rules="[
+                                { required: true, message: '最多失败次数不能为空' },
+                                { type: 'integer', min: 1, message: '最多失败次数为正整数' }
+                            ]">
+                <el-input type="number" v-model.number="healthCheck.maxConsecutiveFailures">
+                  <template slot="prepend">最多失败次数</template>
+                </el-input>
+              </el-form-item>
             </el-col>
             <el-col :span="3">
-              <el-select v-model="healthCheck.ifPortIndex">
-                <el-option v-if="form.container.docker.network === 'BRIDGE'" label="端口组索引" :value="0">端口组索引</el-option>
-                <el-option v-if="form.container.docker.network === 'HOST'" label="端口号" :value="1">端口号</el-option>
-              </el-select>
+              <el-form-item :prop="'healthChecks.' + index + '.ifPortIndex'"
+                            :key="index"
+                            :rules="[
+                                { required: true, message: '请选择端口类型' }
+                            ]">
+                <el-select v-model="healthCheck.ifPortIndex">
+                  <el-option v-if="form.container.docker.network === 'BRIDGE'" label="端口组索引" :value="0">端口组索引</el-option>
+                  <el-option v-if="form.container.docker.network === 'HOST'" label="端口号" :value="1">端口号</el-option>
+                </el-select>
+              </el-form-item>
             </el-col>
             <el-col :span="3" v-if="healthCheck.ifPortIndex === 0">
-              <el-input v-model.number="healthCheck.portIndex">
-                <template slot="prepend">端口组索引</template>
-              </el-input>
+              <el-form-item :prop="'healthChecks.' + index + '.portIndex'"
+                            :key="index"
+                            :rules="[
+                                { required: true, message: '端口组索引不能为空' },
+                                { type: 'integer', min: 1, message: '端口组索引为正整数' }
+                            ]">
+                <el-input type="number" v-model.number="healthCheck.portIndex">
+                  <template slot="prepend">端口组索引</template>
+                </el-input>
+              </el-form-item>
             </el-col>
             <el-col :span="3" v-if="healthCheck.ifPortIndex === 1">
-              <el-input v-model.number="healthCheck.port">
-                <template slot="prepend">端口号</template>
-              </el-input>
+              <el-form-item :prop="'healthChecks.' + index + '.port'"
+                            :key="index"
+                            :rules="[
+                                { required: true, message: '端口号不能为空' },
+                                { type: 'integer', min: 1, message: '端口号为正整数' }
+                            ]">
+                <el-input type="number" v-model.number="healthCheck.port">
+                  <template slot="prepend">端口号</template>
+                </el-input>
+              </el-form-item>
             </el-col>
             <el-col :span="3">
               <template>
@@ -141,9 +212,15 @@
                       :key="index" class="healthCheck">
           <el-row :gutter="12">
             <el-col :span="4">
-              <el-input v-model.number="portMapping.containerPort">
-                <template slot="prepend">容器端口</template>
-              </el-input>
+              <el-form-item :prop="'container.docker.portMappings.' + index + '.containerPort'"
+                            :key="portMapping.index"
+                            :rules="[
+                                { required: true, message: '容器端口不能为空' }
+                            ]">
+                <el-input v-model.number="portMapping.containerPort">
+                  <template slot="prepend">容器端口</template>
+                </el-input>
+              </el-form-item>
             </el-col>
             <el-col :span="3">
               <el-select v-model="portMapping.protocol">
@@ -158,18 +235,31 @@
         <el-form-item label="环境变量">
           <el-button type="primary" size="small" @click="addConfig('envs')">添加环境变量</el-button>
         </el-form-item>
-        <el-form-item v-for="(env, index) in form.envs"
-                      :key="index" class="healthCheck">
+        <el-form-item v-for="(env, index) in form.envs" class="healthCheck">
           <el-row :gutter="12">
-            <el-col :span="4">
-              <el-input v-model="env.key">
-                <template slot="prepend">Key</template>
-              </el-input>
+            <el-col :span="6">
+              <el-form-item :prop="'envs.' + index + '.key'"
+                            :key="env.index"
+                            :rules="[
+                                { required: true, message: '环境变量的 KEY 个数不能为空' },
+                                { pattern: /^[^\u4e00-\u9fa5]*$/, message: '环境变量的 KEY 不能包含中文' }
+                            ]">
+                <el-input v-model="env.key">
+                  <template slot="prepend">KEY</template>
+                </el-input>
+              </el-form-item>
             </el-col>
-            <el-col :span="3">
-              <el-input v-model="env.value">
-                <template slot="prepend">Value</template>
-              </el-input>
+            <el-col :span="5">
+              <el-form-item :prop="'envs.' + index + '.value'"
+                            :key="env.index"
+                            :rules="[
+                                { required: true, message: '环境变量的 VALUE 个数不能为空' },
+                                { pattern: /^[^\u4e00-\u9fa5]*$/, message: '环境变量的 VALUE 不能包含中文' }
+                            ]">
+                <el-input v-model="env.value">
+                  <template slot="prepend">VALUE</template>
+                </el-input>
+              </el-form-item>
             </el-col>
             <el-button @click.prevent="removeConfig(index, 'envs')"><i class="el-icon-delete"></i></el-button>
           </el-row>
@@ -183,7 +273,7 @@
     </el-collapse>
 
     <el-form-item>
-      <el-button type="primary" @click="onSubmit">立即创建</el-button>
+      <el-button type="primary" @click="onSubmit('form')">立即创建</el-button>
       <el-button>取消</el-button>
     </el-form-item>
   </el-form>
@@ -208,10 +298,9 @@
     },
     data () {
       return {
-        selectCluster: '',
         clusters: [],
-        single: '',
-        form: this._.merge({}, appUtil.APP_BASE)
+        form: this._.merge({selectCluster: '', single: ''}, appUtil.APP_BASE),
+        rules: appUtil.APP_FORM_RULES
       }
     },
     methods: {
@@ -230,8 +319,16 @@
       uniqueHostname (flag) {
         console.log(flag)
       },
-      onSubmit () {
+      onSubmit (formName) {
         console.log(this.form)
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!')
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       },
       addConfig (configName) {
         const config = this._.merge({}, appUtil.DYNAMIC_CONFIG)
@@ -258,10 +355,10 @@
       if (this.$route.meta.update) {
         fetchApp.getApp(this.$route.params.id)
           .then(data => {
-            this.form = this._.merge({}, appUtil.APP_BASE, data.data)
+            this.form = this._.merge({selectCluster: '', single: ''}, appUtil.APP_BASE, data.data)
             this.form.envs = appUtil.transformEnvtoArray(this.form.env)
-            this.selectCluster = this.form.constraints.find(item => item[0] === 'vcluster')[2]
-            this.single = this.form.constraints.some(item => item[0] === 'hostname')
+            this.form.selectCluster = this.form.constraints.find(item => item[0] === 'vcluster')[2]
+            this.form.single = this.form.constraints.some(item => item[0] === 'hostname')
           })
 
         fetchCluster.listCluster()
@@ -276,10 +373,10 @@
 
           Promise.all([getApp, listCluster]).then(results => {
             next(vm => {
-              vm.form = vm._.merge({}, appUtil.APP_BASE, results[0].data)
+              vm.form = vm._.merge({selectCluster: '', single: ''}, appUtil.APP_BASE, results[0].data)
               vm.form.envs = appUtil.transformEnvtoArray(vm.form.env)
-              vm.selectCluster = vm.form.constraints.filter(item => item[0] === 'vcluster')[0][2]
-              vm.single = vm.form.constraints.some(item => item[0] === 'hostname')
+              vm.form.selectCluster = vm.form.constraints.filter(item => item[0] === 'vcluster')[0][2]
+              vm.form.single = vm.form.constraints.some(item => item[0] === 'hostname')
               vm.clusters = results[1].data
             })
           })
@@ -295,7 +392,7 @@
   }
 
   .healthCheck .el-row .el-col {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     padding: 0 !important;
     margin-right: 20px;
   }
