@@ -35,6 +35,7 @@
           <el-form-item prop="mem">
             <el-input type="number" v-model.number="form.mem">
               <template slot="prepend">内 存</template>
+              <template slot="append"> MB</template>
             </el-input>
           </el-form-item>
         </el-col>
