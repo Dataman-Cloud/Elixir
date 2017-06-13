@@ -4,6 +4,11 @@
 import _ from 'lodash'
 
 export function transformEnvstoObj (envs = []) {
+  let res = {}
+  envs.forEach(env => {
+    res[env.key] = env.value
+  })
+  return res
 }
 
 export function transformEnvtoArray (env = {}) {
@@ -17,6 +22,7 @@ export function transformEnvtoArray (env = {}) {
 export const APP_BASE = {
   cpus: 0.01,
   mem: 16,
+  instances: '',
   envs: [],
   env: {},
   container: {
@@ -35,7 +41,7 @@ export const APP_BASE = {
   ],
   healthChecks: [],
   labels: {},
-  tasks: []
+  cmd: ''
 }
 
 export const DYNAMIC_CONFIG = {
