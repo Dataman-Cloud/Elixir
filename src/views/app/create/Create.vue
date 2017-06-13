@@ -18,7 +18,7 @@
       <el-checkbox v-model="form.container.docker.forcePullImage">强制拉取镜像</el-checkbox>
     </el-form-item>
     <el-form-item label="网络模式">
-      <el-radio-group v-model="form.container.docker.network">
+      <el-radio-group v-model="form.container.docker.network" @change="networkChange">
         <el-radio label="BRIDGE" :disabled="isUpdate">网桥模式</el-radio>
         <el-radio label="HOST" :disabled="isUpdate">HOST 模式</el-radio>
       </el-radio-group>
@@ -89,11 +89,12 @@
     <el-collapse accordion class="advance" v-model="activeCollapse">
       <el-collapse-item name="advance" title="高级设置">
 
-        <el-form-item label="端口地址">
+        <el-form-item label="端口地址" v-if="form.container.docker.network === 'BRIDGE'">
           <el-button type="primary" size="small" @click="addConfig('portMappings')">添加应用端口地址</el-button>
         </el-form-item>
         <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings"
-                      :key="index" class="healthCheck">
+                      :key="index" class="healthCheck"
+                      v-if="form.container.docker.network === 'BRIDGE'">
           <el-row :gutter="12">
             <el-col :span="4">
               <el-form-item :prop="'container.docker.portMappings.' + index + '.containerPort'"
@@ -187,20 +188,7 @@
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="3">
-              <el-form-item :prop="'healthChecks.' + index + '.ifPortIndex'"
-                            :key="index"
-                            :rules="[
-                                { required: true, message: '请选择端口类型' }
-                            ]">
-                <el-select v-model="healthCheck.ifPortIndex">
-                  <el-option v-if="form.container.docker.network === 'BRIDGE'" label="端口组索引" :value="0">端口组索引
-                  </el-option>
-                  <el-option v-if="form.container.docker.network === 'HOST'" label="端口号" :value="1">端口号</el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="3" v-if="healthCheck.ifPortIndex === 0">
+            <el-col :span="3" v-if="form.container.docker.network === 'BRIDGE'">
               <el-form-item :prop="'healthChecks.' + index + '.portIndex'"
                             :key="index"
                             :rules="[
@@ -212,7 +200,7 @@
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="3" v-if="healthCheck.ifPortIndex === 1">
+            <el-col :span="3" v-else>
               <el-form-item :prop="'healthChecks.' + index + '.port'"
                             :key="index"
                             :rules="[
@@ -274,7 +262,7 @@
     </el-collapse>
 
     <el-form-item>
-      <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即创建</el-button>
+      <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}</el-button>
       <el-button>取消</el-button>
     </el-form-item>
   </el-form>
@@ -341,10 +329,16 @@
           }
         }
       },
+      networkChange (netowrk) {
+        if (netowrk === 'HOST') {
+          this.form.container.docker.portMappings = []
+        }
+      },
       onSubmit (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.form.env = appUtil.transformEnvstoObj(this.form.envs)
+            this.form.healthChecks = appUtil.transformHealthChecks(this.form.healthChecks, this.form.container.docker.network)
             this.submitLoading = true
             if (this.isUpdate) {
               fetchApp.update(this.$route.params.id, this.form)
