@@ -37,7 +37,7 @@
     computed: {
       ...mapState({
         appId (state) {
-          return state.app.app.id.substr(1)
+          return state.app.app.id
         }
       })
     },

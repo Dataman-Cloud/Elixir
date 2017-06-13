@@ -4,7 +4,8 @@
       <el-input v-model="form.id"></el-input>
     </el-form-item>
     <el-form-item label="集群" prop="selectCluster">
-      <el-select v-model="form.selectCluster" placeholder="请选择集群" @visible-change="openClusters" @change="clusterChange">
+      <el-select v-model="form.selectCluster" :disabled="isUpdate" placeholder="请选择集群" @visible-change="openClusters"
+                 @change="clusterChange">
         <el-option v-for="cluster in clusters" :key="cluster.id" :label="cluster.clusterLabel"
                    :value="cluster.clusterLabel"></el-option>
       </el-select>
@@ -18,8 +19,8 @@
     </el-form-item>
     <el-form-item label="网络模式">
       <el-radio-group v-model="form.container.docker.network">
-        <el-radio label="BRIDGE">网桥模式</el-radio>
-        <el-radio label="HOST">HOST 模式</el-radio>
+        <el-radio label="BRIDGE" :disabled="isUpdate">网桥模式</el-radio>
+        <el-radio label="HOST" :disabled="isUpdate">HOST 模式</el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item label="容器规格" class="spec">
@@ -85,11 +86,36 @@
       </el-row>
     </el-form-item>
 
-    <el-collapse accordion class="advance">
-      <el-collapse-item>
-        <template slot="title">
-          高级设置
-        </template>
+    <el-collapse accordion class="advance" v-model="activeCollapse">
+      <el-collapse-item name="advance" title="高级设置">
+
+        <el-form-item label="端口地址">
+          <el-button type="primary" size="small" @click="addConfig('portMappings')">添加应用端口地址</el-button>
+        </el-form-item>
+        <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings"
+                      :key="index" class="healthCheck">
+          <el-row :gutter="12">
+            <el-col :span="4">
+              <el-form-item :prop="'container.docker.portMappings.' + index + '.containerPort'"
+                            :key="portMapping.index"
+                            :rules="[
+                                { required: true, message: '容器端口不能为空' }
+                            ]">
+                <el-input v-model.number="portMapping.containerPort">
+                  <template slot="prepend">容器端口</template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="3">
+              <el-select v-model="portMapping.protocol">
+                <el-option value="tcp">tcp</el-option>
+                <el-option value="udp">udp</el-option>
+              </el-select>
+            </el-col>
+            <el-button @click.prevent="removeConfig(index, 'portMappings')"><i class="el-icon-delete"></i></el-button>
+          </el-row>
+        </el-form-item>
+
         <el-form-item label="健康检查">
           <el-button type="primary" size="small" @click="addConfig('healthChecks')">添加健康检查</el-button>
         </el-form-item>
@@ -168,7 +194,8 @@
                                 { required: true, message: '请选择端口类型' }
                             ]">
                 <el-select v-model="healthCheck.ifPortIndex">
-                  <el-option v-if="form.container.docker.network === 'BRIDGE'" label="端口组索引" :value="0">端口组索引</el-option>
+                  <el-option v-if="form.container.docker.network === 'BRIDGE'" label="端口组索引" :value="0">端口组索引
+                  </el-option>
                   <el-option v-if="form.container.docker.network === 'HOST'" label="端口号" :value="1">端口号</el-option>
                 </el-select>
               </el-form-item>
@@ -178,7 +205,7 @@
                             :key="index"
                             :rules="[
                                 { required: true, message: '端口组索引不能为空' },
-                                { type: 'integer', min: 1, message: '端口组索引为正整数' }
+                                { type: 'integer', min: 0, message: '端口组索引为正整数' }
                             ]">
                 <el-input type="number" v-model.number="healthCheck.portIndex">
                   <template slot="prepend">端口组索引</template>
@@ -206,37 +233,10 @@
           </el-row>
         </el-form-item>
 
-        <el-form-item label="端口地址">
-          <el-button type="primary" size="small" @click="addConfig('portMappings')">添加应用端口地址</el-button>
-        </el-form-item>
-        <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings"
-                      :key="index" class="healthCheck">
-          <el-row :gutter="12">
-            <el-col :span="4">
-              <el-form-item :prop="'container.docker.portMappings.' + index + '.containerPort'"
-                            :key="portMapping.index"
-                            :rules="[
-                                { required: true, message: '容器端口不能为空' }
-                            ]">
-                <el-input v-model.number="portMapping.containerPort">
-                  <template slot="prepend">容器端口</template>
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="3">
-              <el-select v-model="portMapping.protocol">
-                <el-option value="tcp">tcp</el-option>
-                <el-option value="udp">udp</el-option>
-              </el-select>
-            </el-col>
-            <el-button @click.prevent="removeConfig(index, 'portMappings')"><i class="el-icon-delete"></i></el-button>
-          </el-row>
-        </el-form-item>
-
         <el-form-item label="环境变量">
           <el-button type="primary" size="small" @click="addConfig('envs')">添加环境变量</el-button>
         </el-form-item>
-        <el-form-item v-for="(env, index) in form.envs" class="healthCheck">
+        <el-form-item v-for="(env, index) in form.envs" :key="index" class="healthCheck">
           <el-row :gutter="12">
             <el-col :span="6">
               <el-form-item :prop="'envs.' + index + '.key'"
@@ -274,7 +274,7 @@
     </el-collapse>
 
     <el-form-item>
-      <el-button type="primary" @click="onSubmit('form')">立即创建</el-button>
+      <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即创建</el-button>
       <el-button>取消</el-button>
     </el-form-item>
   </el-form>
@@ -300,8 +300,11 @@
     data () {
       return {
         clusters: [],
-        form: this._.merge({selectCluster: '', single: ''}, appUtil.APP_BASE),
-        rules: appUtil.APP_FORM_RULES
+        form: this._.merge({}, appUtil.APP_BASE),
+        rules: appUtil.APP_FORM_RULES,
+        submitLoading: false,
+        isUpdate: this.$route.meta.update,
+        activeCollapse: this.$route.meta.update ? 'advance' : ''
       }
     },
     methods: {
@@ -318,13 +321,50 @@
         this.form.constraints[clusterIndex][2] = cluster
       },
       uniqueHostname (flag) {
-        console.log(flag)
+        const hostEles = ['hostname', 'UNIQUE']
+        if (this.form.single) {
+          if (this.form.constraints.length && !this.form.constraints.some(item => item[0] === 'hostname')) {
+            this.form.constraints.push(hostEles)
+          }
+        } else {
+          if (this.form.constraints.some(item => item[0] === 'hostname')) {
+            let hostIndex = null
+            this.form.constraints.forEach((constraint, index) => {
+              constraint.forEach(item => {
+                if (item === 'hostname') {
+                  hostIndex = index
+                }
+              })
+            })
+
+            this.form.constraints.splice(hostIndex, 1)
+          }
+        }
       },
       onSubmit (formName) {
-        console.log(this.form)
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!')
+            this.form.env = appUtil.transformEnvstoObj(this.form.envs)
+            this.submitLoading = true
+            if (this.isUpdate) {
+              fetchApp.update(this.$route.params.id, this.form)
+                .then(() => {
+                  this.submitLoading = false
+                  this.$router.push({name: '应用列表'})
+                })
+                .catch(() => {
+                  this.submitLoading = false
+                })
+            } else {
+              fetchApp.create(this.form)
+                .then(() => {
+                  this.submitLoading = false
+                  this.$router.push({name: '应用列表'})
+                })
+                .catch(() => {
+                  this.submitLoading = false
+                })
+            }
           } else {
             console.log('error submit!!')
             return false
@@ -333,7 +373,6 @@
       },
       addConfig (configName) {
         const config = this._.merge({}, appUtil.DYNAMIC_CONFIG)
-
         if (this.form.container.docker[configName]) {
           this.form.container.docker[configName].push(config[configName])
         } else if (this.form.container[configName]) {
@@ -353,10 +392,11 @@
       }
     },
     mounted () {
-      if (this.$route.meta.update) {
+      if (this.isUpdate) {
         fetchApp.getApp(this.$route.params.id)
           .then(data => {
-            this.form = this._.merge({selectCluster: '', single: ''}, appUtil.APP_BASE, data.data)
+            let formTemp = this._.merge({}, appUtil.APP_BASE, data.data)
+            this.form = this._.pick(formTemp, Object.keys(appUtil.APP_BASE).concat('id'))
             this.form.envs = appUtil.transformEnvtoArray(this.form.env)
             this.form.selectCluster = this.form.constraints.find(item => item[0] === 'vcluster')[2]
             this.form.single = this.form.constraints.some(item => item[0] === 'hostname')
@@ -374,7 +414,8 @@
 
           Promise.all([getApp, listCluster]).then(results => {
             next(vm => {
-              vm.form = vm._.merge({selectCluster: '', single: ''}, appUtil.APP_BASE, results[0].data)
+              let formTemp = vm._.merge({}, appUtil.APP_BASE, results[0].data)
+              vm.form = this._.pick(formTemp, Object.keys(appUtil.APP_BASE).concat('id'))
               vm.form.envs = appUtil.transformEnvtoArray(vm.form.env)
               vm.form.selectCluster = vm.form.constraints.filter(item => item[0] === 'vcluster')[0][2]
               vm.form.single = vm.form.constraints.some(item => item[0] === 'hostname')

@@ -45,3 +45,19 @@ export function extend (id, instances) {
     data: instances
   })
 }
+
+export function create (data) {
+  return fetch({
+    url: `v1/apps`,
+    method: 'post',
+    data: data
+  })
+}
+
+export function update (id, data) {
+  return fetch({
+    url: `v1/apps/${id}`,
+    method: 'put',
+    data: data
+  })
+}

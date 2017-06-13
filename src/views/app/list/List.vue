@@ -37,7 +37,7 @@
       style="width: 100%">
       <el-table-column property="id" label="名称" width="150">
         <template scope="app">
-          <router-link :to="{name: '应用详情', params:{id : app.row.id.substr(1)}}">{{app.row.id}}</router-link>
+          <router-link :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
         </template>
       </el-table-column>
       <el-table-column
@@ -105,16 +105,16 @@
       },
       updateApp () {
         if (this.currentRow) {
-          this.$router.push({name: '更新应用', params: {id: this.currentRow.id.substr(1)}})
+          this.$router.push({name: '更新应用', params: {id: this.currentRow.id}})
         } else {
           this.$notify({message: '尚未选中应用'})
         }
       },
       openDelete () {
         if (this.currentRow) {
-          Confirm.open(`确认删除 ${this.currentRow.id.substr(1)} 应用?`)
+          Confirm.open(`确认删除 ${this.currentRow.id} 应用?`)
             .then(() => {
-              app.deleteApp(this.currentRow.id.substr(1))
+              app.deleteApp(this.currentRow.id)
                 .then(() => {
                   this.$notify({message: '删除成功'})
                   this.$store.dispatch(type.FETCH_APPS)
@@ -128,14 +128,14 @@
         this.currentRow ? this.$refs.extendDialog.open(this.currentRow) : this.$notify({message: '尚未选中应用'})
       },
       extendOk (res) {
-        app.extend(this.currentRow.id.substr(1), res)
+        app.extend(this.currentRow.id, res)
           .then(data => this.$store.dispatch(type.FETCH_APPS))
       },
       reverse (action) {
         if (this.currentRow) {
-          Confirm.open(`确认${action === 'start' ? '启动' : '停止'} ${this.currentRow.id.substr(1)} 应用?`)
+          Confirm.open(`确认${action === 'start' ? '启动' : '停止'} ${this.currentRow.id} 应用?`)
             .then(() => {
-              app[action](this.currentRow.id.substr(1))
+              app[action](this.currentRow.id)
                 .then(() => {
                   this.$notify({message: `${action === 'start' ? '启动' : '停止'}成功`})
                   this.$store.dispatch(type.FETCH_APPS)
