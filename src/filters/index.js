@@ -5,10 +5,10 @@ export function parseTime (time, cFormat) {
 
   const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
   let date
-  if (typeof time === 'object') {
-    date = time
-  } else {
+  if (time) {
     date = new Date(time)
+  } else {
+    return '-'
   }
   const formatObj = {
     y: date.getFullYear(),
@@ -31,6 +31,9 @@ export function parseTime (time, cFormat) {
 }
 
 export function formatTime (time, option) {
+  if (!time) {
+    return '-'
+  }
   const d = new Date(time)
   const now = Date.now()
 

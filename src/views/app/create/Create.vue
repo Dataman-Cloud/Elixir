@@ -262,7 +262,8 @@
     </el-collapse>
 
     <el-form-item>
-      <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}</el-button>
+      <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}
+      </el-button>
       <el-button>取消</el-button>
     </el-form-item>
   </el-form>
@@ -296,38 +297,19 @@
       }
     },
     methods: {
-      openClusters (flag) {
-        if (flag) {
-          fetchCluster.listCluster()
-            .then(data => {
-              this.clusters = data.data
-            })
+      addConfig (configName) {
+        const config = this._.merge({}, appUtil.DYNAMIC_CONFIG)
+        if (this.form.container.docker[configName]) {
+          this.form.container.docker[configName].push(config[configName])
+        } else if (this.form.container[configName]) {
+          this.form.container[configName].push(config[configName])
+        } else {
+          this.form[configName].push(config[configName])
         }
       },
       clusterChange (cluster) {
         let clusterIndex = this.form.constraints.findIndex(item => item[0] === 'vcluster')
         this.form.constraints[clusterIndex][2] = cluster
-      },
-      uniqueHostname (flag) {
-        const hostEles = ['hostname', 'UNIQUE']
-        if (this.form.single) {
-          if (this.form.constraints.length && !this.form.constraints.some(item => item[0] === 'hostname')) {
-            this.form.constraints.push(hostEles)
-          }
-        } else {
-          if (this.form.constraints.some(item => item[0] === 'hostname')) {
-            let hostIndex = null
-            this.form.constraints.forEach((constraint, index) => {
-              constraint.forEach(item => {
-                if (item === 'hostname') {
-                  hostIndex = index
-                }
-              })
-            })
-
-            this.form.constraints.splice(hostIndex, 1)
-          }
-        }
       },
       networkChange (netowrk) {
         if (netowrk === 'HOST') {
@@ -365,14 +347,12 @@
           }
         })
       },
-      addConfig (configName) {
-        const config = this._.merge({}, appUtil.DYNAMIC_CONFIG)
-        if (this.form.container.docker[configName]) {
-          this.form.container.docker[configName].push(config[configName])
-        } else if (this.form.container[configName]) {
-          this.form.container[configName].push(config[configName])
-        } else {
-          this.form[configName].push(config[configName])
+      openClusters (flag) {
+        if (flag) {
+          fetchCluster.listCluster()
+            .then(data => {
+              this.clusters = data.data
+            })
         }
       },
       removeConfig (index, configName) {
@@ -382,6 +362,27 @@
           this.form.container[configName].splice(index, 1)
         } else {
           this.form[configName].splice(index, 1)
+        }
+      },
+      uniqueHostname (flag) {
+        const hostEles = ['hostname', 'UNIQUE']
+        if (this.form.single) {
+          if (this.form.constraints.length && !this.form.constraints.some(item => item[0] === 'hostname')) {
+            this.form.constraints.push(hostEles)
+          }
+        } else {
+          if (this.form.constraints.some(item => item[0] === 'hostname')) {
+            let hostIndex = null
+            this.form.constraints.forEach((constraint, index) => {
+              constraint.forEach(item => {
+                if (item === 'hostname') {
+                  hostIndex = index
+                }
+              })
+            })
+
+            this.form.constraints.splice(hostIndex, 1)
+          }
         }
       }
     },

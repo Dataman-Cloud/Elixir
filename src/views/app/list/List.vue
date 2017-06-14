@@ -21,41 +21,41 @@
 
       <el-button-group style="display: flex">
         <el-input v-model="searchWord" placeholder="请输入内容"></el-input>
-        <el-button type="primary"><i class="fa fa-refresh"></i></el-button>
+        <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
       </el-button-group>
     </div>
 
     <extend-dialog @ok="extendOk" ref="extendDialog"></extend-dialog>
 
     <el-table
-      :data="apps"
+      :data="filterApps"
       highlight-current-row
       stripe
       row-key="id"
       v-loading="listLoading"
       @current-change="handleCurrentChange"
       style="width: 100%">
-      <el-table-column property="id" label="名称" width="150">
+      <el-table-column property="id" label="名称" width="150" sortable show-overflow-tooltip>
         <template scope="app">
           <router-link :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
         </template>
       </el-table-column>
       <el-table-column
         property="labels.VCLUSTER"
-        label="所属集群">
+        label="所属集群" sortable>
       </el-table-column>
       <el-table-column
         property="instances"
-        label="实例个数">
+        label="实例个数" sortable>
       </el-table-column>
       <el-table-column
         property="appruntatus"
-        label="运行状态">
+        label="运行状态" sortable>
       </el-table-column>
       <el-table-column
         label="健康状态">
       </el-table-column>
-      <el-table-column label="更新时间" min-width="120">
+      <el-table-column property="versionInfo.lastConfigChangeAt" label="更新时间" min-width="120" sortable>
         <template scope="scope">
           <span>{{scope.row.versionInfo.lastConfigChangeAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
@@ -67,7 +67,7 @@
 <script>
   import {mapState} from 'vuex'
   import Confirm from '@/utils/confirm'
-  import ExtendDialog from '@/views/app/modals/ExtendDialog'
+  import ExtendDialog from '@/views/app/components/modals/ExtendDialog'
   import * as type from '@/store/app/mutations_types'
   import * as app from '@/api/app'
 
@@ -86,13 +86,17 @@
       ...mapState({
         apps (state) {
           return state.app.apps.apps
-        },
-        total (state) {
-          return state.app.apps.total
         }
-      })
+      }),
+      filterApps: function () {
+        return this.searchWord ? this.apps.filter(app => app.id.toLowerCase().includes(this.searchWord)) : this.apps
+      }
     },
     methods: {
+      extendOk (res) {
+        app.extend(this.currentRow.id, res)
+          .then(data => this.$store.dispatch(type.FETCH_APPS))
+      },
       handleCurrentChange (val) {
         this.currentRow = val
       },
@@ -102,13 +106,6 @@
         }).catch(() => {
           this.listLoading = false
         })
-      },
-      updateApp () {
-        if (this.currentRow) {
-          this.$router.push({name: '更新应用', params: {id: this.currentRow.id}})
-        } else {
-          this.$notify({message: '尚未选中应用'})
-        }
       },
       openDelete () {
         if (this.currentRow) {
@@ -127,9 +124,11 @@
       openExtend () {
         this.currentRow ? this.$refs.extendDialog.open(this.currentRow) : this.$notify({message: '尚未选中应用'})
       },
-      extendOk (res) {
-        app.extend(this.currentRow.id, res)
-          .then(data => this.$store.dispatch(type.FETCH_APPS))
+      reload () {
+        this.listLoading = true
+        this.$store.dispatch(type.FETCH_APPS)
+          .then(() => (this.listLoading = false))
+          .catch(() => (this.listLoading = false))
       },
       reverse (action) {
         if (this.currentRow) {
@@ -141,6 +140,13 @@
                   this.$store.dispatch(type.FETCH_APPS)
                 })
             })
+        } else {
+          this.$notify({message: '尚未选中应用'})
+        }
+      },
+      updateApp () {
+        if (this.currentRow) {
+          this.$router.push({name: '更新应用', params: {id: this.currentRow.id}})
         } else {
           this.$notify({message: '尚未选中应用'})
         }

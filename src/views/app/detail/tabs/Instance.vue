@@ -18,6 +18,7 @@
       :data="tasks"
       stripe
       highlight-current-row
+      v-loading="listLoading"
       @current-change="handleCurrentChange"
       style="width: 100%">
       <el-table-column property="id" label="实例名称" width="150" show-overflow-tooltip></el-table-column>
@@ -49,7 +50,8 @@
   export default {
     data () {
       return {
-        currentRow: null
+        currentRow: null,
+        listLoading: false
       }
     },
     computed: {
@@ -73,7 +75,10 @@
         this.currentRow = val
       },
       reload () {
+        this.listLoading = true
         this.$store.dispatch(type.FETCH_APP, this.$route.params.id)
+          .then(() => (this.listLoading = false))
+          .catch(() => (this.listLoading = false))
       }
     }
   }
