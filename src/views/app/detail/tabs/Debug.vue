@@ -1,11 +1,11 @@
 <template>
   <ul class="debug-table">
-    <li v-for="(value, key) in labels">
-      <div>
-        <span>{{value}}</span>
-      </div>
+    <li v-for="(value, key) in lastTaskFailure">
       <div>
         <span>{{key}}</span>
+      </div>
+      <div>
+        <span>{{value}}</span>
       </div>
     </li>
   </ul>
@@ -19,8 +19,8 @@
     },
     computed: {
       ...mapState({
-        labels (state) {
-          return state.app.app.labels
+        lastTaskFailure (state) {
+          return state.app.app.lastTaskFailure
         }
       })
     },
