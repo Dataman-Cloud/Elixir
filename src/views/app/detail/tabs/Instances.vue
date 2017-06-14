@@ -21,7 +21,14 @@
       v-loading="listLoading"
       @current-change="handleCurrentChange"
       style="width: 100%">
-      <el-table-column property="id" label="实例名称" width="150" show-overflow-tooltip></el-table-column>
+      <el-table-column property="id" label="实例名称" width="150" show-overflow-tooltip>
+        <template scope="scope">
+          <router-link
+            :to="{name: '实例详情', params: { host: scope.row.host, id: scope.row.id, slaveId: scope.row.slaveId}}">
+            {{scope.row.id}}
+          </router-link>
+        </template>
+      </el-table-column>
       <el-table-column
         property=""
         label="状态">
