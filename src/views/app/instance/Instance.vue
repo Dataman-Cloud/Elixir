@@ -2,7 +2,7 @@
   <div>
     <div style="margin-bottom: 20px;">
       <h3>
-        {{}}
+        {{instanceId}}
       </h3>
     </div>
 
@@ -24,6 +24,7 @@
     },
     data () {
       return {
+        instanceId: this.$route.params.id,
         currentView: 'monitor'
       }
     },
