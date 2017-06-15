@@ -264,7 +264,7 @@
     <el-form-item>
       <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}
       </el-button>
-      <el-button>取消</el-button>
+      <el-button @click="cancel">取消</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -310,6 +310,9 @@
       clusterChange (cluster) {
         let clusterIndex = this.form.constraints.findIndex(item => item[0] === 'vcluster')
         this.form.constraints[clusterIndex][2] = cluster
+      },
+      cancel () {
+        this.$router.go(-1)
       },
       networkChange (netowrk) {
         if (netowrk === 'HOST') {
