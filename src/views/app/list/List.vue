@@ -78,7 +78,7 @@
 </template>
 
 <script>
-  import {mapState, mapMutations, mapActions} from 'vuex'
+  import {mapState, mapActions} from 'vuex'
   import Confirm from '@/utils/confirm'
   import ExtendDialog from '@/views/app/components/modals/ExtendDialog'
   import * as type from '@/store/app/mutations_types'
@@ -106,9 +106,6 @@
       }
     },
     methods: {
-      ...mapMutations({
-        countAppsHealthy: type.COUNT_APPS_HEALTHY
-      }),
       ...mapActions({
         fetchApps: type.FETCH_APPS
       }),
@@ -121,7 +118,6 @@
       },
       listApp () {
         return this.fetchApps().then(() => {
-          this.countAppsHealthy(this.apps)
           this.listLoading = false
         }).catch(() => {
           this.listLoading = false
@@ -192,12 +188,14 @@
     height: 10px;
     background-color: #e8e8e8;
   }
-  .state span{
+
+  .state span {
     display: inline-block;
     width: 8px;
     height: 8px;
     border-radius: 50%;
   }
+
   .state .healthy {
     background-color: #28f7a1;
   }
@@ -209,6 +207,7 @@
   .state .unknown {
     background-color: #929599;
   }
+
   .progress, .progress li {
     list-style: none;
     padding: 0;
