@@ -1,14 +1,17 @@
 <template>
-  <ul class="debug-table">
-    <li v-for="(value, key) in lastTaskFailure">
-      <div>
-        <span>{{key}}</span>
-      </div>
-      <div>
-        <span>{{value}}</span>
-      </div>
-    </li>
-  </ul>
+  <div class="debug-content">
+    <ul class="debug-table" v-if="lastTaskFailure">
+      <li v-for="(value, key) in lastTaskFailure">
+        <div>
+          <span>{{key}}</span>
+        </div>
+        <div>
+          <span>{{value}}</span>
+        </div>
+      </li>
+    </ul>
+    <span v-else>暂无信息</span>
+  </div>
 </template>
 <script>
   import {mapState} from 'vuex'
@@ -23,11 +26,15 @@
           return state.app.app.lastTaskFailure
         }
       })
-    },
-    methods: {}
+    }
   }
 </script>
 <style scoped>
+  .debug-content > span{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+  }
   .debug-table {
     display: flex;
     flex-direction: column;
