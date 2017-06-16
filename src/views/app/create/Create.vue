@@ -44,7 +44,7 @@
     </el-form-item>
     <el-form-item label="容器个数" prop="instances">
       <el-input type="number" v-model.number="form.instances"></el-input>
-      <el-checkbox v-model="form.single" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox>
+      <el-checkbox v-model="form.oneContainer" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox>
     </el-form-item>
     <el-form-item label="挂载路径">
       <el-button type="primary" size="small" @click="addConfig('volumes')">添加挂在路径</el-button>
@@ -274,22 +274,10 @@
   import * as fetchApp from '@/api/app'
 
   export default {
-    beforeRouteEnter (to, from, next) {
-      if (to.meta.update) {
-        fetchApp.getApp(to.params.id)
-          .then(data => {
-            next(vm => {
-              vm.form = data.data
-            })
-          })
-      } else {
-        next()
-      }
-    },
     data () {
       return {
         clusters: [],
-        form: this._.merge({}, appUtil.APP_BASE),
+        form: this._.merge({}, appUtil.APP_BASE, {oneContainer: false, selectCluster: ''}),
         rules: appUtil.APP_FORM_RULES,
         submitLoading: false,
         isUpdate: this.$route.meta.update,
@@ -325,25 +313,21 @@
             this.form.env = appUtil.transformEnvstoObj(this.form.envs)
             this.form.healthChecks = appUtil.transformHealthChecks(this.form.healthChecks, this.form.container.docker.network)
             this.submitLoading = true
-            if (this.isUpdate) {
-              fetchApp.update(this.$route.params.id, this.form)
-                .then(() => {
-                  this.submitLoading = false
-                  this.$router.push({name: '应用列表'})
-                })
-                .catch(() => {
-                  this.submitLoading = false
-                })
-            } else {
-              fetchApp.create(this.form)
-                .then(() => {
-                  this.submitLoading = false
-                  this.$router.push({name: '应用列表'})
-                })
-                .catch(() => {
-                  this.submitLoading = false
-                })
-            }
+            this.isUpdate ? fetchApp.update(this.$route.params.id, this.form)
+              .then(() => {
+                this.submitLoading = false
+                this.$router.push({name: '应用列表'})
+              })
+              .catch(() => {
+                this.submitLoading = false
+              }) : fetchApp.create(this.form)
+              .then(() => {
+                this.submitLoading = false
+                this.$router.push({name: '应用列表'})
+              })
+              .catch(() => {
+                this.submitLoading = false
+              })
           } else {
             console.log('error submit!!')
             return false
@@ -367,9 +351,9 @@
           this.form[configName].splice(index, 1)
         }
       },
-      uniqueHostname (flag) {
+      uniqueHostname () {
         const hostEles = ['hostname', 'UNIQUE']
-        if (this.form.single) {
+        if (this.form.oneContainer) {
           if (this.form.constraints.length && !this.form.constraints.some(item => item[0] === 'hostname')) {
             this.form.constraints.push(hostEles)
           }
@@ -387,39 +371,39 @@
             this.form.constraints.splice(hostIndex, 1)
           }
         }
+      },
+      updateInitFetch (appId) {
+        const getApp = fetchApp.getApp(appId)
+        const listCluster = fetchCluster.listCluster()
+        return Promise.all([getApp, listCluster])
+      },
+      updateInit (context, initFetchData) {
+        let formTemp = context._.merge({}, appUtil.APP_BASE, initFetchData[0].data, {
+          oneContainer: false,
+          selectCluster: ''
+        })
+        context.form = context._.pick(formTemp, Object.keys(appUtil.APP_BASE).concat(['id', 'oneContainer', 'selectCluster']))
+        context.form.envs = appUtil.transformEnvtoArray(context.form.env)
+        context.form.selectCluster = context.form.constraints.find(item => item[0] === 'vcluster') ? context.form.constraints.find(item => item[0] === 'vcluster')[2] : ''
+        context.form.oneContainer = context.form.constraints.some(item => item[0] === 'hostname')
+        context.clusters = initFetchData[1].data
       }
     },
     mounted () {
       if (this.isUpdate) {
-        fetchApp.getApp(this.$route.params.id)
-          .then(data => {
-            let formTemp = this._.merge({}, appUtil.APP_BASE, data.data)
-            this.form = this._.pick(formTemp, Object.keys(appUtil.APP_BASE).concat('id'))
-            this.form.envs = appUtil.transformEnvtoArray(this.form.env)
-            this.form.selectCluster = this.form.constraints.find(item => item[0] === 'vcluster')[2]
-            this.form.single = this.form.constraints.some(item => item[0] === 'hostname')
-          })
-
-        fetchCluster.listCluster()
-          .then(data => this.clusters)
+        this.updateInitFetch(this.$route.params.id)
+          .then(res => this.updateInit(this, res))
       }
     },
     watch: {
       $route (to, from, next) {
         if (to.meta.update) {
-          const getApp = fetchApp.getApp(to.params.id)
-          const listCluster = fetchCluster.listCluster()
-
-          Promise.all([getApp, listCluster]).then(results => {
-            next(vm => {
-              let formTemp = vm._.merge({}, appUtil.APP_BASE, results[0].data)
-              vm.form = this._.pick(formTemp, Object.keys(appUtil.APP_BASE).concat('id'))
-              vm.form.envs = appUtil.transformEnvtoArray(vm.form.env)
-              vm.form.selectCluster = vm.form.constraints.filter(item => item[0] === 'vcluster')[0][2]
-              vm.form.single = vm.form.constraints.some(item => item[0] === 'hostname')
-              vm.clusters = results[1].data
+          this.updateInitFetch(to.params.id)
+            .then(res => {
+              next(vm => {
+                vm.updateInit(vm, res)
+              })
             })
-          })
         }
       }
     }
