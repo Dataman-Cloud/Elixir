@@ -1,5 +1,5 @@
 import * as type from './mutations_types'
-import {transformEnvtoArray, APP_BASE} from '@/utils/app'
+import {transformEnvtoArray, APP_BASE, countHealthyState} from '@/utils/app'
 import _ from 'lodash'
 
 export default {
@@ -10,5 +10,8 @@ export default {
   [type.FETCH_APP] (state, payload = {}) {
     state.app = _.merge({}, APP_BASE, payload)
     state.app.envs = transformEnvtoArray(state.app.env)
+  },
+  [type.COUNT_APPS_HEALTHY] (state, apps = []) {
+    state.apps.apps = apps.map(app => countHealthyState(app))
   }
 }

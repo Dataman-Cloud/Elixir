@@ -3,6 +3,25 @@
  */
 import _ from 'lodash'
 
+export function countHealthyState (app) {
+  let HealthStatus = {
+    HEALTHY: 'healthy',
+    UNHEALTHY: 'unhealthy',
+    UNKNOWN: 'unknown'
+  }
+  let healthData = [
+    {quantity: app.tasksHealthy || 0, state: HealthStatus.HEALTHY},
+    {quantity: app.tasksUnhealthy || 0, state: HealthStatus.UNHEALTHY}
+  ]
+  if (app.healthChecks && app.healthChecks.length === 0) {
+    healthData.push({
+      quantity: app.instances,
+      state: HealthStatus.UNKNOWN
+    })
+  }
+  return {...app, healthData}
+}
+
 export function transformEnvstoObj (envs = []) {
   let res = {}
   envs.forEach(env => {

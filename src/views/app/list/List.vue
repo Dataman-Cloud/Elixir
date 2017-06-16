@@ -52,8 +52,21 @@
         property="appruntatus"
         label="运行状态" sortable>
       </el-table-column>
-      <el-table-column
-        label="健康状态">
+      <el-table-column label="健康状态">
+        <template scope="app">
+          <el-tooltip class="item" effect="dark" placement="top">
+            <div slot="content">
+                  <span v-for="(status, index) in app.row.healthData" :key="index" class="state">
+                    状态: <span :class="status.state"></span> {{status.state}} 数量: {{status.quantity}}<br>
+                  </span>
+            </div>
+            <ul class="progress">
+              <li v-for="(status, index) in app.row.healthData" :key="index" :class="status.state"
+                  :style="{width: (status.quantity / app.row.instances) * 100 + '%'}"></li>
+            </ul>
+          </el-tooltip>
+
+        </template>
       </el-table-column>
       <el-table-column property="versionInfo.lastConfigChangeAt" label="更新时间" min-width="120" sortable>
         <template scope="scope">
@@ -65,7 +78,7 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+  import {mapState, mapMutations, mapActions} from 'vuex'
   import Confirm from '@/utils/confirm'
   import ExtendDialog from '@/views/app/components/modals/ExtendDialog'
   import * as type from '@/store/app/mutations_types'
@@ -93,15 +106,22 @@
       }
     },
     methods: {
+      ...mapMutations({
+        countAppsHealthy: type.COUNT_APPS_HEALTHY
+      }),
+      ...mapActions({
+        fetchApps: type.FETCH_APPS
+      }),
       extendOk (res) {
         app.extend(this.currentRow.id, res)
-          .then(data => this.$store.dispatch(type.FETCH_APPS))
+          .then(data => this.fetchApps())
       },
       handleCurrentChange (val) {
         this.currentRow = val
       },
       listApp () {
-        return this.$store.dispatch(type.FETCH_APPS).then(() => {
+        return this.fetchApps().then(() => {
+          this.countAppsHealthy(this.apps)
           this.listLoading = false
         }).catch(() => {
           this.listLoading = false
@@ -114,7 +134,7 @@
               app.deleteApp(this.currentRow.id)
                 .then(() => {
                   this.$notify({message: '删除成功'})
-                  this.$store.dispatch(type.FETCH_APPS)
+                  this.fetchApps()
                 })
             })
         } else {
@@ -126,7 +146,7 @@
       },
       reload () {
         this.listLoading = true
-        this.$store.dispatch(type.FETCH_APPS)
+        this.fetchApps()
           .then(() => (this.listLoading = false))
           .catch(() => (this.listLoading = false))
       },
@@ -137,7 +157,7 @@
               app[action](this.currentRow.id)
                 .then(() => {
                   this.$notify({message: `${action === 'start' ? '启动' : '停止'}成功`})
-                  this.$store.dispatch(type.FETCH_APPS)
+                  this.fetchApps()
                 })
             })
         } else {
@@ -165,5 +185,54 @@
 <style scoped>
   .btn-group {
     justify-content: space-between;
+  }
+
+  .progress {
+    width: 60%;
+    height: 10px;
+    background-color: #e8e8e8;
+  }
+  .state span{
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .state .healthy {
+    background-color: #28f7a1;
+  }
+
+  .state .unhealthy {
+    background-color: #ff7c64;
+  }
+
+  .state .unknown {
+    background-color: #929599;
+  }
+  .progress, .progress li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .progress li {
+    float: left;
+    -webkit-transition: width .6s ease;
+    transition: width .6s ease;
+  }
+
+  .progress .healthy {
+    height: 100%;
+    background-color: #28f7a1;
+  }
+
+  .progress .unhealthy {
+    height: 100%;
+    background-color: #ff7c64;
+  }
+
+  .progress .unknown {
+    height: 100%;
+    background-color: #929599;
   }
 </style>
