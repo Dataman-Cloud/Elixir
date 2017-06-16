@@ -99,6 +99,6 @@ export const APP_FORM_RULES = {
   ],
   instances: [
     { required: true, message: '容器个数不能为空' },
-    { type: 'number', min: 1, message: 'cpu最小值为0.01' }
+    { type: 'number', min: 0, message: '容器个数最小为 0' }
   ]
 }

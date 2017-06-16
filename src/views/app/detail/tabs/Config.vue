@@ -31,7 +31,7 @@
     <dl class="detail-config">
       <dt>容器个数</dt>
       <dd>{{app.instances}}
-        <span v-if="isOneHost">(每台主机只能运行一个当前容器应用)</span>
+        <span v-if="oneContainer">(每台主机只能运行一个当前容器应用)</span>
       </dd>
     </dl>
 
@@ -134,7 +134,7 @@
         }
       }),
       ...mapGetters([
-        'isOneHost'
+        'oneContainer'
       ])
     }
   }
