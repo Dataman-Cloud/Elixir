@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+  <el-form ref="form" :model="form" :rules="rules" label-width="80px" v-loading="loading" element-loading-text="数据加载中...">
     <el-form-item label="应用名称" prop="id">
       <el-input v-model="form.id"></el-input>
     </el-form-item>
@@ -281,7 +281,8 @@
         rules: appUtil.APP_FORM_RULES,
         submitLoading: false,
         isUpdate: this.$route.meta.update,
-        activeCollapse: this.$route.meta.update ? 'advance' : ''
+        activeCollapse: this.$route.meta.update ? 'advance' : '',
+        loading: false
       }
     },
     methods: {
@@ -373,9 +374,14 @@
         }
       },
       updateInitFetch (appId) {
+        this.loading = true
         const getApp = fetchApp.getApp(appId)
         const listCluster = fetchCluster.listCluster()
         return Promise.all([getApp, listCluster])
+          .then((res) => {
+            this.loading = false
+            return res
+          })
       },
       updateInit (context, initFetchData) {
         let formTemp = context._.merge({}, appUtil.APP_BASE, initFetchData[0].data, {
