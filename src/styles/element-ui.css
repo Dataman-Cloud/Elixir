@@ -2,3 +2,7 @@
 .el-breadcrumb {
   margin-left: 15px;
 }
+
+.el-notification {
+  z-index: 10001 !important;
+}
