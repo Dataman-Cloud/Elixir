@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="form" :rules="rules" label-width="80px" v-loading="loading" element-loading-text="数据加载中...">
+  <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-loading="loading" element-loading-text="数据加载中...">
     <el-form-item label="应用名称" prop="id">
       <el-input v-model="form.id"></el-input>
     </el-form-item>
@@ -257,6 +257,38 @@
           <el-input v-model="form.cmd">
             <template slot="prepend">输入需要运行的命令</template>
           </el-input>
+        </el-form-item>
+        <el-form-item label="Docker 参数">
+          <el-button type="primary" size="small" @click="addConfig('parameters')">添加 Docker 参数</el-button>
+        </el-form-item>
+        <el-form-item v-for="(parameter, index) in form.container.docker.parameters" :key="index" class="parameters">
+          <el-row :gutter="12">
+            <el-col :span="6">
+              <el-form-item :prop="'container.docker.parameters.' + index + '.key'"
+                            :key="parameter.index"
+                            :rules="[
+                                { required: true, message: 'Docker 参数的 KEY 个数不能为空' },
+                                { pattern: /^[^\u4e00-\u9fa5]*$/, message: 'Docker 参数的 KEY 不能包含中文' }
+                            ]">
+                <el-input v-model="parameter.key">
+                  <template slot="prepend">KEY</template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item :prop="'container.docker.parameters.' + index + '.value'"
+                            :key="parameter.index"
+                            :rules="[
+                                { required: true, message: 'Docker 参数的 VALUE 个数不能为空' },
+                                { pattern: /^[^\u4e00-\u9fa5]*$/, message: 'Docker 参数的 KEY 不能包含中文' }
+                            ]">
+                <el-input v-model="parameter.value">
+                  <template slot="prepend">VALUE</template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-button @click.prevent="removeConfig(index, 'parameters')"><i class="el-icon-delete"></i></el-button>
+          </el-row>
         </el-form-item>
       </el-collapse-item>
     </el-collapse>
