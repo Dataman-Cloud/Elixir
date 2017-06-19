@@ -7,6 +7,8 @@ import Layout from '@/views/layout/Layout'
 import AppBase from '@/views/app/index'
 import AppList from '@/views/app/list/List'
 
+import RegistryList from '@/views/registry/list/List'
+
 const AppForm = () => import('../views/app/create/Create')
 const AppDetail = () => import('../views/app/detail/Detail')
 const AppInstance = () => import('../views/app/instance/Instance')
@@ -22,7 +24,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'app',
-        redirect: '/list',
+        redirect: '/app/list',
         name: '应用',
         component: AppBase,
         children: [
@@ -35,7 +37,13 @@ export const constantRouterMap = [
       }
     ]
   },
-  {path: '*', redirect: '/app/list', hidden: true}
+  {
+    path: '/registry',
+    redirect: '/registry/list',
+    name: '镜像',
+    component: Layout,
+    children: [{ path: 'list', component: RegistryList, name: '镜像列表' }]
+  }
 ]
 
 const router = new Router({
