@@ -13,7 +13,8 @@
 </template>
 <script>
   import LineChart from '@/components/charts/Line'
-  import {initSerie} from '@/utils/chart'
+  import {initSerie, getCpuUsageRate} from '@/utils/chart'
+  import * as config from '@/config/constant'
 
   export default {
     components: {LineChart},
@@ -29,7 +30,8 @@
         netWriteData: Array.from({length: 12}, (v, k) => 0),
         diskReadData: Array.from({length: 12}, (v, k) => 0),
         diskWriteData: Array.from({length: 12}, (v, k) => 0),
-        times: ['13:00', '13:05', '13:10', '13:15', '13:20', '13:25', '13:30', '13:35', '13:40', '13:45', '13:50', '13:55']
+        times: Array.from({length: 12}, (v, k) => ''),
+        sseInstance: null
       }
     },
     computed: {
@@ -47,22 +49,39 @@
         return [initSerie('磁盘读取', 'line', this.diskReadData), initSerie('磁盘发送', 'line', this.diskWriteData)]
       }
     },
-    methods: {},
-    mounted () {
-      let i = 0
-      this.interval = setInterval(function () {
-        this.netWriteData.shift()
-        this.netWriteData.push(100 * Math.random())
-        this.netReadData.shift()
-        this.netReadData.push(100 * Math.random())
-
+    methods: {
+      getNowTime (time) {
+        let nowTime = new Date(time)
+        let s = nowTime.getSeconds()
+        let m = nowTime.getMinutes()
+        let h = nowTime.getHours()
+        return `${h}:${m}:${s}`
+      },
+      handleMonitorData (data) {
+        let pointData = JSON.parse(data.data)
         this.times.shift()
-        this.times.push(`14:${i}0`)
-        i++
-      }.bind(this), 5000)
+        this.times.push(this.getNowTime(pointData.read))
+
+        this.cpuData.shift()
+        this.cpuData.push(getCpuUsageRate(pointData))
+        this.memData.shift()
+        this.memData.push(pointData.memory_stats.usage / pointData.memory_stats.limit * 100)
+      },
+      iniMonitorSSE () {
+        let monitorSseUrl = `${config.BASE_URL}/v1/nodes/stats?ip=${this.$route.params.host}&slaveid=${this.$route.params.slaveId}&taskid=${this.$route.params.id}`
+        this.sseInstance = new EventSource(monitorSseUrl)
+        this.sseInstance.onmessage = e => this.handleMonitorData(e)
+        this.sseInstance.error = e => this.sseInstance.close()
+      }
+    },
+    mounted () {
+      this.iniMonitorSSE()
     },
     beforeDestroy: function () {
-      clearInterval(this.interval)
+      if (this.sseInstance) {
+        this.sseInstance.close()
+        this.sseInstance = null
+      }
     }
   }
 </script>
