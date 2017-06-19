@@ -1,5 +1,5 @@
 import * as type from './mutations_types'
-import {transformEnvtoArray, APP_BASE, countHealthyState} from '@/utils/app'
+import {transformEnvtoArray, APP_BASE, countHealthyState} from '@/views/app/services/app'
 import _ from 'lodash'
 
 export default {

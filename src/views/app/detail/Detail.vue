@@ -7,7 +7,7 @@
     </div>
 
     <el-tabs type="border-card" :value="currentView" @tab-click="tabChange">
-      <el-tab-pane label="实例" name="instance"></el-tab-pane>
+      <el-tab-pane label="实例" name="instances"></el-tab-pane>
       <el-tab-pane label="配置" name="config"></el-tab-pane>
       <el-tab-pane label="调试" name="debug"></el-tab-pane>
 
@@ -18,20 +18,20 @@
   </div>
 </template>
 <script>
-  import {Instance, Config, Debug} from './tabs'
+  import {Instances, Config, Debug} from './tabs'
   import {mapState} from 'vuex'
   import store from '@/store'
   import * as type from '@/store/app/mutations_types'
 
   export default {
     components: {
-      instance: Instance,
+      instances: Instances,
       config: Config,
       debug: Debug
     },
     data () {
       return {
-        currentView: 'instance'
+        currentView: 'instances'
       }
     },
     computed: {

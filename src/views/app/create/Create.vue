@@ -269,7 +269,7 @@
   </el-form>
 </template>
 <script>
-  import * as appUtil from '@/utils/app'
+  import * as appUtil from '@/views/app/services/app'
   import * as fetchCluster from '@/api/cluster'
   import * as fetchApp from '@/api/app'
 
