@@ -55,18 +55,19 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  // 判断 Iframe 是否传入 userid, projectid
+  // 判断 Iframe 是否传入 userid, projectid, bayname
   if (to.query.userid && to.query.projectid) {
     localStorage.setItem('userid', to.query.userid)
     localStorage.setItem('projectid', to.query.projectid)
+    localStorage.setItem('bayname', to.query.bayname)
   }
-  if (localStorage.getItem('userid') && localStorage.getItem('projectid')) {
+  if (localStorage.getItem('userid') && localStorage.getItem('projectid') && localStorage.getItem('bayname')) {
     next()
   } else {
     NProgress.done()
     Notification({
       title: '警告',
-      message: '无法获取 userid 或 projectid',
+      message: '无法获取 userid、projectid 或 bayname',
       type: 'error'
     })
   }
