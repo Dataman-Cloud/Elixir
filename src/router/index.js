@@ -7,6 +7,8 @@ import Layout from '@/views/layout/Layout'
 import AppBase from '@/views/app/index'
 import AppList from '@/views/app/list/List'
 
+import RegistryList from '@/views/registry/list/List'
+
 const AppForm = () => import('../views/app/create/Create')
 const AppDetail = () => import('../views/app/detail/Detail')
 const AppInstance = () => import('../views/app/instance/Instance')
@@ -22,7 +24,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'app',
-        redirect: '/list',
+        redirect: '/app/list',
         name: '应用',
         component: AppBase,
         children: [
@@ -35,7 +37,13 @@ export const constantRouterMap = [
       }
     ]
   },
-  {path: '*', redirect: '/app/list', hidden: true}
+  {
+    path: '/registry',
+    redirect: '/registry/list',
+    name: '镜像',
+    component: Layout,
+    children: [{ path: 'list', component: RegistryList, name: '镜像列表' }]
+  }
 ]
 
 const router = new Router({
@@ -47,18 +55,19 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  // 判断 Iframe 是否传入 userid, projectid
+  // 判断 Iframe 是否传入 userid, projectid, bayname
   if (to.query.userid && to.query.projectid) {
     localStorage.setItem('userid', to.query.userid)
     localStorage.setItem('projectid', to.query.projectid)
+    localStorage.setItem('bayname', to.query.bayname)
   }
-  if (localStorage.getItem('userid') && localStorage.getItem('projectid')) {
+  if (localStorage.getItem('userid') && localStorage.getItem('projectid') && localStorage.getItem('bayname')) {
     next()
   } else {
     NProgress.done()
     Notification({
       title: '警告',
-      message: '无法获取 userid 或 projectid',
+      message: '无法获取 userid、projectid 或 bayname',
       type: 'error'
     })
   }

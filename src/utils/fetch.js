@@ -12,7 +12,8 @@ service.interceptors.request.use(
   config => {
     config.params = Object.assign({}, config.params, {
       userid: localStorage.getItem('userid'),
-      projectid: localStorage.getItem('projectid')
+      projectid: localStorage.getItem('projectid'),
+      bayname: localStorage.getItem('bayname')
     })
     return config
   },
