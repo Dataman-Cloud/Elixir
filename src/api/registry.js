@@ -14,7 +14,7 @@ export function deleteRegistry (deleteRegistry = {}) {
   let {Namespace, Image, LatestTag} = deleteRegistry
   return fetch({
     url: `v1/registry/manifests/${Namespace}/${Image}`,
-    method: 'get',
+    method: 'delete',
     params: {
       tag: LatestTag
     }
