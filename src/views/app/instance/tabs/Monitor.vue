@@ -13,8 +13,10 @@
 </template>
 <script>
   import LineChart from '@/components/charts/Line'
-  import {initSerie, getCpuUsageRate} from '@/utils/chart'
+  import {initSerie} from '@/utils/chart'
   import * as config from '@/config/constant'
+
+  const monitorKeys = ['times', 'cpuData', 'memData', 'netReadData', 'netWriteData', 'diskReadData', 'diskWriteData']
 
   export default {
     components: {LineChart},
@@ -50,6 +52,16 @@
       }
     },
     methods: {
+      getCpuUsageRate (data) {
+        let cpuPercent = 0
+        let cpuDelta = data.cpu_stats.cpu_usage.total_usage - data.precpu_stats.cpu_usage.total_usage
+        let systemDelta = data.cpu_stats.system_cpu_usage - data.precpu_stats.system_cpu_usage
+
+        if (systemDelta > 0 && cpuDelta > 0) {
+          cpuPercent = (cpuDelta / systemDelta) * data.cpu_stats.cpu_usage.percpu_usage.length * 100
+        }
+        return cpuPercent.toFixed(2)
+      },
       getNowTime (time) {
         let nowTime = new Date(time)
         let s = nowTime.getSeconds()
@@ -57,20 +69,36 @@
         let h = nowTime.getHours()
         return `${h}:${m}:${s}`
       },
-      handleMonitorData (data) {
+      pickMonitorData (monitorKey, pointData) {
+        switch (monitorKey) {
+          case 'times':
+            return this.getNowTime(pointData.read)
+          case 'cpuData':
+            return this.getCpuUsageRate(pointData)
+          case 'memData':
+            return (pointData.memory_stats.usage / pointData.memory_stats.limit * 100).toFixed(2)
+          case 'netReadData':
+            return pointData.ReceiveRate
+          case 'netWriteData':
+            return pointData.SendRate
+          case 'diskReadData':
+            return pointData.BlkIOReadRate
+          case 'diskWriteData':
+            return pointData.BlkIOWriteRate
+          default:
+        }
+      },
+      pushMonitorData (data) {
         let pointData = JSON.parse(data.data)
-        this.times.shift()
-        this.times.push(this.getNowTime(pointData.read))
-
-        this.cpuData.shift()
-        this.cpuData.push(getCpuUsageRate(pointData))
-        this.memData.shift()
-        this.memData.push(pointData.memory_stats.usage / pointData.memory_stats.limit * 100)
+        monitorKeys.forEach(key => {
+          this[key].shift()
+          this[key].push(this.pickMonitorData(key, pointData))
+        })
       },
       iniMonitorSSE () {
         let monitorSseUrl = `${config.BASE_URL}/v1/nodes/stats?ip=${this.$route.params.host}&slaveid=${this.$route.params.slaveId}&taskid=${this.$route.params.id}`
         this.sseInstance = new EventSource(monitorSseUrl)
-        this.sseInstance.onmessage = e => this.handleMonitorData(e)
+        this.sseInstance.onmessage = e => this.pushMonitorData(e)
         this.sseInstance.error = e => this.sseInstance.close()
       }
     },
