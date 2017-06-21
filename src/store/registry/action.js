@@ -8,5 +8,12 @@ export default {
         context.commit(type.FETCH_REGISTRIES, data.data)
         return data
       })
+  },
+  [type.FETCH_HISTORIES] (context, playload = {}) {
+    return api.listHistory(playload)
+      .then(data => {
+        context.commit(type.FETCH_HISTORIES, data.data)
+        return data
+      })
   }
 }
