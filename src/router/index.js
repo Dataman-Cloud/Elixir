@@ -8,6 +8,7 @@ import AppBase from '@/views/app/index'
 import AppList from '@/views/app/list/List'
 
 import RegistryList from '@/views/registry/list/List'
+import HistoryList from '@/views/registry/history/List'
 
 const AppForm = () => import('../views/app/create/Create')
 const AppDetail = () => import('../views/app/detail/Detail')
@@ -42,7 +43,10 @@ export const constantRouterMap = [
     redirect: '/registry/list',
     name: '镜像',
     component: Layout,
-    children: [{ path: 'list', component: RegistryList, name: '镜像列表' }]
+    children: [
+      {path: 'list', component: RegistryList, name: '镜像列表'},
+      {path: 'histories', component: HistoryList, name: '历史列表'}
+    ]
   }
 ]
 

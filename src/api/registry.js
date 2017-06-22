@@ -20,3 +20,11 @@ export function deleteRegistry (deleteRegistry = {}) {
     }
   })
 }
+
+export function listHistory (data) {
+  return fetch({
+    url: `v1/registry/audit`,
+    method: 'get',
+    params: {...data, ...{operation: 'DeleteManifests'}}
+  })
+}

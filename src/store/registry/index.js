@@ -6,7 +6,11 @@ const state = {
     registries: [],
     total: 0
   },
-  registry: {}
+  registry: {},
+  audits: {
+    audits: [],
+    count: 0
+  }
 }
 
 export default {
