@@ -1,10 +1,9 @@
 <template>
   <div>
     <div class="btn-group">
-      <span class="wrapper">
+      <span>
         <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
-        <router-link class="pan-btn pink-btn" to="/app/create">
-          <el-button type="primary"><i class="el-icon-plus"></i> 创建应用</el-button>
+        <router-link class="el-button el-button--primary" tag="el-button" to="/app/create">创建应用
         </router-link>
         <el-button type="danger" @click="openDelete" :disabled="!currentRow"><i class="el-icon-close"></i> 删除应用
         </el-button>

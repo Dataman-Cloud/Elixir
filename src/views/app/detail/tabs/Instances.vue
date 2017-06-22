@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="btn-group">
-      <span class="wrapper">
+      <span>
         <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
         <a class="pan-btn pink-btn" :href="stdObj.stdout">
           <el-button type="primary" :disabled="!currentRow"><i class="el-icon-plus"></i> stdout 日志</el-button>
