@@ -1,27 +1,30 @@
 <template>
   <div>
     <div class="btn-group">
-      <el-button-group>
+      <span class="wrapper">
+        <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
         <router-link class="pan-btn pink-btn" to="/app/create">
           <el-button type="primary"><i class="el-icon-plus"></i> 创建应用</el-button>
         </router-link>
-        <el-button type="primary" @click="openExtend" v-if="currentRow && currentRow.appruntatus !== 'Suspended'"><i
+        <el-button type="danger" @click="openDelete" :disabled="!currentRow"><i class="el-icon-close"></i> 删除应用
+        </el-button>
+        <el-button type="primary" @click="openExtend" :disabled="!currentRow"><i
           class="el-icon-edit"></i> 扩展应用
         </el-button>
-        <el-button type="primary" @click="openDelete" v-if="currentRow"><i class="el-icon-close"></i> 删除应用</el-button>
-        <el-button type="primary" @click="updateApp" v-if="currentRow"><i class="fa fa-refresh"></i> 更新应用</el-button>
-        <el-button type="primary" @click="reverse('start')" v-if="currentRow && currentRow.appruntatus === 'Suspended'">
+        <el-button type="primary" @click="updateApp" :disabled="!currentRow"><i class="fa fa-refresh"></i>
+          更新应用
+        </el-button>
+        <el-button type="primary" @click="start" :disabled="!currentRow">
           <i class="fa fa-play"></i> 启动
         </el-button>
-        <el-button type="primary" @click="reverse('stop')" v-if="currentRow && currentRow.appruntatus !== 'Suspended'">
+        <el-button type="primary" @click="stop" :disabled="!currentRow">
           <i class="fa fa-stop"></i>
           停止
         </el-button>
-      </el-button-group>
+      </span>
 
       <el-button-group style="display: flex">
         <el-input v-model="searchWord" placeholder="请输入内容"></el-input>
-        <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
       </el-button-group>
     </div>
 
@@ -29,12 +32,12 @@
 
     <el-table
       :data="filterApps"
-      highlight-current-row
-      stripe
+      stripe border
       row-key="id"
       v-loading="listLoading"
-      @current-change="handleCurrentChange"
+      @selection-change="handleCurrentChange"
       style="width: 100%">
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column property="id" label="名称" width="150" sortable show-overflow-tooltip>
         <template scope="app">
           <router-link :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
@@ -91,7 +94,7 @@
     data () {
       return {
         listLoading: false,
-        currentRow: null,
+        currentRows: [],
         searchWord: ''
       }
     },
@@ -103,6 +106,9 @@
       }),
       filterApps: function () {
         return this.searchWord ? this.apps.filter(app => app.id.toLowerCase().includes(this.searchWord)) : this.apps
+      },
+      currentRow: function () {
+        return this.currentRows.length === 1 ? this.currentRows[0] : null
       }
     },
     methods: {
@@ -114,7 +120,7 @@
           .then(data => this.fetchApps())
       },
       handleCurrentChange (val) {
-        this.currentRow = val
+        this.currentRows = val
       },
       listApp () {
         return this.fetchApps().then(() => {
@@ -124,21 +130,17 @@
         })
       },
       openDelete () {
-        if (this.currentRow) {
-          Confirm.open(`确认删除 ${this.currentRow.id} 应用?`)
-            .then(() => {
-              app.deleteApp(this.currentRow.id)
-                .then(() => {
-                  this.$notify({message: '删除成功'})
-                  this.fetchApps()
-                })
-            })
-        } else {
-          this.$notify({message: '尚未选中应用'})
-        }
+        Confirm.open(`确认删除 ${this.currentRow.id} 应用?`)
+          .then(() => {
+            app.deleteApp(this.currentRow.id)
+              .then(() => {
+                this.$notify({message: '删除成功'})
+                this.fetchApps()
+              })
+          })
       },
       openExtend () {
-        this.currentRow ? this.$refs.extendDialog.open(this.currentRow) : this.$notify({message: '尚未选中应用'})
+        this.$refs.extendDialog.open(this.currentRow)
       },
       reload () {
         this.listLoading = true
@@ -146,26 +148,36 @@
           .then(() => (this.listLoading = false))
           .catch(() => (this.listLoading = false))
       },
-      reverse (action) {
-        if (this.currentRow) {
-          Confirm.open(`确认${action === 'start' ? '启动' : '停止'} ${this.currentRow.id} 应用?`)
+      start () {
+        if (this.currentRow.appruntatus === 'Suspended') {
+          Confirm.open(`确认启动 ${this.currentRow.id} 应用?`)
             .then(() => {
-              app[action](this.currentRow.id)
+              app.start(this.currentRow.id)
                 .then(() => {
-                  this.$notify({message: `${action === 'start' ? '启动' : '停止'}成功`})
+                  this.$notify({message: `${this.currentRow.id} 启动成功`})
                   this.fetchApps()
                 })
             })
         } else {
-          this.$notify({message: '尚未选中应用'})
+          this.$notify({message: `${this.currentRow.id} 已运行`})
+        }
+      },
+      stop () {
+        if (this.currentRow.appruntatus !== 'Suspended') {
+          Confirm.open(`确认停止 ${this.currentRow.id} 应用?`)
+            .then(() => {
+              app.stop(this.currentRow.id)
+                .then(() => {
+                  this.$notify({message: `${this.currentRow.id} 已停止`})
+                  this.fetchApps()
+                })
+            })
+        } else {
+          this.$notify({message: `${this.currentRow.id} 已停止`})
         }
       },
       updateApp () {
-        if (this.currentRow) {
-          this.$router.push({name: '更新应用', params: {id: this.currentRow.id}})
-        } else {
-          this.$notify({message: '尚未选中应用'})
-        }
+        this.$router.push({name: '更新应用', params: {id: this.currentRow.id}})
       }
     },
     mounted () {

@@ -1,26 +1,24 @@
 <template>
   <div>
     <div class="btn-group">
-      <el-button-group>
+      <span class="wrapper">
+        <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
         <a class="pan-btn pink-btn" :href="stdObj.stdout">
-          <el-button type="primary"><i class="el-icon-plus"></i> stdout 日志</el-button>
+          <el-button type="primary" :disabled="!currentRow"><i class="el-icon-plus"></i> stdout 日志</el-button>
         </a>
-
         <a class="pan-btn pink-btn" :href="stdObj.stderr">
-          <el-button type="primary"><i class="el-icon-plus"></i> stderr 日志</el-button>
+          <el-button type="primary" :disabled="!currentRow"><i class="el-icon-plus"></i> stderr 日志</el-button>
         </a>
-      </el-button-group>
-
-      <el-button type="primary" @click="reload()"><i class="fa fa-refresh"></i></el-button>
+      </span>
     </div>
 
     <el-table
       :data="tasks"
-      stripe
-      highlight-current-row
+      stripe border
       v-loading="listLoading"
-      @current-change="handleCurrentChange"
+      @selection-change="handleCurrentChange"
       style="width: 100%">
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column property="id" label="实例名称" width="150" show-overflow-tooltip>
         <template scope="scope">
           <router-link
@@ -57,16 +55,19 @@
   export default {
     data () {
       return {
-        currentRow: null,
+        currentRows: [],
         listLoading: false
       }
     },
     computed: {
       ...mapState({
-        tasks (state) {
-          return state.app.app.tasks
+        tasks ({app}) {
+          return app.app.tasks
         }
       }),
+      currentRow: function () {
+        return this.currentRows.length === 1 ? this.currentRows[0] : null
+      },
       stdObj: function () {
         return this.currentRow ? {
           stderr: `${constant.BASE_URL}/v1/apps/stdlog?hostip=${this.currentRow.host}&slaveid=${this.currentRow.slaveId}&taskid=${this.currentRow.id}&logtype=stderr`,
@@ -79,7 +80,7 @@
     },
     methods: {
       handleCurrentChange (val) {
-        this.currentRow = val
+        this.currentRows = val
       },
       reload () {
         this.listLoading = true
