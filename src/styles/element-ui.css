@@ -6,3 +6,25 @@
 .el-notification {
   z-index: 10001 !important;
 }
+.el-dialog__header{
+  background-color: #01C4BC;
+  padding: 15px 20px 15px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.el-dialog__title{
+  color: #fff;
+}
+.el-dialog{
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.el-form-item__label{
+  color: #333;
+}
+.el-form-item.is-required .el-form-item__label:before{
+  color: #333;
+}
+.el-dialog--small{
+  width: 40%;
+}
