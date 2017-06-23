@@ -24,6 +24,14 @@ export function deleteApp (id) {
   })
 }
 
+export function deleteApps (appIds = []) {
+  return fetch({
+    url: `v1/apps/delete`,
+    method: 'put',
+    data: appIds
+  })
+}
+
 export function start (id) {
   return fetch({
     url: `v1/apps/${id}/start`,

@@ -5,7 +5,7 @@
         <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
         <router-link class="el-button el-button--primary" tag="el-button" to="/app/create">创建应用
         </router-link>
-        <el-button type="danger" @click="openDelete" :disabled="!currentRow"><i class="el-icon-close"></i> 删除应用
+        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="el-icon-close"></i> 删除应用
         </el-button>
         <el-button type="primary" @click="openExtend" :disabled="!currentRow"><i
           class="el-icon-edit"></i> 扩展应用
@@ -129,9 +129,9 @@
         })
       },
       openDelete () {
-        Confirm.open(`确认删除 ${this.currentRow.id} 应用?`)
+        Confirm.open(`确认删除应用?`)
           .then(() => {
-            app.deleteApp(this.currentRow.id)
+            app.deleteApps(this.currentRows.map(app => app.id))
               .then(() => {
                 this.$notify({message: '删除成功'})
                 this.fetchApps()
