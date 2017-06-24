@@ -3,14 +3,12 @@
     <div class="btn-group">
       <span>
         <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
-        <router-link class="el-button el-button--primary" tag="el-button" to="/app/create">创建应用
-        </router-link>
-        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="el-icon-close"></i> 删除应用
-        </el-button>
+        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="el-icon-close"></i> 删除应用</el-button>
+        <el-button type="primary" @click="openCreate"><i class="el-icon-plus"></i> 创建应用</el-button>
         <el-button type="primary" @click="openExtend" :disabled="!currentRow"><i
           class="el-icon-edit"></i> 扩展应用
         </el-button>
-        <el-button type="primary" @click="updateApp" :disabled="!currentRow"><i class="fa fa-refresh"></i>
+        <el-button type="primary" @click="openUpdate" :disabled="!currentRow"><i class="fa fa-refresh"></i>
           更新应用
         </el-button>
         <el-button type="primary" @click="start" :disabled="!currentRow">
@@ -28,6 +26,7 @@
     </div>
 
     <extend-dialog @ok="extendOk" ref="extendDialog"></extend-dialog>
+    <create-dialog @ok="createOk" ref="createDialog"></create-dialog>
 
     <el-table
       :data="filterApps"
@@ -83,12 +82,14 @@
   import {mapState, mapActions} from 'vuex'
   import Confirm from '@/utils/confirm'
   import ExtendDialog from '@/views/app/components/modals/ExtendDialog'
+  import CreateDialog from '@/views/app/components/modals/CreateDialog'
   import * as type from '@/store/app/mutations_types'
   import * as app from '@/api/app'
 
   export default {
     components: {
-      ExtendDialog
+      ExtendDialog,
+      CreateDialog
     },
     data () {
       return {
@@ -118,6 +119,10 @@
         app.extend(this.currentRow.id, res)
           .then(data => this.fetchApps())
       },
+      createOk () {
+        app.extend(this.form)
+          .then(data => this.fetchApps())
+      },
       handleCurrentChange (val) {
         this.currentRows = val
       },
@@ -140,6 +145,12 @@
       },
       openExtend () {
         this.$refs.extendDialog.open(this.currentRow)
+      },
+      openCreate () {
+        this.$refs.createDialog.open()
+      },
+      openUpdate () {
+        this.$refs.createDialog.open(this.currentRow.id)
       },
       reload () {
         this.listLoading = true

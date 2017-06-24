@@ -10,7 +10,6 @@ import AppList from '@/views/app/list/List'
 import RegistryList from '@/views/registry/list/List'
 import HistoryList from '@/views/registry/history/List'
 
-const AppForm = () => import('../views/app/create/Create')
 const AppDetail = () => import('../views/app/detail/Detail')
 const AppInstance = () => import('../views/app/instance/Instance')
 
@@ -30,8 +29,6 @@ export const constantRouterMap = [
         component: AppBase,
         children: [
           {path: 'list', component: AppList, name: '应用列表'},
-          {path: 'create', component: AppForm, name: '创建应用'},
-          {path: 'update/:id', component: AppForm, name: '更新应用', meta: {update: true}},
           {path: 'detail/:id', component: AppDetail, name: '应用详情'},
           {path: 'instances/:host/:id/:slaveId', component: AppInstance, name: '实例详情'}
         ]
