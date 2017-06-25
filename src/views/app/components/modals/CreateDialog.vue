@@ -304,7 +304,7 @@
         <el-form-item>
           <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}
           </el-button>
-          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">取消</el-button>
         </el-form-item>
       </el-form>
     </div>
