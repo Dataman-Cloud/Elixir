@@ -108,12 +108,12 @@
 .el-select-dropdown.is-multiple{}
 
 .el-select-dropdown.is-multiple .el-select-dropdown__item.selected{
-    color: #37a798;
+    color: #6BCDC8;
     background-color: #fff;
 }
 
 .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover{
-    background-color: rgb(228, 240, 241);
+    background-color: rgb(228, 239, 241);
 }
 
 .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after{

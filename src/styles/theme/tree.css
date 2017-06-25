@@ -109,7 +109,7 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  color: rgb(94, 130, 125);
+  color: rgb(94, 130, 128);
 }
 
 .el-tree-node{
@@ -140,7 +140,7 @@
 }
 
 .el-tree-node__content:hover{
-  background: rgb(228, 240, 241);
+  background: rgb(228, 239, 241);
 }
 
 .el-tree-node__expand-icon{
@@ -152,7 +152,7 @@
   margin-left: 10px;
   border: 6px solid transparent;
   border-right-width: 0;
-  border-left-color: rgb(151, 190, 190);
+  border-left-color: rgb(151, 187, 190);
   border-left-width: 7px;
   transform: rotate(0deg);
   transition: transform 0.3s ease-in-out;
@@ -182,11 +182,11 @@
   vertical-align: middle;
   margin-right: 4px;
   font-size: 14px;
-  color: rgb(151, 190, 190);
+  color: rgb(151, 187, 190);
 }
 
 .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
-  background-color: rgb(239, 248, 247);
+  background-color: rgb(243, 251, 251);
 }
 :root{
   /* Transition
