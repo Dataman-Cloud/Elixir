@@ -11,7 +11,7 @@
 
   /* Colors
   -------------------------- */
-  --color-primary: #37a798;
+  --color-primary: #6BCDC8;
 
   --color-success: #13ce66;
   --color-warning: #f7ba2a;
@@ -79,7 +79,7 @@
   /* Disable base
   -------------------------- */
   --disabled-fill-base: var(--color-extra-light-gray);
-  --disabled-color-base: #bbb;
+  --disabled-color-base: #60c0af;
   --disabled-border-base: var(--color-base-gray);
 
   /* Icon

@@ -99,7 +99,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: rgb(72, 106, 106);
+    color: rgb(72, 104, 106);
     height: 36px;
     line-height: 1.5;
     box-sizing: border-box;
@@ -107,16 +107,16 @@
 }
 
 .el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
-    background-color: rgb(228, 240, 241)
+    background-color: rgb(228, 239, 241)
 }
 
 .el-select-dropdown__item.selected{
     color: #fff;
-    background-color: #37a798
+    background-color: #6BCDC8
 }
 
 .el-select-dropdown__item.selected.hover{
-    background-color: rgb(48, 147, 134)
+    background-color: rgb(94, 180, 176)
 }
 
 .el-select-dropdown__item span{
@@ -124,7 +124,7 @@
 }
 
 .el-select-dropdown__item.is-disabled{
-    color: rgb(191, 217, 216);
+    color: rgb(191, 216, 217);
     cursor: not-allowed
 }
 
