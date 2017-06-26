@@ -6,8 +6,10 @@
   const echarts = require('echarts/lib/echarts')
 
   require('echarts/lib/chart/line')
+  require('echarts/lib/chart/bar')
   // 引入提示框和标题组件
   require('echarts/lib/component/tooltip')
+  require('echarts/lib/component/toolbox')
   require('echarts/lib/component/title')
   require('echarts/lib/component/legend')
   export default {
@@ -86,6 +88,14 @@
           tooltip: {
             trigger: 'axis'
           },
+          toolbox: {
+            show: true,
+            left: '18%',
+            feature: {
+              dataView: {readOnly: true},
+              saveAsImage: {}
+            }
+          },
           legend: {
             icon: 'rect',
             itemWidth: 14,
@@ -99,7 +109,7 @@
           },
           xAxis: [{
             type: this.xAxisType,
-            boundaryGap: false,
+            boundaryGap: true,
             splitLine: {
               show: false
             },
