@@ -46,7 +46,7 @@
   background-color: #43aa98;
   border-color: #43aa98;
 }
-.el-input__icon{
+.el-input-search .el-input__icon{
   background-color: #60c0af;
   left: 1px;
   top: 1px;
@@ -67,3 +67,25 @@
 .el-table .cell{
   font-size: 12px;
 }
+.el-button--default{
+  color: #fff;
+}
+.el-button--default:hover{
+  color: #fff;
+}
+.el-button--danger{
+  background-color: #e93f35;
+  border-color: #e93f35;
+}
+.el-button--danger:hover{
+  background-color: #e93f35;
+}
+.el-button--danger.is-disabled{
+  background-color: #CCC;
+  border-color: #CCC;
+}
+.el-button--danger.is-disabled:hover{
+  background-color: #CCC;
+  border-color: #CCC;
+}
+
