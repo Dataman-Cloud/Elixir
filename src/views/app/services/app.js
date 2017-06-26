@@ -87,7 +87,8 @@ export const DYNAMIC_CONFIG = {
   },
   portMappings: {
     containerPort: '',
-    protocol: 'tcp'
+    protocol: 'tcp',
+    servicePort: ''
   },
   volumes: {
     containerPath: '',

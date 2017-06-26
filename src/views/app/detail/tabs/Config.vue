@@ -47,6 +47,7 @@
           <el-table :data="app.container.docker.portMappings" stripe style="width: 100%;">
             <el-table-column prop="containerPort" label="应用端口" width="200"></el-table-column>
             <el-table-column prop="protocol" label="协议" width="200"></el-table-column>
+            <el-table-column prop="servicePort" label="映射端口" width="200"></el-table-column>
           </el-table>
         </template>
         <span v-else>-</span>

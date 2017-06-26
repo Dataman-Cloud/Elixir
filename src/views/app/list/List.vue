@@ -81,8 +81,8 @@
 <script>
   import {mapState, mapActions} from 'vuex'
   import Confirm from '@/utils/confirm'
-  import ExtendDialog from '@/views/app/components/modals/ExtendDialog'
-  import CreateDialog from '@/views/app/components/modals/CreateDialog'
+  import ExtendDialog from '@/views/app/modals/ExtendDialog'
+  import CreateDialog from '@/views/app/modals/CreateDialog'
   import * as type from '@/store/app/mutations_types'
   import * as app from '@/api/app'
 
