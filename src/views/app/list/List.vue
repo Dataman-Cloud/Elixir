@@ -3,7 +3,7 @@
     <div class="btn-group">
       <span>
         <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
-        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="el-icon-close"></i> 删除应用</el-button>
+        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="fa fa-minus-circle"></i> 删除应用</el-button>
         <el-button type="primary" @click="openCreate"><i class="fa fa-plus-circle"></i> 创建应用</el-button>
         <el-button type="primary" @click="openExtend" :disabled="!currentRow"><i
           class="el-icon-edit"></i> 扩展应用

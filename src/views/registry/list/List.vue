@@ -1,15 +1,13 @@
 <template>
   <div>
     <div class="btn-group">
-      <el-button-group>
-        <el-button type="primary" @click="openDelete"><i class="el-icon-close"></i> 删除镜像</el-button>
-        <router-link class="pan-btn pink-btn" to="/registry/histories">
-          <el-button type="primary">查看历史</el-button>
-        </router-link>
-      </el-button-group>
-      <el-button-group style="display: flex">
-        <el-input v-model="searchWord" placeholder="请输入内容"></el-input>
+      <span>
         <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
+        <el-button type="danger" @click="openDelete" :disabled="!currentRow"><i class="fa fa-minus-circle"></i> 删除镜像</el-button>
+        <router-link class="primary" to="/registry/histories" tag="el-button"><i class="el-icon-more"></i> 历史</router-link>
+      </span>
+      <el-button-group style="display: flex">
+        <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入内容"></el-input>
       </el-button-group>
     </div>
 
@@ -17,10 +15,12 @@
       :data="filterRegistries"
       highlight-current-row
       stripe
+      border
       row-key="ID"
       v-loading="listLoading"
-      @current-change="handleCurrentChange"
+      @selection-change="handleCurrentChange"
       style="width: 100%">
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column
         sortable show-overflow-tooltip
         width="200"
@@ -56,7 +56,7 @@
     data () {
       return {
         listLoading: false,
-        currentRow: null,
+        currentRows: [],
         searchWord: ''
       }
     },
@@ -68,6 +68,9 @@
       }),
       filterRegistries: function () {
         return this.searchWord ? this.registries.filter(reistry => reistry.Image.toLowerCase().includes(this.searchWord)) : this.registries
+      },
+      currentRow: function () {
+        return this.currentRows.length === 1 ? this.currentRows[0] : null
       }
     },
     methods: {
@@ -75,7 +78,7 @@
         fetchRegistries: type.FETCH_REGISTRIES
       }),
       handleCurrentChange (val) {
-        this.currentRow = val
+        this.currentRows = val
       },
       openDelete () {
         if (this.currentRow) {
