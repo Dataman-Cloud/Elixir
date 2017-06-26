@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :title="isUpdate ? '更新应用' : '创建应用'" v-model="dialogVisible" size="small" ref="dialog">
-    <div style="width: 37vw;height: 60vh;overflow-y:scroll;overflow-x: hidden">
+  <el-dialog :title="isUpdate ? '更新应用' : '创建应用'" v-model="dialogVisible" size="small" ref="dialog" @close="close">
+    <div style="width: 37vw; height: 60vh; overflow-y:scroll; overflow-x: hidden">
       <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-loading="loading"
                element-loading-text="数据加载中...">
         <el-form-item label="应用名称" prop="id">
@@ -118,8 +118,21 @@
                     <el-option value="udp">udp</el-option>
                   </el-select>
                 </el-col>
-                <el-button @click.prevent="removeConfig(index, 'portMappings')"><i class="el-icon-delete"></i>
-                </el-button>
+                <el-col :span="8">
+                  <el-form-item :prop="'container.docker.portMappings.' + index + '.servicePort'"
+                                :key="portMapping.index"
+                                :rules="[
+                                { required: true, message: '映射端口不能为空' }
+                            ]">
+                    <el-input v-model.number="portMapping.servicePort">
+                      <template slot="prepend">映射端口</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="2">
+                  <el-button @click.prevent="removeConfig(index, 'portMappings')"><i class="el-icon-delete"></i>
+                  </el-button>
+                </el-col>
               </el-row>
             </el-form-item>
 
@@ -325,10 +338,16 @@
         form: this._.merge({}, appUtil.APP_BASE, {oneContainer: false, selectCluster: ''}),
         rules: appUtil.APP_FORM_RULES,
         submitLoading: false,
-        isUpdate: false,
-        activeCollapse: this.$route.meta.update ? 'advance' : '',
         loading: false,
         id: null
+      }
+    },
+    computed: {
+      activeCollapse: function () {
+        return this.isUpdate ? 'advance' : ''
+      },
+      isUpdate: function () {
+        return !!this.id
       }
     },
     methods: {
@@ -349,6 +368,10 @@
         let clusterIndex = this.form.constraints.findIndex(item => item[0] === 'vcluster')
         this.form.constraints[clusterIndex][2] = cluster
       },
+      close () {
+        this.resetForm()
+        this.submitLoading = false
+      },
       networkChange (netowrk) {
         if (netowrk === 'HOST') {
           this.form.container.docker.portMappings = []
@@ -362,14 +385,14 @@
             this.submitLoading = true
             this.isUpdate ? fetchApp.update(this.id, this.form)
               .then(() => {
-                this.resetForm()
+                this.dialogVisible = false
                 this.$store.dispatch(type.FETCH_APPS)
               })
               .catch(() => {
                 this.submitLoading = false
               }) : fetchApp.create(this.form)
               .then(() => {
-                this.resetForm()
+                this.dialogVisible = false
                 this.$store.dispatch(type.FETCH_APPS)
               })
               .catch(() => {
@@ -391,7 +414,6 @@
       },
       open: function (id) {
         this.id = id
-        this.isUpdate = !!id
         if (this.isUpdate) {
           this.updateInitFetch(this.id)
             .then(res => this.updateInit(res))
@@ -409,8 +431,6 @@
       },
       resetForm () {
         this.$refs.form.resetFields()
-        this.dialogVisible = false
-        this.submitLoading = false
       },
       uniqueHostname () {
         const hostEles = ['hostname', 'UNIQUE']
