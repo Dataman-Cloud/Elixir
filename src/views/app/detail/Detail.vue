@@ -6,10 +6,16 @@
       </h3>
     </div>
 
-    <el-tabs type="border-card" :value="currentView" @tab-click="tabChange">
-      <el-tab-pane label="实例" name="instances"></el-tab-pane>
-      <el-tab-pane label="配置" name="config"></el-tab-pane>
-      <el-tab-pane label="调试" name="debug"></el-tab-pane>
+    <el-tabs type="card" :value="currentView" @tab-click="tabChange">
+      <el-tab-pane name="instances">
+        <span class="el-tab-label" slot="label"><a></a>实例</span>
+      </el-tab-pane>
+      <el-tab-pane name="config">
+        <span class="el-tab-label" slot="label"><a></a>配置</span>
+      </el-tab-pane>
+      <el-tab-pane name="debug">
+        <span class="el-tab-label" slot="label"><a></a>调试</span>
+      </el-tab-pane>
 
       <transition name="fade" mode="out-in">
         <component v-bind:is="currentView"></component>
