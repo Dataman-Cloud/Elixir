@@ -4,7 +4,7 @@
       <span>
         <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
         <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="el-icon-close"></i> 删除应用</el-button>
-        <el-button type="primary" @click="openCreate"><i class="el-icon-plus"></i> 创建应用</el-button>
+        <el-button type="primary" @click="openCreate"><i class="fa fa-plus-circle"></i> 创建应用</el-button>
         <el-button type="primary" @click="openExtend" :disabled="!currentRow"><i
           class="el-icon-edit"></i> 扩展应用
         </el-button>
@@ -12,16 +12,16 @@
           更新应用
         </el-button>
         <el-button type="primary" @click="start" :disabled="!currentRow">
-          <i class="fa fa-play"></i> 启动
+          <i class="fa fa-play-circle-o"></i> 启动
         </el-button>
         <el-button type="primary" @click="stop" :disabled="!currentRow">
-          <i class="fa fa-stop"></i>
+          <i class="fa fa-power-off"></i>
           停止
         </el-button>
       </span>
 
       <el-button-group style="display: flex">
-        <el-input v-model="searchWord" placeholder="请输入内容"></el-input>
+        <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入应用名称"></el-input>
       </el-button-group>
     </div>
 

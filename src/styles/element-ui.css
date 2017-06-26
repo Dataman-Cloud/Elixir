@@ -28,3 +28,42 @@
 .el-dialog--small{
   width: 40%;
 }
+.el-button.is-disabled, .el-button.is-disabled:hover, .el-button.is-disabled:focus{
+  cursor: pointer;
+  color: #fff;
+  background-color: #98d6cb;
+  border-radius: 2px;
+  border-color: #98d6cb;
+}
+.el-button{
+  background-color: #6acdc8;
+  border-color: #6acdc8;
+  height: 34px;
+  line-height: 34px;
+  padding: 0px 12px;
+}
+.el-button--primary:hover, .el-button--primary:focus{
+  background-color: #43aa98;
+  border-color: #43aa98;
+}
+.el-input__icon{
+  background-color: #60c0af;
+  left: 1px;
+  top: 1px;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+.el-input-search .el-input__inner{
+  padding-left: 35px;
+  border-radius:25px;
+  height: 32px;
+  color: #ccc;
+}
+.el-input-search .el-input__icon{
+  width: 26px;
+  height: 26px;
+}
+.el-table .cell{
+  font-size: 12px;
+}
