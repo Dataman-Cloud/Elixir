@@ -1,8 +1,5 @@
 <template>
   <div class="app-wrapper">
-    <header class="bread-header">
-      <Breadcrumb/>
-    </header>
     <section class="main-content">
       <App-main/>
     </section>
