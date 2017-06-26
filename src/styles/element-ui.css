@@ -88,4 +88,19 @@
   background-color: #CCC;
   border-color: #CCC;
 }
+.el-table{
+  border: 1px solid #E1E5E2;
+}
+.el-table th.is-leaf, .el-table td {
+  border-bottom: 1px solid #E1E5E2;
+}
+.el-table--border th, .el-table--border td {
+  border-right: 1px solid #E1E5E2;
+}
+.el-table th{
+  background-color: #e9ecf1;
+}
+.el-table__header-wrapper thead div{
+  background-color: #e9ecf1;
+}
 
