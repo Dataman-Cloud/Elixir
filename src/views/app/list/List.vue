@@ -30,7 +30,7 @@
 
     <el-table
       :data="filterApps"
-      stripe border
+      border
       row-key="id"
       v-loading="listLoading"
       @selection-change="handleCurrentChange"
