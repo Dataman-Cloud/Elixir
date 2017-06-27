@@ -7,6 +7,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import lodash from '@/utils/lodash'
 import * as filters from '@/filters'
+import directives from '@/directives'
 import './styles/theme/index.css'
 import 'font-awesome/css/font-awesome.min.css'
 import './styles/index.css' // 全局自定义的css样式
@@ -21,6 +22,11 @@ Vue.use(lodash)
 // 注册全局 Filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
+})
+
+// 注册全局 Directive
+Object.keys(directives).forEach(key => {
+  Vue.directive(key, directives[key])
 })
 
 /* eslint-disable no-new */
