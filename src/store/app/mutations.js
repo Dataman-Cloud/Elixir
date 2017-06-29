@@ -8,7 +8,8 @@ export default {
     state.apps.total = state.apps.apps.length
   },
   [type.FETCH_APP] (state, payload = {}) {
-    state.app = _.merge({}, APP_BASE, payload)
+    let app = _.merge({}, APP_BASE, payload)
+    state.app = countHealthyState(app)
     state.app.envs = transformEnvtoArray(state.app.env)
   }
 }

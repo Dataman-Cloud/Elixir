@@ -16,6 +16,9 @@
       <el-tab-pane name="debug">
         <span class="el-tab-label" slot="label"><a></a>调试</span>
       </el-tab-pane>
+      <el-tab-pane name="topology">
+        <span class="el-tab-label" slot="label"><a></a>拓扑图</span>
+      </el-tab-pane>
 
       <transition name="fade" mode="out-in">
         <component v-bind:is="currentView"></component>
@@ -24,7 +27,7 @@
   </div>
 </template>
 <script>
-  import {Instances, Config, Debug} from './tabs'
+  import {Instances, Config, Debug, Topology} from './tabs'
   import {mapState} from 'vuex'
   import store from '@/store'
   import * as type from '@/store/app/mutations_types'
@@ -33,7 +36,8 @@
     components: {
       instances: Instances,
       config: Config,
-      debug: Debug
+      debug: Debug,
+      topology: Topology
     },
     data () {
       return {
