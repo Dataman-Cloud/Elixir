@@ -93,3 +93,55 @@ dl {
   padding-left: 15px;
   border-radius: 4px;
 }
+/*状态条*/
+.progress {
+  width: 60%;
+  height: 10px;
+  background-color: #e8e8e8;
+}
+
+.state span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.state .healthy {
+  background-color: #28f7a1;
+}
+
+.state .unhealthy {
+  background-color: #ff7c64;
+}
+
+.state .unknown {
+  background-color: #929599;
+}
+
+.progress, .progress li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.progress li {
+  float: left;
+  -webkit-transition: width .6s ease;
+  transition: width .6s ease;
+}
+
+.progress .healthy {
+  height: 100%;
+  background-color: #28f7a1;
+}
+
+.progress .unhealthy {
+  height: 100%;
+  background-color: #ff7c64;
+}
+
+.progress .unknown {
+  height: 100%;
+  background-color: #929599;
+}
