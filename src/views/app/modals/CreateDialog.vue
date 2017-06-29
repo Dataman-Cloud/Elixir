@@ -311,6 +311,20 @@
                 <el-button @click.prevent="removeConfig(index, 'parameters')"><i class="el-icon-delete"></i></el-button>
               </el-row>
             </el-form-item>
+            <el-form-item label="拓扑">
+              <el-row :gutter="12">
+                <el-col :span="8">
+                  <el-select v-model="form.labels.PROLONGATIONTYPE" placeholder="请选择">
+                    <el-option value="WEB">WEB</el-option>
+                    <el-option value="DB">DB</el-option>
+                    <el-option value="Cache">WEB</el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="8">
+                  <el-input v-model="form.labels.PROLONGATION4ROOTAPP"></el-input>
+                </el-col>
+              </el-row>
+            </el-form-item>
           </el-collapse-item>
         </el-collapse>
 
