@@ -62,7 +62,10 @@ export const APP_BASE = {
     ]
   ],
   healthChecks: [],
-  labels: {},
+  labels: {
+    PROLONGATIONTYPE: null,
+    PROLONGATION4ROOTAPP: null
+  },
   cmd: null
 }
 
