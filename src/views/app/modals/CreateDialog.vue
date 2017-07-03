@@ -7,12 +7,7 @@
           <el-input v-model="form.id"></el-input>
         </el-form-item>
         <el-form-item label="集群" prop="selectCluster">
-          <el-select v-model="form.selectCluster" :disabled="isUpdate" placeholder="请选择集群"
-                     @visible-change="openClusters"
-                     @change="clusterChange">
-            <el-option v-for="cluster in clusters" :key="cluster.id" :label="cluster.clusterLabel"
-                       :value="cluster.clusterLabel"></el-option>
-          </el-select>
+          <el-input v-model="form.selectCluster" disabled></el-input>
         </el-form-item>
         <el-form-item label="镜像地址" prop="container.docker.image">
           <div>
@@ -345,9 +340,8 @@
   </el-dialog>
 </template>
 <script>
-  import {mapActions} from 'vuex'
+  import {mapActions, mapState} from 'vuex'
   import * as appUtil from '@/views/app/services/app'
-  import * as fetchCluster from '@/api/cluster'
   import * as fetchApp from '@/api/app'
   import * as type from '@/store/app/mutations_types'
 
@@ -364,6 +358,11 @@
       }
     },
     computed: {
+      ...mapState({
+        bayname ({user}) {
+          return user.bayname
+        }
+      }),
       activeCollapse: function () {
         return this.isUpdate ? 'advance' : ''
       },
@@ -392,9 +391,9 @@
           this.form[configName].push(config[configName])
         }
       },
-      clusterChange (cluster) {
+      setClusterConstraints () {
         let clusterIndex = this.form.constraints.findIndex(item => item[0] === 'vcluster')
-        this.form.constraints[clusterIndex][2] = cluster
+        this.form.constraints[clusterIndex][2] = this.form.selectCluster
       },
       close () {
         this.resetForm()
@@ -408,6 +407,7 @@
       onSubmit () {
         this.$refs.form.validate((valid) => {
           if (valid) {
+            this.setClusterConstraints()
             this.form.env = appUtil.transformEnvstoObj(this.form.envs)
             this.form.healthChecks = appUtil.transformHealthChecks(this.form.healthChecks, this.form.container.docker.network)
             this.submitLoading = true
@@ -432,19 +432,13 @@
           }
         })
       },
-      openClusters (flag) {
-        if (flag) {
-          fetchCluster.listCluster()
-            .then(data => {
-              this.clusters = data.data
-            })
-        }
-      },
       open: function (id) {
         this.id = id
         if (this.isUpdate) {
           this.updateInitFetch(this.id)
             .then(res => this.updateInit(res))
+        } else {
+          this.form.selectCluster = this.bayname
         }
         this.$refs.dialog.open()
       },
@@ -483,16 +477,14 @@
       },
       updateInitFetch (appId) {
         this.loading = true
-        const getApp = fetchApp.getApp(appId)
-        const listCluster = fetchCluster.listCluster()
-        return Promise.all([getApp, listCluster])
+        return fetchApp.getApp(appId)
           .then((res) => {
             this.loading = false
             return res
           })
       },
       updateInit (initFetchData) {
-        let formTemp = this._.merge({}, appUtil.APP_BASE, initFetchData[0].data, {
+        let formTemp = this._.merge({}, appUtil.APP_BASE, initFetchData.data, {
           oneContainer: false,
           selectCluster: ''
         })
@@ -500,7 +492,6 @@
         this.form.envs = appUtil.transformEnvtoArray(this.form.env)
         this.form.selectCluster = this.form.constraints.find(item => item[0] === 'vcluster') ? this.form.constraints.find(item => item[0] === 'vcluster')[2] : ''
         this.form.oneContainer = this.form.constraints.some(item => item[0] === 'hostname')
-        this.clusters = initFetchData[1].data
       }
     }
   }
