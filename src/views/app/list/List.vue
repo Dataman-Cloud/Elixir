@@ -2,9 +2,9 @@
   <div>
     <div class="btn-group">
       <span>
-        <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
-        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="fa fa-minus-circle"></i> 删除应用</el-button>
-        <el-button type="primary" @click="openCreate"><i class="fa fa-plus-circle"></i> 创建应用</el-button>
+        <el-button type="primary" @click="reload"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></el-button>
+        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="ion-ios-minus-outline"></i> 删除应用</el-button>
+        <el-button type="primary" @click="openCreate"><i class="ion-ios-plus-outline"></i> 创建应用</el-button>
         <el-button type="primary" @click="openExtend" :disabled="!currentRow"><i
           class="el-icon-edit"></i> 扩展应用
         </el-button>
@@ -36,22 +36,22 @@
       @selection-change="handleCurrentChange"
       style="width: 100%">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column property="id" label="名称" width="150" sortable show-overflow-tooltip>
+      <el-table-column property="id" label="应用" width="150" sortable show-overflow-tooltip>
         <template scope="app">
-          <router-link :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
+          <router-link :title="app.row.id" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
         </template>
       </el-table-column>
       <el-table-column
         property="labels.VCLUSTER"
-        label="所属集群" sortable>
+        label="集群">
       </el-table-column>
       <el-table-column
         property="instances"
-        label="实例个数" sortable>
+        label="实例">
       </el-table-column>
       <el-table-column
         property="appruntatus"
-        label="运行状态" sortable>
+        label="运行状态">
       </el-table-column>
       <el-table-column label="健康状态">
         <template scope="app">
@@ -69,7 +69,7 @@
 
         </template>
       </el-table-column>
-      <el-table-column property="versionInfo.lastConfigChangeAt" label="更新时间" min-width="120" sortable>
+      <el-table-column property="versionInfo.lastConfigChangeAt" label="更新时间" min-width="120">
         <template scope="scope">
           <span>{{scope.row.versionInfo.lastConfigChangeAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
