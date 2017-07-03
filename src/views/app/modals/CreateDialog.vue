@@ -314,14 +314,21 @@
             <el-form-item label="拓扑">
               <el-row :gutter="12">
                 <el-col :span="8">
-                  <el-select v-model="form.labels.PROLONGATIONTYPE" placeholder="请选择">
-                    <el-option value="WEB">WEB</el-option>
-                    <el-option value="DB">DB</el-option>
-                    <el-option value="Cache">WEB</el-option>
-                  </el-select>
+                  <el-form-item prop="labels.PROLONGATIONTYPE"
+                                :rules="[{ required: form.labels.PROLONGATION4ROOTAPP, message: '拓扑选项不能为空' }]">
+                    <el-select v-model="form.labels.PROLONGATIONTYPE" placeholder="请选择">
+                      <el-option value="">空</el-option>
+                      <el-option value="WEB">WEB</el-option>
+                      <el-option value="DB">DB</el-option>
+                      <el-option value="Cache">WEB</el-option>
+                    </el-select>
+                  </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-input v-model="form.labels.PROLONGATION4ROOTAPP"></el-input>
+                  <el-form-item prop="labels.PROLONGATION4ROOTAPP"
+                                :rules="[{ required: form.labels.PROLONGATIONTYPE, message: '拓扑名称不能为空' }]">
+                    <el-input v-model="form.labels.PROLONGATION4ROOTAPP"></el-input>
+                  </el-form-item>
                 </el-col>
               </el-row>
             </el-form-item>
