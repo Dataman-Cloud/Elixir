@@ -50,7 +50,7 @@
 <script>
   import {mapState} from 'vuex'
   import * as type from '@/store/app/mutations_types'
-  import * as constant from '@/config/constant'
+  import baseUrl from 'baseUrl'
 
   export default {
     data () {
@@ -70,8 +70,8 @@
       },
       stdObj: function () {
         return this.currentRow ? {
-          stderr: `${constant.BASE_URL}/v1/apps/stdlog?hostip=${this.currentRow.host}&slaveid=${this.currentRow.slaveId}&taskid=${this.currentRow.id}&logtype=stderr`,
-          stdout: `${constant.BASE_URL}/v1/apps/stdlog?hostip=${this.currentRow.host}&slaveid=${this.currentRow.slaveId}&taskid=${this.currentRow.id}&logtype=stdout`
+          stderr: `${baseUrl}/v1/apps/stdlog?hostip=${this.currentRow.host}&slaveid=${this.currentRow.slaveId}&taskid=${this.currentRow.id}&logtype=stderr`,
+          stdout: `${baseUrl}/v1/apps/stdlog?hostip=${this.currentRow.host}&slaveid=${this.currentRow.slaveId}&taskid=${this.currentRow.id}&logtype=stdout`
         } : {
           stderr: 'javascript:void(0);',
           stdout: 'javascript:void(0);'
