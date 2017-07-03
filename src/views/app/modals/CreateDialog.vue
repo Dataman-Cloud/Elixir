@@ -314,14 +314,22 @@
             <el-form-item label="拓扑">
               <el-row :gutter="12">
                 <el-col :span="8">
-                  <el-select v-model="form.labels.PROLONGATIONTYPE" placeholder="请选择">
-                    <el-option value="WEB">WEB</el-option>
-                    <el-option value="DB">DB</el-option>
-                    <el-option value="Cache">WEB</el-option>
-                  </el-select>
+                  <el-form-item prop="labels.PROLONGATIONTYPE">
+                    <el-select v-model="form.labels.PROLONGATIONTYPE" placeholder="请选择"
+                               @change="topologyChange">
+                      <el-option value="">空</el-option>
+                      <el-option value="WEB">WEB</el-option>
+                      <el-option value="DB">DB</el-option>
+                      <el-option value="Cache">WEB</el-option>
+                    </el-select>
+                  </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-input v-model="form.labels.PROLONGATION4ROOTAPP"></el-input>
+                  <el-form-item prop="labels.PROLONGATION4ROOTAPP">
+                    <el-input :disabled="isDisable" v-model="form.labels.PROLONGATION4ROOTAPP"></el-input>
+                    <p style="color: red;font-size: 12px;" v-if="!isDisable && !form.labels.PROLONGATION4ROOTAPP">
+                      请输入拓扑值！！！</p>
+                  </el-form-item>
                 </el-col>
               </el-row>
             </el-form-item>
@@ -347,6 +355,7 @@
   export default {
     data () {
       return {
+        isDisable: true,
         dialogVisible: false,
         clusters: [],
         form: this._.merge({}, appUtil.APP_BASE, {oneContainer: false, selectCluster: ''}),
@@ -452,6 +461,14 @@
       },
       resetForm () {
         this.$refs.form.resetFields()
+      },
+      topologyChange (value) {
+        if (value) {
+          this.isDisable = false
+        } else {
+          this.isDisable = true
+          this.form.labels.PROLONGATION4ROOTAPP = ''
+        }
       },
       uniqueHostname () {
         const hostEles = ['hostname', 'UNIQUE']
