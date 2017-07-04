@@ -43,8 +43,8 @@
   padding: 0px 12px;
 }
 .el-button--primary:hover, .el-button--primary:focus{
-  background-color: #43aa98;
-  border-color: #43aa98;
+  background-color: #358577;
+  border-color: #358577;
 }
 .el-input-search .el-input__icon{
   background-color: #60c0af;
@@ -74,8 +74,8 @@
   color: #fff;
 }
 .el-button--danger{
-  background-color: #e93f35;
-  border-color: #e93f35;
+  background-color: #ee6b63;
+  border-color: #ee6b63;
 }
 .el-button--danger:hover{
   background-color: #e93f35;
@@ -90,6 +90,7 @@
 }
 .el-table{
   border: 1px solid #E1E5E2;
+  color: #666;
 }
 .el-table th.is-leaf, .el-table td {
   border-bottom: 1px solid #E1E5E2;
@@ -99,6 +100,11 @@
 }
 .el-table th{
   background-color: #e9ecf1;
+}
+.el-table th > .cell{
+  font-weight: normal;
+  color: #333;
+  font: 14px/1.5 tahoma,arial,Hiragino Sans GB,宋体,sans-serif, 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .el-table__header-wrapper thead div{
   background-color: #e9ecf1;
@@ -144,4 +150,44 @@
 }
 .el-tabs__item:hover a{
   background-color: #60c0af;
+}
+.el-table .sort-caret.descending,.el-table .sort-caret.ascending{
+  border-top-color: #d4d4d4;
+  border-bottom-color: #d4d4d4;
+}
+.el-table .ascending .sort-caret.ascending, .el-table .descending .sort-caret.descending{
+  border-bottom-color: #333;
+  border-top-color: #333;
+}
+.el-checkbox__inner{
+  width: 12px;
+  height: 12px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.el-checkbox__input.is-focus .el-checkbox__inner,.el-checkbox__inner:hover,.el-input__inner,.el-input__inner:focus,.el-input__inner:hover{
+  border-color: #ccc;
+}
+.el-checkbox__inner::after{
+  height: 7px;
+  left: 3px;
+  top: 0px;
+  width: 3px;
+  font-weight: 100;
+  font-size: 12px;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner{
+  background-color: #3c99f8;
+  border-color: #3c99f8;
+}
+.ellipsis{
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.el-table .caret-wrapper{
+  opacity: 0;
+}
+.el-table th > .cell:hover .caret-wrapper{
+  opacity: 1;
 }

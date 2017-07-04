@@ -2,7 +2,7 @@
   <div>
     <div class="btn-group">
       <span>
-        <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
+        <el-button type="primary" @click="reload"><i class="glyphicon glyphicon-repeat"></i></el-button>
         <a class="pan-btn pink-btn" :href="stdObj.stdout">
           <el-button type="primary" :disabled="!currentRow"><i class="el-icon-plus"></i> stdout 日志</el-button>
         </a>
@@ -19,10 +19,10 @@
       @selection-change="handleCurrentChange"
       style="width: 100%">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column property="id" label="实例名称" width="150" show-overflow-tooltip>
+      <el-table-column property="id" label="实例名称" width="150">
         <template scope="scope">
-          <router-link
-            :to="{name: '实例详情', params: { host: scope.row.host, id: scope.row.id, slaveId: scope.row.slaveId}}">
+          <router-link :title="scope.row.id" class="ellipsis"
+                       :to="{name: '实例详情', params: { host: scope.row.host, id: scope.row.id, slaveId: scope.row.slaveId}}">
             {{scope.row.id}}
           </router-link>
         </template>
