@@ -25,14 +25,19 @@
                        :to="{name: '实例详情', params: { host: scope.row.host, id: scope.row.id, slaveId: scope.row.slaveId}}">
             {{scope.row.id}}
           </router-link>
+          <small>IP:{{scope.row.host}}
+            <span v-if="scope.row.ports.length">:[<a v-for="port in scope.row.ports"
+                                                     :href="'http://'+ scope.row.host + ':' + port" target="_blank"> {{port}} </a>]</span>
+          </small>
         </template>
+
       </el-table-column>
       <el-table-column
-        property=""
+        property="status"
         label="状态">
       </el-table-column>
       <el-table-column
-        property=""
+        property="healthStatus"
         label="健康">
       </el-table-column>
       <el-table-column
