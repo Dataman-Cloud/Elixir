@@ -1,2 +1,3 @@
 src/styles/theme/* linguist-vendored
+src/styles/fonts.css linguist-vendored
 element-variables.css linguist-vendored
