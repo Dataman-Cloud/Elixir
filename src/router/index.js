@@ -3,9 +3,12 @@ import Router from 'vue-router'
 import Layout from '@/views/layout/Layout'
 import AppBase from '@/views/app/index'
 import AppList from '@/views/app/list/List'
+import CicdList from '@/views/cicd/list/List'
 
 const AppDetail = () => import('../views/app/detail/Detail')
 const AppInstance = () => import('../views/app/instance/Instance')
+
+const BuildDetail = () => import('../views/cicd/detail/Detail')
 
 const RegistryList = () => import('../views/registry/list/List')
 const HistoryList = () => import('../views/registry/history/List')
@@ -40,6 +43,16 @@ export const constantRouterMap = [
     children: [
       {path: 'list', component: RegistryList, name: '镜像列表'},
       {path: 'histories', component: HistoryList, name: '历史列表'}
+    ]
+  },
+  {
+    path: '/cicd',
+    redirect: '/cicd/list',
+    name: '镜像构建',
+    component: Layout,
+    children: [
+      {path: 'list', component: CicdList, name: '构建列表'},
+      {path: 'detail/:name', component: BuildDetail, name: '构建详情'}
     ]
   }
 ]
