@@ -3,9 +3,10 @@
     <div class="btn-group">
       <span>
         <el-button type="primary"><i class="glyphicon glyphicon-repeat"></i></el-button>
-        <el-button type="primary" :disabled="!currentRow"><i class="ion-ios-plus-outline"></i> 部署</el-button>
-        <el-button type="danger" :disabled="!currentRow"><i class="ion-ios-minus-outline"></i> 删除</el-button>
+        <!--<el-button type="primary" :disabled="!currentRow"><i class="ion-ios-plus-outline"></i> 部署</el-button>-->
+        <el-button type="danger" :disabled="!currentRow" @click="deleteCicd"><i class="ion-ios-minus-outline"></i> 删除</el-button>
         <el-button type="primary" @click="openCreate"><i class="ion-ios-plus-outline"></i> 新增项目</el-button>
+        <el-button type="primary" :disabled="!currentRow" @click="build"><i class="ion-ios-plus-outline"></i> 立即构建</el-button>
       </span>
       <el-button-group style="display: flex">
         <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入内容"></el-input>
@@ -58,6 +59,8 @@
   import {mapState, mapActions} from 'vuex'
   import CreateDialog from '@/views/cicd/modals/CreateDialog'
   import * as type from '@/store/cicd/mutations_types'
+  import * as fetchCicd from '@/api/cicd'
+  import Confirm from '@/utils/confirm'
 
   export default {
     components: {
@@ -88,7 +91,27 @@
       ...mapActions({
         fetchCicds: type.FETCH_CICDS
       }),
+      build () {
+        Confirm.open(`是否立即构建?`)
+          .then(() => {
+            fetchCicd.cicdBuild(this.currentRows.map(item => item.name))
+              .then(() => {
+                this.$notify({message: '构建成功'})
+                this.fetchCicds()
+              })
+          })
+      },
       createOk () {
+      },
+      deleteCicd () {
+        Confirm.open(`确认删除该信息?`)
+          .then(() => {
+            fetchCicd.cicdDelete(this.currentRows.map(item => item.name))
+              .then(() => {
+                this.$notify({message: '删除成功'})
+                this.fetchCicds()
+              })
+          })
       },
       handleCurrentChange (val) {
         this.currentRows = val
