@@ -18,6 +18,7 @@
 .el-dialog{
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  min-width: 400px;
 }
 .el-form-item__label{
   color: #333;

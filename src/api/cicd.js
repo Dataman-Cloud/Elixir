@@ -17,9 +17,23 @@ export function cicdDetails (name) {
   })
 }
 
+export function cicdBuild (name) {
+  return fetch({
+    url: `v1/cicd/jenkins/jobs/${name}/build`,
+    method: 'get'
+  })
+}
+
 export function logDetail (jobName, buildNum) {
   return fetch({
     url: `v1/cicd/jenkins/jobs/${jobName}/log/${buildNum}`,
     method: 'get'
+  })
+}
+
+export function cicdDelete (name) {
+  return fetch({
+    url: `v1/cicd/jenkins/jobs/${name}`,
+    method: 'DELETE'
   })
 }
