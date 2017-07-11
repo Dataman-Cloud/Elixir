@@ -313,9 +313,9 @@
                                 :rules="[{ required: form.labels.PROLONGATION4ROOTAPP, message: '拓扑选项不能为空' }]">
                     <el-select v-model="form.labels.PROLONGATIONTYPE" placeholder="请选择">
                       <el-option value="">空</el-option>
-                      <el-option value="WEB">WEB</el-option>
+                      <el-option value="CACHE">CACHE</el-option>
                       <el-option value="DB">DB</el-option>
-                      <el-option value="Cache">WEB</el-option>
+                      <el-option value="WEB">WEB</el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
