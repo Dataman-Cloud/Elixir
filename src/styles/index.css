@@ -156,3 +156,7 @@ dl {
   width: 10px;
   height: auto;
 }
+.pagination-container{
+  margin-top: 30px;
+  margin-right: 0;
+}
