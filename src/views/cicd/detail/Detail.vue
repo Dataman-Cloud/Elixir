@@ -10,9 +10,9 @@
       <el-tab-pane name="version">
         <span class="el-tab-label" slot="label"><a></a>版本</span>
       </el-tab-pane>
-      <el-tab-pane name="event">
-        <span class="el-tab-label" slot="label"><a></a>事件</span>
-      </el-tab-pane>
+      <!--<el-tab-pane name="event">-->
+        <!--<span class="el-tab-label" slot="label"><a></a>事件</span>-->
+      <!--</el-tab-pane>-->
 
       <transition name="fade" mode="out-in">
         <component v-bind:is="currentView"></component>
