@@ -3,7 +3,7 @@
     <div class="btn-group">
       <span>
         <el-button type="primary" @click="reload"><i class="fa fa-refresh"></i></el-button>
-        <el-button type="primary"><i class="fa fa-plus-circle"></i> 部署</el-button>
+        <!--<el-button type="primary"><i class="fa fa-plus-circle"></i> 部署</el-button>-->
         <el-button type="primary" @click="openLog" :disabled="!currentRow"><i class="fa fa-file-text" aria-hidden="true"></i> 日志</el-button>
       </span>
       <el-button-group style="display: flex">
