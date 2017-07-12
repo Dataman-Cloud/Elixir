@@ -37,3 +37,11 @@ export function cicdDelete (name) {
     method: 'DELETE'
   })
 }
+
+export function create (data) {
+  return fetch({
+    url: `v1/cicd/jenkins/jobs`,
+    method: 'post',
+    data: data
+  })
+}
