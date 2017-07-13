@@ -4,6 +4,7 @@ import Layout from '@/views/layout/Layout'
 import AppBase from '@/views/app/index'
 import AppList from '@/views/app/list/List'
 import CicdList from '@/views/cicd/list/List'
+import ElasticList from '@/views/elastic/list/List'
 
 const AppDetail = () => import('../views/app/detail/Detail')
 const AppInstance = () => import('../views/app/instance/Instance')
@@ -12,6 +13,8 @@ const BuildDetail = () => import('../views/cicd/detail/Detail')
 
 const RegistryList = () => import('../views/registry/list/List')
 const HistoryList = () => import('../views/registry/history/List')
+
+const HistoryDetail = () => import('../views/elastic/detail/Detail')
 
 Vue.use(Router)
 
@@ -53,6 +56,16 @@ export const constantRouterMap = [
     children: [
       {path: 'list', component: CicdList, name: '构建列表'},
       {path: 'detail/:name', component: BuildDetail, name: '构建详情'}
+    ]
+  },
+  {
+    path: '/elastic',
+    redirect: '/elastic/list',
+    name: '弹性扩缩',
+    component: Layout,
+    children: [
+      {path: 'list', component: ElasticList, name: '策略列表'},
+      {path: 'detail/:name', component: HistoryDetail, name: '扩缩历史'}
     ]
   }
 ]

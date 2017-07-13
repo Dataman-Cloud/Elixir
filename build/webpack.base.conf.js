@@ -27,7 +27,8 @@ module.exports = {
     }
   },
   externals: {
-    baseUrl: 'BASE_URL'
+    baseUrl: 'BASE_URL',
+    elasticUrl: 'ELASTIC_URL'
   },
   module: {
     rules: [
