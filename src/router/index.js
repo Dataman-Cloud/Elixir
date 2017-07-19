@@ -5,6 +5,7 @@ import AppBase from '@/views/app/index'
 import AppList from '@/views/app/list/List'
 import CicdList from '@/views/cicd/list/List'
 import ElasticList from '@/views/elastic/list/List'
+import LogList from '@/views/log/list/List'
 
 const AppDetail = () => import('../views/app/detail/Detail')
 const AppInstance = () => import('../views/app/instance/Instance')
@@ -66,6 +67,15 @@ export const constantRouterMap = [
     children: [
       {path: 'list', component: ElasticList, name: '策略列表'},
       {path: 'detail/:name', component: HistoryDetail, name: '扩缩历史'}
+    ]
+  },
+  {
+    path: '/log',
+    redirect: '/log/list',
+    name: '日志监控',
+    component: Layout,
+    children: [
+      {path: 'list', component: LogList, name: '日志查询'}
     ]
   }
 ]
