@@ -1,3 +1,3 @@
 /* eslint-disable */
-BASE_URL = 'http://192.168.73.15:7777/CloudOS'
+BASE_URL = 'http://192.168.1.51:8818'
 ELASTIC_URL = 'http://192.168.1.51:8188'

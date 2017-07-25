@@ -36,42 +36,26 @@
       @selection-change="handleCurrentChange"
       style="width: 100%">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column property="id" label="应用" width="150" sortable show-overflow-tooltip>
+      <el-table-column property="name" label="应用" width="150" sortable show-overflow-tooltip>
         <template scope="app">
-          <router-link :title="app.row.id" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
+          <router-link :title="app.row.name" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.name}}">{{app.row.id}}</router-link>
         </template>
       </el-table-column>
       <el-table-column
-        property="labels.VCLUSTER"
-        label="集群">
-      </el-table-column>
-      <el-table-column
-        property="instances"
-        label="实例">
-      </el-table-column>
-      <el-table-column
-        property="appruntatus"
+        property="status"
         label="运行状态">
       </el-table-column>
       <el-table-column label="健康状态">
         <template scope="app">
-          <el-tooltip class="item" effect="dark" placement="top">
-            <div slot="content">
-                  <span v-for="(status, index) in app.row.healthData" :key="index" class="state">
-                    状态: <span :class="status.state"></span> {{status.state}} 数量: {{status.quantity}}<br>
-                  </span>
-            </div>
-            <ul class="progress">
-              <li v-for="(status, index) in app.row.healthData" :key="index" :class="status.state"
-                  :style="{width: (status.quantity / app.row.instances) * 100 + '%'}"></li>
-            </ul>
-          </el-tooltip>
-
+          <span>总数: </span><i>{{app.row.health.total}} </i>
+          <span> 健康: </span><i>{{app.row.health.healthy}} </i>
+          <span> 不健康: </span><i>{{app.row.health.unhealthy}} </i>
+          <span> unset: </span><i>{{app.row.health.unset}} </i>
         </template>
       </el-table-column>
-      <el-table-column property="versionInfo.lastConfigChangeAt" label="更新时间" min-width="120">
+      <el-table-column property="updated" label="更新时间" min-width="120">
         <template scope="scope">
-          <span>{{scope.row.versionInfo.lastConfigChangeAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+          <span>{{scope.row.updated | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -84,7 +68,7 @@
   import ExtendDialog from '@/views/app/modals/ExtendDialog'
   import CreateDialog from '@/views/app/modals/CreateDialog'
   import * as type from '@/store/app/mutations_types'
-  import * as app from '@/api/app'
+  import * as app from '@/api/app-swan'
 
   export default {
     components: {
