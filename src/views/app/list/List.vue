@@ -143,7 +143,7 @@
           .catch(() => (this.listLoading = false))
       },
       start () {
-        if (this.currentRow.appruntatus === 'Suspended') {
+        if (this.currentRow.status === 'unavailable') {
           Confirm.open(`确认启动 ${this.currentRow.id} 应用?`)
             .then(() => {
               app.start(this.currentRow.id)
@@ -157,7 +157,7 @@
         }
       },
       stop () {
-        if (this.currentRow.appruntatus !== 'Suspended') {
+        if (this.currentRow.status !== 'unavailable') {
           Confirm.open(`确认停止 ${this.currentRow.id} 应用?`)
             .then(() => {
               app.stop(this.currentRow.id)

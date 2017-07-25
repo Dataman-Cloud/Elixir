@@ -169,6 +169,16 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
+                  <el-form-item :prop="'healthCheck.delaySeconds'"
+                                :rules="[
+                                { type: 'integer', min: 1, message: '延迟时间为正整数' }
+                            ]">
+                    <el-input type="number" v-model.number="form.healthCheck.delaySeconds">
+                      <template slot="prepend">延迟时间(秒)</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
                   <el-form-item :prop="'healthCheck.timeoutSeconds'"
                                 :rules="[
                                 { type: 'integer', min: 1, message: '检查超时时间为正整数' }
@@ -191,17 +201,14 @@
                 <el-col :span="10">
                   <el-form-item :prop="'healthCheck.portName'">
                     <el-input type="text" v-model.number="form.healthCheck.portName">
-                      <template slot="prepend">端口组索引</template>
+                      <template slot="prepend">端口名</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthCheck.port'"
-                                :rules="[
-                                { type: 'integer', min: 1, message: '端口号为正整数' }
-                            ]">
-                    <el-input type="number" v-model.number="form.healthCheck.port">
-                      <template slot="prepend">端口号</template>
+                  <el-form-item :prop="'healthCheck.path'">
+                    <el-input type="text" v-model.number="form.healthCheck.path">
+                      <template slot="prepend">路径</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
@@ -383,6 +390,8 @@
         if (this.isUpdate) {
           this.updateInitFetch(this.id)
             .then(res => this.updateInit(res))
+        } else {
+          this.form = this._.merge({}, appUtil.APP_BASE, {oneContainer: false, selectCluster: ''})
         }
         this.$refs.dialog.open()
       },
@@ -421,7 +430,7 @@
       },
       updateInitFetch (appId) {
         this.loading = true
-        return fetchApp.getApp(appId)
+        return fetchApp.curVersion(appId)
           .then((res) => {
             this.loading = false
             return res

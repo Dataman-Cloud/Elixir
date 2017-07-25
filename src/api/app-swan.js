@@ -42,7 +42,7 @@ export function start (appId) {
 export function stop (appId) {
   return fetch({
     url: `esborg/apps/${appId}/switch/disable`,
-    method: 'put'
+    method: 'post'
   })
 }
 
