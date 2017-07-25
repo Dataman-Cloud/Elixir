@@ -12,25 +12,25 @@ export function listApp () {
 
 export function getApp (id) {
   return fetch({
-    url: `v1/apps/${id}`,
+    url: `esborg/apps/${id}`,
     method: 'get'
   })
 }
 
 export function deleteApp (id) {
   return fetch({
-    url: `v1/apps/${id}`,
+    url: `esborg/apps/${id}`,
     method: 'delete'
   })
 }
 
-export function deleteApps (appIds = []) {
-  return fetch({
-    url: `v1/apps/delete`,
-    method: 'put',
-    data: appIds
-  })
-}
+// export function deleteApps (appIds = []) {
+//   return fetch({
+//     url: `v1/apps/delete`,
+//     method: 'put',
+//     data: appIds
+//   })
+// }
 
 export function start (id) {
   return fetch({
@@ -46,11 +46,11 @@ export function stop (id) {
   })
 }
 
-export function extend (id, instances) {
+export function extend (id, taskCount) {
   return fetch({
-    url: `v1/apps/${id}`,
-    method: 'put',
-    data: instances
+    url: `esborg/apps/${id}/scale`,
+    method: 'post',
+    data: {scale: taskCount}
   })
 }
 
@@ -67,5 +67,26 @@ export function update (id, data) {
     url: `v1/apps/${id}`,
     method: 'put',
     data: data
+  })
+}
+
+export function instances (appId) {
+  return fetch({
+    url: `esborg/apps/${appId}/tasks`,
+    method: 'get'
+  })
+}
+
+export function versions (appId) {
+  return fetch({
+    url: `esborg/apps/${appId}/versions`,
+    method: 'get'
+  })
+}
+
+export function curVersion (appId) {
+  return fetch({
+    url: `esborg/apps/${appId}/currentversion`,
+    method: 'get'
   })
 }

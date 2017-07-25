@@ -1,8 +1,8 @@
 <template>
   <el-dialog title="扩展应用" v-model="dialogVisible" size="tiny" ref="dialog">
     <el-form :model="form" ref="form" :rules="rules">
-      <el-form-item label="容器个数" prop="instances">
-        <el-input v-model.number="form.instances" auto-complete="off"></el-input>
+      <el-form-item label="容器个数" prop="task_count">
+        <el-input v-model.number="form.task_count" auto-complete="off"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -18,25 +18,25 @@
       return {
         dialogVisible: false,
         rules: {
-          instances: [
+          task_count: [
             { required: true, message: '实例数不能为空' },
             { type: 'number', message: '只能输入数字' }
           ]
         },
         form: {
-          instances: null
+          task_count: null
         }
       }
     },
     methods: {
       open: function (data = {}) {
-        this.form.instances = data.instances
+        this.form.task_count = data.task_count
         this.$refs.dialog.open()
       },
       confirm: function (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$emit('ok', this.form)
+            this.$emit('ok', this.form.task_count)
             this.dialogVisible = false
           } else {
             console.log('error submit!!')

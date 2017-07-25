@@ -10,7 +10,11 @@ const state = {
     apps: [],
     total: 0
   },
-  app: {}
+  app: {
+    tasks: [],
+    versions: [],
+    curVersionObj: {}
+  }
 }
 
 export default {

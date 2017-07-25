@@ -10,14 +10,14 @@
       <el-tab-pane name="instances">
         <span class="el-tab-label" slot="label"><a></a>实例</span>
       </el-tab-pane>
+      <el-tab-pane name="versions">
+        <span class="el-tab-label" slot="label"><a></a>版本</span>
+      </el-tab-pane>
       <el-tab-pane name="config">
         <span class="el-tab-label" slot="label"><a></a>配置</span>
       </el-tab-pane>
       <el-tab-pane name="debug">
         <span class="el-tab-label" slot="label"><a></a>调试</span>
-      </el-tab-pane>
-      <el-tab-pane name="topology">
-        <span class="el-tab-label" slot="label"><a></a>拓扑图</span>
       </el-tab-pane>
 
       <transition name="fade" mode="out-in">
@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-  import {Instances, Config, Debug, Topology} from './tabs'
+  import {Instances, Config, Debug, Topology, Versions} from './tabs'
   import {mapState} from 'vuex'
   import store from '@/store'
   import * as type from '@/store/app/mutations_types'
@@ -37,7 +37,8 @@
       instances: Instances,
       config: Config,
       debug: Debug,
-      topology: Topology
+      topology: Topology,
+      versions: Versions
     },
     data () {
       return {
@@ -47,7 +48,7 @@
     computed: {
       ...mapState({
         appId (state) {
-          return state.app.app.id
+          return state.app.app.name
         }
       })
     },

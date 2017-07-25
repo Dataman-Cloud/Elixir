@@ -3,7 +3,7 @@
     <div class="btn-group">
       <span>
         <el-button type="primary" @click="reload"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></el-button>
-        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="ion-ios-minus-outline"></i> 删除应用</el-button>
+        <el-button type="danger" @click="openDelete" :disabled="!currentRow"><i class="ion-ios-minus-outline"></i> 删除应用</el-button>
         <el-button type="primary" @click="openCreate"><i class="ion-ios-plus-outline"></i> 创建应用</el-button>
         <el-button type="primary" @click="openExtend" :disabled="!currentRow"><i
           class="el-icon-edit"></i> 扩展应用
@@ -38,7 +38,7 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column property="name" label="应用" width="150" sortable show-overflow-tooltip>
         <template scope="app">
-          <router-link :title="app.row.name" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.name}}">{{app.row.id}}</router-link>
+          <router-link :title="app.row.name" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.name}}</router-link>
         </template>
       </el-table-column>
       <el-table-column
@@ -99,8 +99,8 @@
       ...mapActions({
         fetchApps: type.FETCH_APPS
       }),
-      extendOk (res) {
-        app.extend(this.currentRow.id, res)
+      extendOk (taskCount) {
+        app.extend(this.currentRow.id, taskCount)
           .then(data => this.fetchApps())
       },
       createOk () {
@@ -120,7 +120,7 @@
       openDelete () {
         Confirm.open(`确认删除应用?`)
           .then(() => {
-            app.deleteApps(this.currentRows.map(app => app.id))
+            app.deleteApp(this.currentRow.id)
               .then(() => {
                 this.$notify({message: '删除成功'})
                 this.fetchApps()
