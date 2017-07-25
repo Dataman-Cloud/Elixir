@@ -44,12 +44,14 @@ export function transformHealthChecks (healthChecks = [], networkMode = 'BRIDGE'
 export const APP_BASE = {
   cpus: 0.01,
   mem: 16,
-  instances: '',
+  instances: null,
+  runAs: 'admin',
   envs: [],
   env: {},
   container: {
     docker: {
-      network: 'BRIDGE',
+      network: 'bridge',
+      forcePullImage: false,
       parameters: [],
       portMappings: []
     },
@@ -62,8 +64,9 @@ export const APP_BASE = {
     ]
   ],
   healthChecks: [],
-  healthCheck: {},
-  labels: {},
+  healthCheck: {
+    protocol: null
+  },
   cmd: null
 }
 
@@ -75,16 +78,6 @@ export const DYNAMIC_CONFIG = {
   parameters: {
     key: '',
     value: ''
-  },
-  healthChecks: {
-    protocol: 'TCP',
-    gracePeriodSeconds: '',
-    intervalSeconds: '',
-    timeoutSeconds: '',
-    maxConsecutiveFailures: '',
-    port: '',
-    portIndex: '',
-    ignoreHttp1xx: false
   },
   portMappings: {
     containerPort: '',

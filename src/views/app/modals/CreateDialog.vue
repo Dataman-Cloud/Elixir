@@ -7,7 +7,7 @@
           <el-input v-model="form.id"></el-input>
         </el-form-item>
         <el-form-item label="集群" prop="selectCluster">
-          <el-input v-model="form.selectCluster" disabled></el-input>
+          <el-input v-model="form.selectCluster"></el-input>
         </el-form-item>
         <el-form-item label="镜像地址" prop="container.docker.image">
           <div>
@@ -18,8 +18,8 @@
         </el-form-item>
         <el-form-item label="网络模式">
           <el-radio-group v-model="form.container.docker.network" @change="networkChange">
-            <el-radio label="BRIDGE" :disabled="isUpdate">网桥模式</el-radio>
-            <el-radio label="HOST" :disabled="isUpdate">HOST 模式</el-radio>
+            <el-radio label="bridge" :disabled="isUpdate">网桥模式</el-radio>
+            <el-radio label="host" :disabled="isUpdate">HOST 模式</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="容器规格" class="spec">
@@ -131,108 +131,80 @@
               </el-row>
             </el-form-item>
 
-            <el-form-item label="健康检查">
-              <el-button type="primary" size="small" @click="addConfig('healthChecks')">添加健康检查</el-button>
-            </el-form-item>
-            <el-form-item v-for="(healthCheck, index) in form.healthChecks"
-                          :key="index" class="healthCheck">
+            <el-form-item label="健康检查"></el-form-item>
+            <el-form-item class="healthCheck">
               <el-row :gutter="20">
                 <el-col :span="10">
-                  <el-select v-model="healthCheck.protocol">
+                  <el-select v-model="form.healthCheck.protocol">
+                    <el-option value="">空</el-option>
                     <el-option value="TCP">TCP</el-option>
                     <el-option value="HTTP">HTTP</el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="10" v-if="healthCheck.protocol === 'HTTP'">
-                  <el-form-item :prop="'healthChecks.' + index + '.path'"
-                                :key="index"
-                                :rules="[
-                                { required: true, message: '路径不能为空' }
-                            ]">
-                    <el-input v-model="healthCheck.path">
+                <el-col :span="10" v-if="form.healthCheck.protocol === 'HTTP'">
+                  <el-form-item :prop="'healthCheck.path'">
+                    <el-input v-model="form.healthCheck.path">
                       <template slot="prepend">路径</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthChecks.' + index + '.gracePeriodSeconds'"
-                                :key="index"
+                  <el-form-item :prop="'healthCheck.gracePeriodSeconds'"
                                 :rules="[
-                                { required: true, message: '宽限时间不能为空' },
                                 { type: 'integer', min: 1, message: '宽限时间为正整数' }
                             ]">
-                    <el-input type="number" v-model.number="healthCheck.gracePeriodSeconds">
+                    <el-input type="number" v-model.number="form.healthCheck.gracePeriodSeconds">
                       <template slot="prepend">宽限时间(秒)</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthChecks.' + index + '.intervalSeconds'"
-                                :key="index"
+                  <el-form-item :prop="'healthCheck.intervalSeconds'"
                                 :rules="[
-                                { required: true, message: '检查间隔不能为空' },
                                 { type: 'integer', min: 1, message: '检查间隔为正整数' }
                             ]">
-                    <el-input type="number" v-model.number="healthCheck.intervalSeconds">
+                    <el-input type="number" v-model.number="form.healthCheck.intervalSeconds">
                       <template slot="prepend">检查间隔(秒)</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthChecks.' + index + '.timeoutSeconds'"
-                                :key="index"
+                  <el-form-item :prop="'healthCheck.timeoutSeconds'"
                                 :rules="[
-                                { required: true, message: '检查超时时间不能为空' },
                                 { type: 'integer', min: 1, message: '检查超时时间为正整数' }
                             ]">
-                    <el-input type="number" v-model.number="healthCheck.timeoutSeconds">
+                    <el-input type="number" v-model.number="form.healthCheck.timeoutSeconds">
                       <template slot="prepend">检查超时(秒)</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthChecks.' + index + '.maxConsecutiveFailures'"
-                                :key="index"
+                  <el-form-item :prop="'healthCheck.consecutiveFailures'"
                                 :rules="[
-                                { required: true, message: '最多失败次数不能为空' },
                                 { type: 'integer', min: 1, message: '最多失败次数为正整数' }
                             ]">
-                    <el-input type="number" v-model.number="healthCheck.maxConsecutiveFailures">
+                    <el-input type="number" v-model.number="form.healthCheck.consecutiveFailures">
                       <template slot="prepend">最多失败次数</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="10" v-if="form.container.docker.network === 'BRIDGE'">
-                  <el-form-item :prop="'healthChecks.' + index + '.portIndex'"
-                                :key="index"
-                                :rules="[
-                                { required: true, message: '端口组索引不能为空' },
-                                { type: 'integer', min: 0, message: '端口组索引为正整数' }
-                            ]">
-                    <el-input type="number" v-model.number="healthCheck.portIndex">
+                <el-col :span="10">
+                  <el-form-item :prop="'healthCheck.portName'">
+                    <el-input type="text" v-model.number="form.healthCheck.portName">
                       <template slot="prepend">端口组索引</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="10" v-else>
-                  <el-form-item :prop="'healthChecks.' + index + '.port'"
-                                :key="index"
+                <el-col :span="10">
+                  <el-form-item :prop="'healthCheck.port'"
                                 :rules="[
-                                { required: true, message: '端口号不能为空' },
                                 { type: 'integer', min: 1, message: '端口号为正整数' }
                             ]">
-                    <el-input type="number" v-model.number="healthCheck.port">
+                    <el-input type="number" v-model.number="form.healthCheck.port">
                       <template slot="prepend">端口号</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="10">
-                  <template>
-                    <el-checkbox v-model="healthCheck.ignoreHttp1xx">忽略HTTP返回码100~199</el-checkbox>
-                  </template>
-                </el-col>
-                <el-button @click.prevent="removeConfig(index, 'healthChecks')"><i class="el-icon-delete"></i>
-                </el-button>
               </el-row>
             </el-form-item>
 
@@ -268,11 +240,6 @@
                 <el-button @click.prevent="removeConfig(index, 'envs')"><i class="el-icon-delete"></i></el-button>
               </el-row>
             </el-form-item>
-            <el-form-item label="命令">
-              <el-input v-model="form.cmd">
-                <template slot="prepend">输入需要运行的命令</template>
-              </el-input>
-            </el-form-item>
             <el-form-item label="Docker 参数">
               <el-button type="primary" size="small" @click="addConfig('parameters')">添加 Docker 参数</el-button>
             </el-form-item>
@@ -306,26 +273,10 @@
                 <el-button @click.prevent="removeConfig(index, 'parameters')"><i class="el-icon-delete"></i></el-button>
               </el-row>
             </el-form-item>
-            <el-form-item label="拓扑">
-              <el-row :gutter="12">
-                <el-col :span="8">
-                  <el-form-item prop="labels.PROLONGATIONTYPE"
-                                :rules="[{ required: form.labels.PROLONGATION4ROOTAPP, message: '拓扑选项不能为空' }]">
-                    <el-select v-model="form.labels.PROLONGATIONTYPE" placeholder="请选择">
-                      <el-option value="">空</el-option>
-                      <el-option value="CACHE">CACHE</el-option>
-                      <el-option value="DB">DB</el-option>
-                      <el-option value="WEB">WEB</el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item prop="labels.PROLONGATION4ROOTAPP"
-                                :rules="[{ required: form.labels.PROLONGATIONTYPE, message: '拓扑名称不能为空' }]">
-                    <el-input v-model="form.labels.PROLONGATION4ROOTAPP"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+            <el-form-item label="命令">
+              <el-input v-model="form.cmd">
+                <template slot="prepend">输入需要运行的命令</template>
+              </el-input>
             </el-form-item>
           </el-collapse-item>
         </el-collapse>
@@ -340,9 +291,9 @@
   </el-dialog>
 </template>
 <script>
-  import {mapActions, mapState} from 'vuex'
+  import {mapActions} from 'vuex'
   import * as appUtil from '@/views/app/services/app'
-  import * as fetchApp from '@/api/app'
+  import * as fetchApp from '@/api/app-swan'
   import * as type from '@/store/app/mutations_types'
 
   export default {
@@ -358,11 +309,6 @@
       }
     },
     computed: {
-      ...mapState({
-        bayname ({user}) {
-          return user.bayname
-        }
-      }),
       activeCollapse: function () {
         return this.isUpdate ? 'advance' : ''
       },
@@ -409,7 +355,7 @@
           if (valid) {
             this.setClusterConstraints()
             this.form.env = appUtil.transformEnvstoObj(this.form.envs)
-            this.form.healthChecks = appUtil.transformHealthChecks(this.form.healthChecks, this.form.container.docker.network)
+//            this.form.healthChecks = appUtil.transformHealthChecks(this.form.healthChecks, this.form.container.docker.network)
             this.submitLoading = true
             this.isUpdate ? fetchApp.update(this.id, this.form)
               .then(() => {
@@ -437,8 +383,6 @@
         if (this.isUpdate) {
           this.updateInitFetch(this.id)
             .then(res => this.updateInit(res))
-        } else {
-          this.form.selectCluster = this.bayname
         }
         this.$refs.dialog.open()
       },

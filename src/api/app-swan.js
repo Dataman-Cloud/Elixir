@@ -32,16 +32,16 @@ export function deleteApp (id) {
 //   })
 // }
 
-export function start (id) {
+export function start (appId) {
   return fetch({
-    url: `v1/apps/${id}/start`,
-    method: 'put'
+    url: `esborg/apps/${appId}/switch/enable`,
+    method: 'post'
   })
 }
 
-export function stop (id) {
+export function stop (appId) {
   return fetch({
-    url: `v1/apps/${id}/stop`,
+    url: `esborg/apps/${appId}/switch/disable`,
     method: 'put'
   })
 }
@@ -56,15 +56,15 @@ export function extend (id, taskCount) {
 
 export function create (data) {
   return fetch({
-    url: `v1/apps`,
+    url: `esborg/apps/app`,
     method: 'post',
     data: data
   })
 }
 
-export function update (id, data) {
+export function update (appId, data) {
   return fetch({
-    url: `v1/apps/${id}`,
+    url: `esborg/apps/${appId}`,
     method: 'put',
     data: data
   })

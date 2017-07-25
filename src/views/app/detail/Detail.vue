@@ -10,15 +10,15 @@
       <el-tab-pane name="instances">
         <span class="el-tab-label" slot="label"><a></a>实例</span>
       </el-tab-pane>
-      <el-tab-pane name="versions">
-        <span class="el-tab-label" slot="label"><a></a>版本</span>
-      </el-tab-pane>
+      <!--<el-tab-pane name="versions">-->
+        <!--<span class="el-tab-label" slot="label"><a></a>版本</span>-->
+      <!--</el-tab-pane>-->
       <el-tab-pane name="config">
         <span class="el-tab-label" slot="label"><a></a>配置</span>
       </el-tab-pane>
-      <el-tab-pane name="debug">
-        <span class="el-tab-label" slot="label"><a></a>调试</span>
-      </el-tab-pane>
+      <!--<el-tab-pane name="debug">-->
+        <!--<span class="el-tab-label" slot="label"><a></a>调试</span>-->
+      <!--</el-tab-pane>-->
 
       <transition name="fade" mode="out-in">
         <component v-bind:is="currentView"></component>
