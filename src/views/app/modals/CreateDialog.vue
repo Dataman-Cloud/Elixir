@@ -16,7 +16,7 @@
           </div>
           <el-checkbox v-model="form.container.docker.forcePullImage">强制拉取镜像</el-checkbox>
         </el-form-item>
-        <el-form-item label="网络模式">
+        <el-form-item label="网络模式" prop="container.docker.network">
           <el-radio-group v-model="form.container.docker.network" @change="networkChange">
             <el-radio label="BRIDGE" :disabled="isUpdate">网桥模式</el-radio>
             <el-radio label="HOST" :disabled="isUpdate">HOST 模式</el-radio>
@@ -77,10 +77,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-select v-model="volume.mode">
-                <el-option value="RW">RW</el-option>
-                <el-option value="RD">RD</el-option>
-              </el-select>
+              <el-form-item :prop="'container.volumes.' + index + '.mode'"
+                            :key="volume.index">
+                <el-select v-model="volume.mode">
+                  <el-option value="RW">RW</el-option>
+                  <el-option value="RD">RD</el-option>
+                </el-select>
+              </el-form-item>
             </el-col>
             <el-button @click.prevent="removeConfig(index, 'volumes')"><i class="el-icon-delete"></i></el-button>
           </el-row>
@@ -108,10 +111,13 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-select v-model="portMapping.protocol">
-                    <el-option value="tcp">tcp</el-option>
-                    <el-option value="udp">udp</el-option>
-                  </el-select>
+                  <el-form-item :prop="'container.docker.portMappings.' + index + '.protocol'"
+                                :key="portMapping.index">
+                    <el-select v-model="portMapping.protocol">
+                      <el-option value="tcp">tcp</el-option>
+                      <el-option value="udp">udp</el-option>
+                    </el-select>
+                  </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item :prop="'container.docker.portMappings.' + index + '.servicePort'"
@@ -138,10 +144,12 @@
                           :key="index" class="healthCheck">
               <el-row :gutter="20">
                 <el-col :span="10">
-                  <el-select v-model="healthCheck.protocol">
-                    <el-option value="TCP">TCP</el-option>
-                    <el-option value="HTTP">HTTP</el-option>
-                  </el-select>
+                  <el-form-item :prop="'healthChecks.' + index + '.protocol'">
+                    <el-select v-model="healthCheck.protocol">
+                      <el-option value="TCP">TCP</el-option>
+                      <el-option value="HTTP">HTTP</el-option>
+                    </el-select>
+                  </el-form-item>
                 </el-col>
                 <el-col :span="10" v-if="healthCheck.protocol === 'HTTP'">
                   <el-form-item :prop="'healthChecks.' + index + '.path'"
@@ -227,9 +235,11 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <template>
-                    <el-checkbox v-model="healthCheck.ignoreHttp1xx">忽略HTTP返回码100~199</el-checkbox>
-                  </template>
+                  <el-form-item :prop="'healthChecks.' + index + '.ignoreHttp1xx'">
+                    <template>
+                      <el-checkbox v-model="healthCheck.ignoreHttp1xx">忽略HTTP返回码100~199</el-checkbox>
+                    </template>
+                  </el-form-item>
                 </el-col>
                 <el-button @click.prevent="removeConfig(index, 'healthChecks')"><i class="el-icon-delete"></i>
                 </el-button>
@@ -268,7 +278,7 @@
                 <el-button @click.prevent="removeConfig(index, 'envs')"><i class="el-icon-delete"></i></el-button>
               </el-row>
             </el-form-item>
-            <el-form-item label="命令">
+            <el-form-item label="命令" prop="cmd">
               <el-input v-model="form.cmd">
                 <template slot="prepend">输入需要运行的命令</template>
               </el-input>
