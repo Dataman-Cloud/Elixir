@@ -3,24 +3,24 @@
  */
 import _ from 'lodash'
 
-export function countHealthyState (app) {
-  let HealthStatus = {
-    HEALTHY: 'healthy',
-    UNHEALTHY: 'unhealthy',
-    UNKNOWN: 'unknown'
-  }
-  let healthData = [
-    {quantity: app.tasksHealthy || 0, state: HealthStatus.HEALTHY},
-    {quantity: app.tasksUnhealthy || 0, state: HealthStatus.UNHEALTHY}
-  ]
-  if (app.healthChecks && app.healthChecks.length === 0) {
-    healthData.push({
-      quantity: app.instances,
-      state: HealthStatus.UNKNOWN
-    })
-  }
-  return {...app, healthData}
-}
+// export function countHealthyState (app) {
+//   let HealthStatus = {
+//     HEALTHY: 'healthy',
+//     UNHEALTHY: 'unhealthy',
+//     UNKNOWN: 'unknown'
+//   }
+//   let healthData = [
+//     {quantity: app.tasksHealthy || 0, state: HealthStatus.HEALTHY},
+//     {quantity: app.tasksUnhealthy || 0, state: HealthStatus.UNHEALTHY}
+//   ]
+//   if (app.healthChecks && app.healthChecks.length === 0) {
+//     healthData.push({
+//       quantity: app.instances,
+//       state: HealthStatus.UNKNOWN
+//     })
+//   }
+//   return {...app, healthData}
+// }
 
 export function transformEnvstoObj (envs = []) {
   return envs.reduce((env, val) => {
@@ -36,12 +36,13 @@ export function transformEnvtoArray (env = {}) {
   })
   return res
 }
-
-export function transformHealthChecks (healthChecks = [], networkMode = 'BRIDGE') {
-  return healthChecks.map(health => _.omit(health, networkMode === 'BRIDGE' ? 'port' : 'portIndex'))
-}
+//
+// export function transformHealthChecks (healthChecks = [], networkMode = 'BRIDGE') {
+//   return healthChecks.map(health => _.omit(health, networkMode === 'BRIDGE' ? 'port' : 'portIndex'))
+// }
 
 export const APP_BASE = {
+  name: null,
   cpus: 0.01,
   mem: 16,
   instances: null,
@@ -49,6 +50,7 @@ export const APP_BASE = {
   envs: [],
   env: {},
   container: {
+    type: 'DOCKER',
     docker: {
       network: 'bridge',
       forcePullImage: false,
@@ -58,15 +60,13 @@ export const APP_BASE = {
     volumes: []
   },
   constraints: [
-    [
-      'vcluster',
-      'LIKE'
-    ]
+    // {
+    //   attribute: 'vcluster',
+    //   operator: '==',
+    //   value: null
+    // }
   ],
   healthChecks: [],
-  healthCheck: {
-    protocol: null
-  },
   cmd: null
 }
 
@@ -82,7 +82,7 @@ export const DYNAMIC_CONFIG = {
   portMappings: {
     containerPort: '',
     protocol: 'tcp',
-    servicePort: ''
+    hostPort: ''
   },
   volumes: {
     containerPath: '',
@@ -92,7 +92,7 @@ export const DYNAMIC_CONFIG = {
 }
 
 export const APP_FORM_RULES = {
-  id: [
+  name: [
     {required: true, message: '应用名不能为空'},
     {pattern: /^[a-zA-Z0-9-]+$/, message: '应用名称只能包含数字、字母、中划线'},
     {max: 48, message: '最大长度48个字符 (汉字占3个字符)'}

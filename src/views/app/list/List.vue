@@ -50,7 +50,7 @@
           <span>总数: </span><i>{{app.row.health.total}} </i>
           <span> 健康: </span><i>{{app.row.health.healthy}} </i>
           <span> 不健康: </span><i>{{app.row.health.unhealthy}} </i>
-          <span> unset: </span><i>{{app.row.health.unset}} </i>
+          <span> 未设置: </span><i>{{app.row.health.unset}} </i>
         </template>
       </el-table-column>
       <el-table-column property="updated" label="更新时间" min-width="120">

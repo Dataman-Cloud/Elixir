@@ -66,8 +66,8 @@
             <el-table-column prop="timeoutSeconds" label="检查超时" width="100"></el-table-column>
             <el-table-column prop="consecutiveFailures" label="失败次数" width="100"></el-table-column>
             <el-table-column prop="delaySeconds" label="延迟时间" width="100"></el-table-column>
-            <el-table-column prop="path" label="path" width="80"></el-table-column>
-            <el-table-column prop="portName" label="端口名称" width="100"></el-table-column>
+            <el-table-column prop="path" label="路径" width="80"></el-table-column>
+            <el-table-column prop="portName" label="端口名" width="100"></el-table-column>
           </el-table>
         </template>
         <span v-else>-</span>
@@ -104,7 +104,7 @@
     <dl class="detail-config">
       <dt>Docker 参数</dt>
       <dd>
-        <template v-if="curVersionObj.container.docker.parameters.length">
+        <template v-if="curVersionObj.container.docker.parameters">
           <el-table :data="curVersionObj.container.docker.parameters" stripe style="width: 100%;">
             <el-table-column prop="key" show-overflow-tooltip label="KEY" width="200"></el-table-column>
             <el-table-column prop="value" show-overflow-tooltip label="VALUE" width="200"></el-table-column>
