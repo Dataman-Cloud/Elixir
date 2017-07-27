@@ -32,7 +32,7 @@ export function transformEnvstoObj (envs = []) {
 export function transformEnvtoArray (env = {}) {
   let res = []
   _.forOwn(env, (v, k) => {
-    res.push({key: k, value: v})
+    res.push({ key: k, value: v })
   })
   return res
 }
@@ -67,6 +67,10 @@ export const APP_BASE = {
     // }
   ],
   healthChecks: [],
+  proxy: {
+    enabled: false,
+    alias: null
+  },
   cmd: null
 }
 
@@ -93,25 +97,25 @@ export const DYNAMIC_CONFIG = {
 
 export const APP_FORM_RULES = {
   name: [
-    {required: true, message: '应用名不能为空'},
-    {pattern: /^[a-zA-Z0-9-]+$/, message: '应用名称只能包含数字、字母、中划线'},
-    {max: 48, message: '最大长度48个字符 (汉字占3个字符)'}
+    { required: true, message: '应用名不能为空' },
+    { pattern: /^[a-zA-Z0-9-]+$/, message: '应用名称只能包含数字、字母、中划线' },
+    { max: 48, message: '最大长度48个字符 (汉字占3个字符)' }
   ],
   selectCluster: [
-    {required: true, message: '集群不能为空'}
+    { required: true, message: '集群不能为空' }
   ],
   'container.docker.image': [
-    {required: true, message: '镜像地址不能为空'}
+    { required: true, message: '镜像地址不能为空' }
   ],
   cpus: [
-    {required: true, message: 'cpu不能为空'},
-    {type: 'number', min: 0.01, message: 'cpu最小值为0.01'}
+    { required: true, message: 'cpu不能为空' },
+    { type: 'number', min: 0.01, message: 'cpu最小值为0.01' }
   ],
   mem: [
-    {required: true, message: '内存不能为空最小值为16'}
+    { required: true, message: '内存不能为空最小值为16' }
   ],
   instances: [
-    {required: true, message: '容器个数不能为空'},
-    {type: 'number', min: 0, message: '容器个数最小为 0'}
+    { required: true, message: '容器个数不能为空' },
+    { type: 'number', min: 0, message: '容器个数最小为 0' }
   ]
 }
