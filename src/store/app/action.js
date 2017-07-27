@@ -17,7 +17,7 @@ export default {
       .then(data => {
         context.commit(type.FETCH_APP, data.data)
         return Promise.all(
-          [ context.dispatch(type.FETCH_APP_INSTANCES, id),
+          [context.dispatch(type.FETCH_APP_INSTANCES, id),
             context.dispatch(type.FETCH_APP_VERSIONS, id),
             context.dispatch(type.FETCH_APP_CUR_VERSION, id)
           ])
@@ -41,6 +41,13 @@ export default {
     return api.curVersion(id)
       .then(data => {
         context.commit(type.FETCH_APP_CUR_VERSION, data.data)
+        return data
+      })
+  },
+  [type.FETCH_COMPOSES] (context) {
+    return api.listComposes()
+      .then(data => {
+        context.commit(type.FETCH_COMPOSES, data.data)
         return data
       })
   }
