@@ -124,23 +124,23 @@
 </template>
 
 <script>
-  import {mapState, mapGetters} from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
-  export default {
-    data () {
-      return {}
-    },
-    computed: {
-      ...mapState({
-        curVersionObj (state) {
-          return state.app.app.curVersionObj
-        }
-      }),
-      ...mapGetters([
-        'oneContainer'
-      ])
-    },
-    created: function () {}
-  }
+export default {
+  data () {
+    return {}
+  },
+  computed: {
+    ...mapState({
+      curVersionObj (state) {
+        return state.app.app.curVersionObj
+      }
+    }),
+    ...mapGetters([
+      'oneContainer'
+    ])
+  },
+  created: function () { }
+}
 </script>
 
