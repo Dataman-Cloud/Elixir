@@ -56,6 +56,13 @@
     </dl>
 
     <dl class="detail-config">
+      <dt>Http Proxy</dt>
+      <dd>
+        <span>{{curVersionObj.proxy.enabled ? '开启' : '关闭'}} 别名: {{curVersionObj.proxy.alias ? curVersionObj.proxy.alias : '-'}}</span>
+      </dd>
+    </dl>
+
+    <dl class="detail-config">
       <dt>健康检查</dt>
       <dd>
         <template v-if="curVersionObj.healthChecks.length">
