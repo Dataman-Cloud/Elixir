@@ -97,3 +97,19 @@ export function version (appId, versionId) {
     method: 'get'
   })
 }
+
+export function listComposes () {
+  return fetch({
+    url: `esborg/composes`,
+    method: 'get'
+  })
+}
+
+export function createCompose (compose) {
+  console.log(compose)
+  return fetch({
+    url: `esborg/composes/compose`,
+    method: 'post',
+    data: compose
+  })
+}

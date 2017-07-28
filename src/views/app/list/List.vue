@@ -4,7 +4,7 @@
       <el-tab-pane name="appList">
         <span class="el-tab-label" slot="label"><a></a>应用列表</span>
       </el-tab-pane>
-      <el-tab-pane name="appCompose">
+      <el-tab-pane name="composeList">
         <span class="el-tab-label" slot="label"><a></a>编排列表</span>
       </el-tab-pane>
 
@@ -15,12 +15,12 @@
   </div>
 </template>
 <script>
-  import { AppList, AppCompose } from './tabs'
+  import { AppList, ComposeList } from './tabs'
 
   export default {
     components: {
       appList: AppList,
-      appCompose: AppCompose
+      composeList: ComposeList
     },
     data () {
       return {

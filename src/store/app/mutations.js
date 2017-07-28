@@ -29,5 +29,9 @@ export default {
     state.app.curVersionObj = payload
     state.app.curVersionObj.envs = transformEnvtoArray(state.app.curVersionObj.env)
     state.app.curVersionObj.healthChecks = state.app.curVersionObj.healthCheck ? [].concat(state.app.curVersionObj.healthCheck) : []
+  },
+  [type.FETCH_COMPOSES] (state, composes = []) {
+    state.composes.composes = composes
+    state.composes.total = state.composes.composes.length
   }
 }

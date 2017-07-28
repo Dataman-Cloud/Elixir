@@ -160,3 +160,6 @@ dl {
   margin-top: 30px;
   margin-right: 0;
 }
+.CodeMirror-sizer{
+    min-height: 400px;
+  }

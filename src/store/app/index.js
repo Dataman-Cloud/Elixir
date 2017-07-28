@@ -14,6 +14,10 @@ const state = {
     tasks: [],
     versions: [],
     curVersionObj: {}
+  },
+  composes: {
+    composes: [],
+    total: 0
   }
 }
 
