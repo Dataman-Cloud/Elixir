@@ -50,7 +50,7 @@ export function extend (id, taskCount) {
   return fetch({
     url: `esborg/apps/${id}/scale`,
     method: 'post',
-    data: { scale: taskCount }
+    data: { instances: taskCount }
   })
 }
 
