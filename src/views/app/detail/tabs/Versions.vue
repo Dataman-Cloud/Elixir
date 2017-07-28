@@ -2,128 +2,201 @@
   <div>
     <div class="btn-group">
       <span>
-        <el-button type="primary" @click="reload"><i class="glyphicon glyphicon-repeat"></i></el-button>
+        <el-button type="primary" @click="reload">
+          <i class="glyphicon glyphicon-repeat"></i>
+        </el-button>
       </span>
     </div>
 
-    <el-table
-      :data="tableData5"
-      row-key="id"
-      style="width: 100%">
+    <el-table :data="versions" row-key="id" style="width: 100%">
       <el-table-column type="expand">
-        <template scope="props">
-          <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="商品名称">
-              <span>{{ props.row.name }}</span>
-            </el-form-item>
-            <el-form-item label="所属店铺">
-              <span>{{ props.row.shop }}</span>
-            </el-form-item>
-            <el-form-item label="商品 ID">
-              <span>{{ props.row.id }}</span>
-            </el-form-item>
-            <el-form-item label="店铺 ID">
-              <span>{{ props.row.shopId }}</span>
-            </el-form-item>
-            <el-form-item label="商品分类">
-              <span>{{ props.row.category }}</span>
-            </el-form-item>
-            <el-form-item label="店铺地址">
-              <span>{{ props.row.address }}</span>
-            </el-form-item>
-            <el-form-item label="商品描述">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-          </el-form>
+        <template scope="version">
+          <dl class="detail-config">
+            <dt>镜像地址</dt>
+            <dd>{{version.row.container.docker.image}}</dd>
+          </dl>
+
+          <dl class="detail-config">
+            <dt>容器规格</dt>
+            <dd>
+              <dl id="cpu">
+                <dt>
+                  <small>CPU</small>
+                </dt>
+                <dd>
+                  <small>{{version.row.cpus}}</small>
+                </dd>
+              </dl>
+              <dl id="mem">
+                <dt>
+                  <small>Mem</small>
+                </dt>
+                <dd>
+                  <small>{{version.row.mem}} MB</small>
+                </dd>
+              </dl>
+            </dd>
+          </dl>
+
+          <dl class="detail-config">
+            <dt>容器个数</dt>
+            <dd>{{version.row.instances}}</dd>
+          </dl>
+
+          <dl class="detail-config">
+            <dt>应用模式</dt>
+            <dd>{{version.row.container.docker.network}} 模式</dd>
+          </dl>
+
+          <dl class="detail-config">
+            <dt>端口映射</dt>
+            <dd>
+              <template v-if="version.row.container.docker.portMappings.length">
+                <el-table :data="version.row.container.docker.portMappings" stripe style="width: 100%;">
+                  <el-table-column prop="containerPort" label="应用端口" width="200"></el-table-column>
+                  <el-table-column prop="protocol" label="协议" width="200"></el-table-column>
+                  <el-table-column prop="hostPort" label="主机端口" width="200"></el-table-column>
+                  <el-table-column prop="name" label="名称" width="200"></el-table-column>
+                </el-table>
+              </template>
+              <span v-else>-</span>
+            </dd>
+          </dl>
+
+          <dl class="detail-config">
+            <dt>Http Proxy</dt>
+            <dd>
+              <span>{{version.row.proxy.enabled ? '开启' : '关闭'}} 别名: {{version.row.proxy.alias ? version.row.proxy.alias : '-'}}</span>
+            </dd>
+          </dl>
+
+          <dl class="detail-config">
+            <dt>健康检查</dt>
+            <dd>
+              <template v-if="version.row.healthChecks.length">
+                <el-table :data="version.row.healthChecks" stripe style="width: 100%;">
+                  <el-table-column prop="protocol" label="协议"></el-table-column>
+                  <el-table-column prop="gracePeriodSeconds" label="宽限时间" width="100"></el-table-column>
+                  <el-table-column prop="intervalSeconds" label="检查间隔" width="100"></el-table-column>
+                  <el-table-column prop="timeoutSeconds" label="检查超时" width="100"></el-table-column>
+                  <el-table-column prop="consecutiveFailures" label="失败次数" width="100"></el-table-column>
+                  <el-table-column prop="delaySeconds" label="延迟时间" width="100"></el-table-column>
+                  <el-table-column prop="path" label="路径" width="80"></el-table-column>
+                  <el-table-column prop="portName" label="端口名" width="100"></el-table-column>
+                </el-table>
+              </template>
+              <span v-else>-</span>
+            </dd>
+          </dl>
+
+          <dl class="detail-config">
+            <dt>存储挂载路径</dt>
+            <dd>
+              <template v-if="version.row.container.volumes.length">
+                <el-table :data="version.row.container.volumes" stripe style="width: 100%;">
+                  <el-table-column prop="hostPath" show-overflow-tooltip label="主机路径" width="150"></el-table-column>
+                  <el-table-column prop="containerPath" show-overflow-tooltip label="容器路径" width="150"></el-table-column>
+                  <el-table-column prop="mode" label="模式" width="100"></el-table-column>
+                </el-table>
+              </template>
+              <span v-else>-</span>
+            </dd>
+          </dl>
+
+          <dl class="detail-config">
+            <dt>环境变量</dt>
+            <dd>
+              <template v-if="version.row.envs.length">
+                <el-table :data="version.row.envs" stripe style="width: 100%;">
+                  <el-table-column prop="key" show-overflow-tooltip label="KEY" width="200"></el-table-column>
+                  <el-table-column prop="value" show-overflow-tooltip label="VALUE" width="200"></el-table-column>
+                </el-table>
+              </template>
+              <span v-else>-</span>
+            </dd>
+          </dl>
+
+          <dl class="detail-config">
+            <dt>Docker 参数</dt>
+            <dd>
+              <template v-if="version.row.container.docker.parameters">
+                <el-table :data="version.row.container.docker.parameters" stripe style="width: 100%;">
+                  <el-table-column prop="key" show-overflow-tooltip label="KEY" width="200"></el-table-column>
+                  <el-table-column prop="value" show-overflow-tooltip label="VALUE" width="200"></el-table-column>
+                </el-table>
+              </template>
+              <span v-else>-</span>
+            </dd>
+          </dl>
+
+          <dl class="detail-config">
+            <dt>CMD</dt>
+            <dd v-if="version.row.cmd">{{version.row.cmd}}</dd>
+            <dd v-else>-</dd>
+          </dl>
         </template>
       </el-table-column>
-      <el-table-column
-        label="商品 ID"
-        prop="id">
+      <el-table-column label="ID" prop="id">
       </el-table-column>
-      <el-table-column
-        label="商品名称"
-        prop="name">
+      <el-table-column label="内存" prop="mem">
       </el-table-column>
-      <el-table-column
-        label="描述"
-        prop="desc">
+      <el-table-column label="CPU" prop="cpus">
       </el-table-column>
     </el-table>
   </div>
 </template>
 
 <style>
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
+.demo-table-expand {
+  font-size: 0;
+}
+
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
 </style>
 
 <script>
-  import {mapState} from 'vuex'
-  import * as type from '@/store/app/mutations_types'
+import { mapState } from 'vuex'
+import * as type from '@/store/app/mutations_types'
+import * as fetchApp from '@/api/app-swan'
 
-  export default {
-    data () {
-      return {
-        tableData5: [{
-          id: '12987122',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987123',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987125',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987126',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }]
+export default {
+  data () {
+    return {}
+  },
+  computed: {
+    ...mapState({
+      versions ({ app }) {
+        return app.app.versions
       }
-    },
-    computed: {
-      ...mapState({
-        versions ({app}) {
-          return app.app.versions
+    })
+  },
+  methods: {
+    expand (row, expanded) {
+      if (expanded) {
+        if (!row.versionDetail) {
+          // TODO
+          fetchApp.version(this.$route.params.id, row.id)
+            .then(data => {
+              row.versionDetail = data
+            })
         }
-      })
-    },
-    methods: {
-      reload () {
-        this.listLoading = true
-        this.$store.dispatch(type.FETCH_APP, this.$route.params.id)
-          .then(() => (this.listLoading = false))
-          .catch(() => (this.listLoading = false))
       }
+    },
+    reload () {
+      this.listLoading = true
+      this.$store.dispatch(type.FETCH_APP, this.$route.params.id)
+        .then(() => (this.listLoading = false))
+        .catch(() => (this.listLoading = false))
     }
   }
+}
 </script>

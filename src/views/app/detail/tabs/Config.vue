@@ -30,9 +30,7 @@
 
     <dl class="detail-config">
       <dt>容器个数</dt>
-      <dd>{{curVersionObj.instances}}
-        <span v-if="oneContainer">(每台主机只能运行一个当前容器应用)</span>
-      </dd>
+      <dd>{{curVersionObj.instances}}</dd>
     </dl>
 
     <dl class="detail-config">
@@ -52,6 +50,13 @@
           </el-table>
         </template>
         <span v-else>-</span>
+      </dd>
+    </dl>
+
+    <dl class="detail-config">
+      <dt>Http Proxy</dt>
+      <dd>
+        <span>{{curVersionObj.proxy.enabled ? '开启' : '关闭'}} 别名: {{curVersionObj.proxy.alias ? curVersionObj.proxy.alias : '-'}}</span>
       </dd>
     </dl>
 
@@ -124,23 +129,23 @@
 </template>
 
 <script>
-  import {mapState, mapGetters} from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
-  export default {
-    data () {
-      return {}
-    },
-    computed: {
-      ...mapState({
-        curVersionObj (state) {
-          return state.app.app.curVersionObj
-        }
-      }),
-      ...mapGetters([
-        'oneContainer'
-      ])
-    },
-    created: function () {}
-  }
+export default {
+  data () {
+    return {}
+  },
+  computed: {
+    ...mapState({
+      curVersionObj (state) {
+        return state.app.app.curVersionObj
+      }
+    }),
+    ...mapGetters([
+      'oneContainer'
+    ])
+  },
+  created: function () { }
+}
 </script>
 
