@@ -30,9 +30,7 @@
 
     <dl class="detail-config">
       <dt>容器个数</dt>
-      <dd>{{curVersionObj.instances}}
-        <span v-if="oneContainer">(每台主机只能运行一个当前容器应用)</span>
-      </dd>
+      <dd>{{curVersionObj.instances}}</dd>
     </dl>
 
     <dl class="detail-config">

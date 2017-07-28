@@ -50,7 +50,7 @@ export function extend (id, taskCount) {
   return fetch({
     url: `esborg/apps/${id}/scale`,
     method: 'post',
-    data: {scale: taskCount}
+    data: { scale: taskCount }
   })
 }
 
@@ -87,6 +87,13 @@ export function versions (appId) {
 export function curVersion (appId) {
   return fetch({
     url: `esborg/apps/${appId}/currentversion`,
+    method: 'get'
+  })
+}
+
+export function version (appId, versionId) {
+  return fetch({
+    url: `esborg/apps/${appId}/versions/${versionId}`,
     method: 'get'
   })
 }

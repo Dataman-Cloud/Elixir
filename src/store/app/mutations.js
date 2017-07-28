@@ -18,7 +18,11 @@ export default {
     state.app.tasks = payload
   },
   [type.FETCH_APP_VERSIONS] (state, payload = []) {
-    state.app.versions = payload
+    state.app.versions = payload.map(version => {
+      version.envs = transformEnvtoArray(version.env)
+      version.healthChecks = version.healthCheck ? [].concat(state.app.curVersionObj.healthCheck) : []
+      return version
+    })
   },
   [type.FETCH_APP_CUR_VERSION] (state, payload = {}) {
     // let curVersionObj = _.merge({}, APP_BASE, payload)
