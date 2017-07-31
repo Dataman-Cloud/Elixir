@@ -8,7 +8,7 @@
       </span>
     </div>
 
-    <el-table :data="versions" row-key="id" style="width: 100%">
+    <el-table :data="versions" row-key="id" style="width: 100%" :expand-row-keys="defaultOpenItems" ref="table">
       <el-table-column type="expand">
         <template scope="version">
           <dl class="detail-config">
@@ -137,6 +137,10 @@
         </template>
       </el-table-column>
       <el-table-column label="ID" prop="id">
+        <template scope="scope">
+          <span>{{scope.row.id}} </span>
+          <span v-if="currentVersion.indexOf(scope.row.id) >= 0"> ( 当前版本 )</span>
+        </template>
       </el-table-column>
       <el-table-column label="内存" prop="mem">
       </el-table-column>
@@ -145,6 +149,45 @@
     </el-table>
   </div>
 </template>
+
+<script>
+import { mapState } from 'vuex'
+import * as type from '@/store/app/mutations_types'
+
+export default {
+  data () {
+    return {
+      defaultOpenItems: []
+    }
+  },
+  computed: {
+    ...mapState({
+      versions ({ app }) {
+        return app.app.versions
+      },
+      currentVersion ({ app }) {
+        return app.app.currentVersion
+      }
+    })
+  },
+  methods: {
+    async reload () {
+      this.listLoading = true
+      await this.$store.dispatch(type.FETCH_APP, this.$route.params.id).catch(() => (this.listLoading = false))
+      this.listLoading = false
+    }
+  },
+  mounted () {
+    if (this.versions.length) {
+      this.defaultOpenItems = [this.versions[0].id]
+    }
+  },
+  updated () {
+    // Element Table internal method, not exposed
+    this.$refs.table.store.setExpandRowKeys(this.defaultOpenItems)
+  }
+}
+</script>
 
 <style>
 .demo-table-expand {
@@ -162,41 +205,3 @@
   width: 50%;
 }
 </style>
-
-<script>
-import { mapState } from 'vuex'
-import * as type from '@/store/app/mutations_types'
-import * as fetchApp from '@/api/app-swan'
-
-export default {
-  data () {
-    return {}
-  },
-  computed: {
-    ...mapState({
-      versions ({ app }) {
-        return app.app.versions
-      }
-    })
-  },
-  methods: {
-    expand (row, expanded) {
-      if (expanded) {
-        if (!row.versionDetail) {
-          // TODO
-          fetchApp.version(this.$route.params.id, row.id)
-            .then(data => {
-              row.versionDetail = data
-            })
-        }
-      }
-    },
-    reload () {
-      this.listLoading = true
-      this.$store.dispatch(type.FETCH_APP, this.$route.params.id)
-        .then(() => (this.listLoading = false))
-        .catch(() => (this.listLoading = false))
-    }
-  }
-}
-</script>

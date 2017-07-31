@@ -15,10 +15,10 @@
         <span class="el-tab-label" slot="label">
           <a></a>版本</span>
       </el-tab-pane>
-      <el-tab-pane name="config">
+      <!-- <el-tab-pane name="config">
         <span class="el-tab-label" slot="label">
           <a></a>配置</span>
-      </el-tab-pane>
+      </el-tab-pane> -->
       <!--<el-tab-pane name="debug">-->
       <!--<span class="el-tab-label" slot="label"><a></a>调试</span>-->
       <!--</el-tab-pane>-->
