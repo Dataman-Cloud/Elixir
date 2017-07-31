@@ -163,3 +163,14 @@ dl {
 .CodeMirror-sizer{
     min-height: 400px;
   }
+
+.info-list {
+  margin-bottom: 4px;
+  margin-right: 20px;
+}
+
+.info-list dt {
+  color: rgba(0, 0, 0, 0.4);
+  min-width: 60px;
+  margin-right: 10px
+}
