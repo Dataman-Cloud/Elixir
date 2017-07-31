@@ -20,7 +20,7 @@
 
     <el-table ref="multipleTable" :data="composes" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column property="name" label="编排名称"></el-table-column>
+      <el-table-column property="id" label="编排名称"></el-table-column>
       <el-table-column property="status" label="状态"></el-table-column>
       <el-table-column property="desc" label="介绍"></el-table-column>
       <el-table-column property="created_at" label="创建时间">
