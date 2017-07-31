@@ -5,8 +5,6 @@
         <el-button type="primary" @click="reload">
           <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
         </el-button>
-        <el-button type="danger" @click="openDelete" :disabled="!currentRow">
-          <i class="ion-ios-minus-outline"></i> 删除应用</el-button>
         <el-button type="primary" @click="openCreate">
           <i class="ion-ios-plus-outline"></i> 创建应用</el-button>
         <el-button type="primary" @click="openExtend" :disabled="!currentRow">
@@ -22,6 +20,9 @@
         <el-button type="primary" @click="stop" :disabled="!currentRow">
           <i class="fa fa-power-off"></i>
           停止
+        </el-button>
+        <el-button type="danger" @click="openDelete" :disabled="!currentRow">
+          <i class="ion-ios-minus-outline"></i> 删除应用
         </el-button>
       </span>
 
@@ -111,12 +112,9 @@ export default {
     handleCurrentChange (val) {
       this.currentRows = val
     },
-    listApp () {
-      return this.fetchApps().then(() => {
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
+    async listApp () {
+      await this.fetchApps().catch(() => (this.listLoading = false))
+      this.listLoading = false
     },
     openDelete () {
       Confirm.open(`确认删除应用?`)
@@ -137,11 +135,10 @@ export default {
     openUpdate () {
       this.$refs.createDialog.open(this.currentRow.id)
     },
-    reload () {
+    async reload () {
       this.listLoading = true
-      this.fetchApps()
-        .then(() => (this.listLoading = false))
-        .catch(() => (this.listLoading = false))
+      await this.fetchApps().catch(() => (this.listLoading = false))
+      this.listLoading = false
     },
     start () {
       if (this.currentRow.status === 'unavailable') {

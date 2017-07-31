@@ -20,7 +20,7 @@ export default {
   [type.FETCH_APP_VERSIONS] (state, payload = []) {
     state.app.versions = payload.map(version => {
       version.envs = transformEnvtoArray(version.env)
-      version.healthChecks = version.healthCheck ? [].concat(state.app.curVersionObj.healthCheck) : []
+      version.healthChecks = version.healthCheck ? [].concat(version.healthCheck) : []
       return version
     })
   },
