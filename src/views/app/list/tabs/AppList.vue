@@ -5,8 +5,6 @@
         <el-button type="primary" @click="reload">
           <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
         </el-button>
-        <el-button type="danger" @click="openDelete" :disabled="!currentRow">
-          <i class="ion-ios-minus-outline"></i> 删除应用</el-button>
         <el-button type="primary" @click="openCreate">
           <i class="ion-ios-plus-outline"></i> 创建应用</el-button>
         <el-button type="primary" @click="openExtend" :disabled="!currentRow">
@@ -22,6 +20,9 @@
         <el-button type="primary" @click="stop" :disabled="!currentRow">
           <i class="fa fa-power-off"></i>
           停止
+        </el-button>
+        <el-button type="danger" @click="openDelete" :disabled="!currentRow">
+          <i class="ion-ios-minus-outline"></i> 删除应用
         </el-button>
       </span>
 
