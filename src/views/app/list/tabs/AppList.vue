@@ -35,9 +35,9 @@
 
     <el-table :data="filterApps" border row-key="id" v-loading="listLoading" @selection-change="handleCurrentChange" style="width: 100%">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column property="name" label="应用" width="150" sortable show-overflow-tooltip>
+      <el-table-column property="name" label="应用" width="250" sortable>
         <template scope="app">
-          <router-link :title="app.row.name" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.name}}</router-link>
+          <router-link :title="app.row.id" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.id}}">{{(app.row.id).replace(/\./g,'-')}}</router-link>
         </template>
       </el-table-column>
       <el-table-column property="status" label="运行状态">
