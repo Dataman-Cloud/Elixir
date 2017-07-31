@@ -83,17 +83,17 @@
           <el-collapse-item name="advance" title="高级设置">
 
             <el-form-item label="端口地址">
-              <el-row>
-                <el-col :span="8">
+              <el-row :gutter="5">
+                <el-col :span="9">
                   <el-button type="primary" size="small" @click="addConfig('portMappings')">添加应用端口地址</el-button>
                 </el-col>
 
-                <el-col :span="7">
-                  Proxy
+                <el-col :span="8">
+                  Http 代理
                   <el-switch on-text="" off-text="" v-model="form.proxy.enabled" :disabled="!hasPortMapping"></el-switch>
                 </el-col>
 
-                <el-col :span="8">
+                <el-col :span="6">
                   <el-input v-model="form.proxy.alias" placeholder="代理别名" :disabled="!hasPortMapping || !form.proxy.enabled"></el-input>
                 </el-col>
               </el-row>
