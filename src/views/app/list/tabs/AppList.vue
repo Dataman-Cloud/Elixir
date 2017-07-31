@@ -111,12 +111,9 @@ export default {
     handleCurrentChange (val) {
       this.currentRows = val
     },
-    listApp () {
-      return this.fetchApps().then(() => {
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
+    async listApp () {
+      await this.fetchApps().catch(() => (this.listLoading = false))
+      this.listLoading = false
     },
     openDelete () {
       Confirm.open(`确认删除应用?`)
@@ -137,11 +134,10 @@ export default {
     openUpdate () {
       this.$refs.createDialog.open(this.currentRow.id)
     },
-    reload () {
+    async reload () {
       this.listLoading = true
-      this.fetchApps()
-        .then(() => (this.listLoading = false))
-        .catch(() => (this.listLoading = false))
+      await this.fetchApps().catch(() => (this.listLoading = false))
+      this.listLoading = false
     },
     start () {
       if (this.currentRow.status === 'unavailable') {

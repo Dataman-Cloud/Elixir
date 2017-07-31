@@ -71,11 +71,10 @@ export default {
     handleCurrentChange (val) {
       this.currentRows = val
     },
-    reload () {
+    async reload () {
       this.listLoading = true
-      this.$store.dispatch(type.FETCH_APP, this.$route.params.id)
-        .then(() => (this.listLoading = false))
-        .catch(() => (this.listLoading = false))
+      await this.$store.dispatch(type.FETCH_APP, this.$route.params.id).catch(() => (this.listLoading = false))
+      this.listLoading = false
     }
   }
 }
