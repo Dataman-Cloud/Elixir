@@ -43,6 +43,8 @@
       </el-table-column>
       <el-table-column property="status" label="运行状态">
       </el-table-column>
+      <el-table-column property="cluster" label="集群">
+      </el-table-column>
       <el-table-column label="健康状态">
         <template scope="app">
           <span>总数: </span>
@@ -55,7 +57,7 @@
           <i>{{app.row.health.unset}} </i>
         </template>
       </el-table-column>
-      <el-table-column property="updated" label="更新时间" min-width="100">
+      <el-table-column property="updated" label="更新时间" min-width="100" sortable>
         <template scope="scope">
           <span>{{scope.row.updated | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>

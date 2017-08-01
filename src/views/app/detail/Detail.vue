@@ -19,17 +19,10 @@
         <span class="el-tab-label" slot="label">
           <a></a>实例</span>
       </el-tab-pane>
-      <el-tab-pane name="versions">
+      <el-tab-pane name="config">
         <span class="el-tab-label" slot="label">
-          <a></a>版本</span>
+          <a></a>配置</span>
       </el-tab-pane>
-      <!-- <el-tab-pane name="config">
-                  <span class="el-tab-label" slot="label">
-                    <a></a>配置</span>
-                </el-tab-pane> -->
-      <!--<el-tab-pane name="debug">-->
-      <!--<span class="el-tab-label" slot="label"><a></a>调试</span>-->
-      <!--</el-tab-pane>-->
 
       <transition name="fade" mode="out-in">
         <component v-bind:is="currentView"></component>
@@ -38,7 +31,7 @@
   </div>
 </template>
 <script>
-import { Instances, Config, Debug, Topology, Versions } from './tabs'
+import { Instances, Config } from './tabs'
 import { mapState } from 'vuex'
 import store from '@/store'
 import { formatTime } from '@/filters'
@@ -47,10 +40,7 @@ import * as type from '@/store/app/mutations_types'
 export default {
   components: {
     instances: Instances,
-    config: Config,
-    debug: Debug,
-    topology: Topology,
-    versions: Versions
+    config: Config
   },
   data () {
     return {
