@@ -44,6 +44,11 @@
           </dl>
 
           <dl class="detail-config">
+            <dt>IP</dt>
+            <dd>{{version.row.IP || `-`}}</dd>
+          </dl>
+
+          <dl class="detail-config">
             <dt>应用模式</dt>
             <dd>{{version.row.container.docker.network}} 模式</dd>
           </dl>

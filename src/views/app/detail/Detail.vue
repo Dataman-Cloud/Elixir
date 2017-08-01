@@ -12,6 +12,14 @@
           </dl>
         </el-col>
       </el-row>
+      <el-row :gutter="20" v-if="app.curVersionObj.proxy.enabled">
+        <el-col :span="8">
+          <dl class="info-list">
+            <dt>HTTP 代理:</dt>
+            <dd><a target="_blank" :href="`http://${app.id}${agentSuffix}`">{{`${app.id}${agentSuffix}`}}</a></dd>
+          </dl>
+        </el-col>
+      </el-row>
     </div>
 
     <el-tabs type="card" :value="currentView" @tab-click="tabChange">
@@ -37,6 +45,9 @@ import store from '@/store'
 import { formatTime } from '@/filters'
 import * as type from '@/store/app/mutations_types'
 
+const domainName = '.swan.com'
+const agentSuffix = '.gateway.swan.com'
+
 export default {
   components: {
     instances: Instances,
@@ -44,7 +55,9 @@ export default {
   },
   data () {
     return {
-      currentView: 'instances'
+      currentView: 'instances',
+      domainName: domainName,
+      agentSuffix: agentSuffix
     }
   },
   computed: {
@@ -58,7 +71,8 @@ export default {
         '当前版本': this.app.currentVersion[0],
         '网络模式': this.app.curVersionObj.container.docker.network,
         '镜像': this.app.curVersionObj.container.docker.image,
-        '更新时间': formatTime(this.app.updated, '{y}-{m}-{d} {h}:{i}:{s}')
+        '更新时间': formatTime(this.app.updated, '{y}-{m}-{d} {h}:{i}:{s}'),
+        '域名': `${this.app.id}${domainName}`
       }
     }
   },

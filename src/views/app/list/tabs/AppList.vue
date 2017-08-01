@@ -7,12 +7,12 @@
         </el-button>
         <el-button type="primary" @click="openCreate">
           <i class="ion-ios-plus-outline"></i> 创建应用</el-button>
-        <el-button type="primary" @click="openExtend" :disabled="!currentRow">
-          <i class="el-icon-edit"></i> 扩展应用
-        </el-button>
         <el-button type="primary" @click="openUpdate" :disabled="!currentRow">
           <i class="fa fa-refresh"></i>
           更新应用
+        </el-button>
+        <el-button type="primary" @click="openExtend" :disabled="!currentRow">
+          <i class="el-icon-edit"></i> 扩展应用
         </el-button>
         <el-button type="primary" @click="start" :disabled="!currentRow">
           <i class="fa fa-play-circle-o"></i> 启动
