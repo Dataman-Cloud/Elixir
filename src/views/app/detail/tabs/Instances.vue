@@ -10,7 +10,7 @@
 
     <el-table :data="tasks" stripe border v-loading="listLoading" @selection-change="handleCurrentChange" style="width: 100%">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column property="name" label="实例名称" width="150">
+      <el-table-column property="name" label="实例名称" width="150" sortable>
         <template scope="scope">
           <span>{{scope.row.name.replace(/\./g, '-')}}</span>
         </template>

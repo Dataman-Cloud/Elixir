@@ -2,12 +2,6 @@
  * Created by my9074 on 2017/6/6.
  */
 
-export {default as Instances} from './Instances'
+export { default as Instances } from './Instances'
 
-export {default as Config} from './Config'
-
-export {default as Debug} from './Debug'
-
-export {default as Topology} from './Topology'
-
-export {default as Versions} from './Versions'
+export { default as Config } from './Config'
