@@ -5,15 +5,17 @@
         <el-button type="primary">
           <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
         </el-button>
-        <el-button type="danger" :disabled="!currentRow">
-          <i class="ion-ios-minus-outline"></i> 删除编排</el-button>
         <el-button type="primary" @click="openCreate">
-          <i class="ion-ios-plus-outline"></i> 创建编排</el-button>
+          <i class="ion-ios-plus-outline"></i> 创建编排
+        </el-button>
+        <el-button type="danger" :disabled="!currentRow">
+          <i class="ion-ios-minus-outline"></i> 删除编排
+        </el-button>
       </span>
 
-      <el-button-group style="display: flex">
+      <!-- <el-button-group style="display: flex">
         <el-input class="el-input-search" icon="search" placeholder="请输入编排名称"></el-input>
-      </el-button-group>
+      </el-button-group> -->
 
     </div>
     <create-compose @ok="createOk" ref="createCompose"></create-compose>
@@ -43,7 +45,7 @@
   </div>
 </template>
 <script>
-import {mapState, mapActions} from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import * as type from '@/store/app/mutations_types'
 import CreateCompose from '@/views/app/modals/CreateCompose'
 

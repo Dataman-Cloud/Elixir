@@ -5,9 +5,9 @@
         <el-form-item label="应用名称" prop="name">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <!--<el-form-item label="集群" prop="selectCluster">-->
-        <!--<el-input v-model="form.selectCluster" @change="setClusterConstraints"></el-input>-->
-        <!--</el-form-item>-->
+        <el-form-item label="集群">
+          <el-input v-model="cluster" disabled></el-input>
+        </el-form-item>
         <el-form-item label="镜像地址" prop="container.docker.image">
           <div>
             <el-input v-model="form.container.docker.image"></el-input>
@@ -19,7 +19,11 @@
           <el-radio-group v-model="form.container.docker.network" @change="networkChange">
             <el-radio label="bridge" :disabled="isUpdate">网桥模式</el-radio>
             <el-radio label="host" :disabled="isUpdate">HOST 模式</el-radio>
+            <el-radio label="swan" :disabled="isUpdate">Static IP</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="网络" v-if="form.container.docker.network === 'swan'">
+          <el-input v-model="network" disabled></el-input>
         </el-form-item>
         <el-form-item label="容器规格" class="spec">
           <el-row :gutter="12">
@@ -45,10 +49,12 @@
           <!--<el-checkbox v-model="form.oneContainer" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）-->
           <!--</el-checkbox>-->
         </el-form-item>
+        <el-form-item prop="ipsStr" label="IP" v-if="form.container.docker.network === 'swan'" :disabled="!!form.instances" :rules="[{ required: form.container.docker.network === 'swan', message: 'Static IP 模式下 IP 为必填项,且个数与实例数一致'}]">
+          <el-input type="text" v-model="form.ipsStr" placeholder="请用逗号分隔ip，如192.168.1.1,192.168.1.2"></el-input>
+        </el-form-item>
         <el-form-item label="挂载路径">
           <el-button type="primary" size="small" @click="addConfig('volumes')">添加挂在路径</el-button>
         </el-form-item>
-
         <el-form-item v-for="(volume, index) in form.container.volumes" :key="index">
           <el-row :gutter="20">
             <el-col :span="8">
@@ -277,7 +283,8 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      clusters: [],
+      cluster: 'dataman',
+      network: 'swan',
       form: this._.merge({}, appUtil.APP_BASE, { oneContainer: false }),
       rules: appUtil.APP_FORM_RULES,
       submitLoading: false,
@@ -326,16 +333,22 @@ export default {
       this.submitLoading = false
     },
     networkChange (netowrk) {
-      //        if (netowrk === 'host') {
-      //          this.form.container.docker.portMappings = []
-      //        }
+      if (netowrk === 'swan') {
+        this.$set(this.form, 'ip', [])
+        this.$set(this.form, 'ipsStr', undefined)
+      } else {
+        this.$delete(this.form, 'ip')
+        this.$delete(this.form, 'ipsStr')
+      }
     },
     onSubmit () {
       this.$refs.form.validate((valid) => {
         if (valid) {
           //            this.setClusterConstraints()
           this.form.env = appUtil.transformEnvstoObj(this.form.envs)
-          //            this.form.healthChecks = appUtil.transformHealthChecks(this.form.healthChecks, this.form.container.docker.network)
+          if (this.form.ip && this.form.ipsStr) {
+            this.form.ip = this.form.ipsStr.split(',')
+          }
           this.submitLoading = true
           this.isUpdate ? fetchApp.update(this.id, this.form)
             .then(() => {
@@ -379,27 +392,6 @@ export default {
     resetForm () {
       this.$refs.form.resetFields()
     },
-    //      uniqueHostname () {
-    //        const hostEles = ['hostname', 'UNIQUE']
-    //        if (this.form.oneContainer) {
-    //          if (this.form.constraints.length && !this.form.constraints.some(item => item[0] === 'hostname')) {
-    //            this.form.constraints.push(hostEles)
-    //          }
-    //        } else {
-    //          if (this.form.constraints.some(item => item[0] === 'hostname')) {
-    //            let hostIndex = null
-    //            this.form.constraints.forEach((constraint, index) => {
-    //              constraint.forEach(item => {
-    //                if (item === 'hostname') {
-    //                  hostIndex = index
-    //                }
-    //              })
-    //            })
-    //
-    //            this.form.constraints.splice(hostIndex, 1)
-    //          }
-    //        }
-    //      },
     updateInitFetch (appId) {
       this.loading = true
       return fetchApp.curVersion(appId)
@@ -419,7 +411,6 @@ export default {
     }
   },
   watch: {
-    // 如果 question 发生改变，这个函数就会运行
     'form.container.docker.portMappings': function (newValue) {
       if (newValue.length && !this.form.healthCheck) {
         this.$set(this.form, 'healthCheck', {
