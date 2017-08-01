@@ -45,7 +45,7 @@
 
           <dl class="detail-config">
             <dt>IP</dt>
-            <dd>{{version.row.IP || `-`}}</dd>
+            <dd>{{version.row.ips || `-`}}</dd>
           </dl>
 
           <dl class="detail-config">
