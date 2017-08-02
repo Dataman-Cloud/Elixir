@@ -49,7 +49,7 @@
           <!--<el-checkbox v-model="form.oneContainer" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）-->
           <!--</el-checkbox>-->
         </el-form-item>
-        <el-form-item prop="ipsStr" label="IP" v-if="form.container.docker.network === 'swan'" :disabled="!!form.instances" :rules="[{ required: form.container.docker.network === 'swan', message: 'Static IP 模式下 IP 为必填项,且个数与实例数一致'}]">
+        <el-form-item prop="ipsStr" label="IP" v-if="form.container.docker.network === 'swan'" :disabled="!!form.instances" :rules="[{ required: form.container.docker.network === 'swan', message: 'Static IP 模式下 IP 为必填项,且个数与实例数一致'}, {validator: checkIpsRule}]">
           <el-input type="text" v-model="form.ipsStr" placeholder="请用逗号分隔ip，如192.168.1.1,192.168.1.2"></el-input>
         </el-form-item>
         <el-form-item label="挂载路径">
@@ -324,9 +324,12 @@ export default {
         this.form[configName].push(config[configName])
       }
     },
-    setClusterConstraints () {
-      let clusterIndex = this.form.constraints.findIndex(item => item.attribute === 'vcluster')
-      this.form.constraints[clusterIndex].value = this.form.selectCluster
+    checkIpsRule (rule, value, callback) {
+      if (this.form.instances === value.split(',').length) {
+        callback()
+      } else {
+        callback(new Error('IP 个数与实例个数不符'))
+      }
     },
     close () {
       this.resetForm()
@@ -334,10 +337,10 @@ export default {
     },
     networkChange (netowrk) {
       if (netowrk === 'swan') {
-        this.$set(this.form, 'ip', [])
+        this.$set(this.form, 'ips', [])
         this.$set(this.form, 'ipsStr', undefined)
       } else {
-        this.$delete(this.form, 'ip')
+        this.$delete(this.form, 'ips')
         this.$delete(this.form, 'ipsStr')
       }
     },
@@ -346,8 +349,8 @@ export default {
         if (valid) {
           //            this.setClusterConstraints()
           this.form.env = appUtil.transformEnvstoObj(this.form.envs)
-          if (this.form.ip && this.form.ipsStr) {
-            this.form.ip = this.form.ipsStr.split(',')
+          if (this.form.ips && this.form.ipsStr) {
+            this.form.ips = this.form.ipsStr.split(',')
           }
           this.submitLoading = true
           this.isUpdate ? fetchApp.update(this.id, this.form)
@@ -391,6 +394,10 @@ export default {
     },
     resetForm () {
       this.$refs.form.resetFields()
+    },
+    setClusterConstraints () {
+      let clusterIndex = this.form.constraints.findIndex(item => item.attribute === 'vcluster')
+      this.form.constraints[clusterIndex].value = this.form.selectCluster
     },
     updateInitFetch (appId) {
       this.loading = true
