@@ -22,24 +22,19 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column
         sortable show-overflow-tooltip
-        width="200"
-        property="Image"
+        property="name"
         label="名称">
-      </el-table-column>
-      <el-table-column
-        property="ImageUrl"
-        sortable label="地址">
-      </el-table-column>
-      <el-table-column
-        property="LatestTag"
-        sortable label="最新版本">
-      </el-table-column>
-      <el-table-column
-        property="CreatedAt"
-        sortable label="创建时间">
-        <template scope="scope">
-          <span>{{scope.row.CreatedAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+        <template scope="harbor">
+          <router-link :title="harbor.row.name" class="ellipsis" :to="{name: '镜像仓库', params:{name : harbor.row.name}}">{{harbor.row.name}}</router-link>
         </template>
+      </el-table-column>
+      <el-table-column
+        property="tags_count"
+        sortable label="标签数">
+      </el-table-column>
+      <el-table-column
+        property="star_count"
+        sortable label="下载数">
       </el-table-column>
     </el-table>
   </div>
@@ -56,7 +51,8 @@
       return {
         listLoading: false,
         currentRows: [],
-        searchWord: ''
+        searchWord: '',
+        auth: 'dataman'
       }
     },
     computed: {
@@ -66,7 +62,7 @@
         }
       }),
       filterRegistries: function () {
-        return this.searchWord ? this.registries.filter(reistry => reistry.Image.toLowerCase().includes(this.searchWord)) : this.registries
+        return this.searchWord ? this.registries.filter(reistry => reistry.name.toLowerCase().includes(this.searchWord)) : this.registries
       },
       currentRow: function () {
         return this.currentRows.length === 1 ? this.currentRows[0] : null
@@ -79,16 +75,16 @@
       handleCurrentChange (val) {
         this.currentRows = val
       },
-      openDelete () {
+      async openDelete () {
         if (this.currentRow) {
-          Confirm.open(`确认删除 ${this.currentRow.Image} 镜像?`)
-            .then(() => {
-              registryApi.deleteRegistry(this.currentRow)
-                .then(() => {
-                  this.$notify({message: '删除成功'})
-                  this.fetchRegistries()
-                })
-            })
+          await Confirm.open(`确认删除 ${this.currentRow.name} 镜像?`)
+          let res = await registryApi.deleteHarbor(this.currentRow.name, this.auth)
+          if (res.code === '01') {
+            this.$notify({message: res.message})
+          } else {
+            this.$notify({message: '删除成功'})
+            this.fetchRegistries(this.name)
+          }
         } else {
           this.$notify({message: '尚未选中镜像'})
         }

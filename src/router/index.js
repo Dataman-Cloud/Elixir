@@ -14,6 +14,7 @@ const BuildDetail = () => import('../views/cicd/detail/Detail')
 
 const RegistryList = () => import('../views/registry/list/List')
 const HistoryList = () => import('../views/registry/history/List')
+const WareHouse = () => import('../views/registry/detail/Detail')
 
 const HistoryDetail = () => import('../views/elastic/detail/Detail')
 
@@ -46,7 +47,8 @@ export const constantRouterMap = [
     component: Layout,
     children: [
       {path: 'list', component: RegistryList, name: '镜像列表'},
-      {path: 'histories', component: HistoryList, name: '历史列表'}
+      {path: 'histories', component: HistoryList, name: '历史列表'},
+      {path: 'detail/:name', component: WareHouse, name: '镜像仓库'}
     ]
   },
   {

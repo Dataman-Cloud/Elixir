@@ -5,26 +5,48 @@ import fetch from '@/utils/fetch'
 
 export function listRegistry () {
   return fetch({
-    url: 'v1/registry/repositories/mine',
+    url: 'v1/api/repositories',
     method: 'get'
   })
 }
 
-export function deleteRegistry (deleteRegistry = {}) {
-  let {Namespace, Image, LatestTag} = deleteRegistry
+export function tagDetail (name) {
   return fetch({
-    url: `v1/registry/manifests/${Namespace}/${Image}`,
-    method: 'delete',
+    url: 'v1/api/tags',
+    method: 'get',
     params: {
-      tag: LatestTag
+      repositoryName: name
     }
   })
 }
 
-export function listHistory (data) {
+export function listLogs () {
   return fetch({
-    url: `v1/registry/audit`,
-    method: 'get',
-    params: {...data, ...{operation: 'DeleteManifests'}}
+    url: 'v1/api/logs',
+    method: 'get'
   })
 }
+
+export function deleteHarbor (name, auth) {
+  return fetch({
+    url: 'v1/api/repository',
+    method: 'delete',
+    params: {
+      repositoryName: name,
+      auth: auth
+    }
+  })
+}
+
+export function deleteTags (name, tagName, auth) {
+  return fetch({
+    url: 'v1/api/repository/tag',
+    method: 'delete',
+    params: {
+      repositoryName: name,
+      tagName: tagName,
+      auth: auth
+    }
+  })
+}
+
