@@ -12,7 +12,7 @@
           </dl>
         </el-col>
       </el-row>
-      <el-row :gutter="20" v-if="app.curVersionObj.proxy.enabled">
+      <el-row :gutter="20" v-if="app.curVersionObj.proxy && app.curVersionObj.proxy.enable">
         <el-col :span="8">
           <dl class="info-list">
             <dt>HTTP 代理:</dt>
