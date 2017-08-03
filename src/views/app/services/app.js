@@ -10,8 +10,8 @@ export function countHealthyState (app) {
     UNKNOWN: 'unknown'
   }
   let healthData = [
-    {quantity: app.tasksHealthy || 0, state: HealthStatus.HEALTHY},
-    {quantity: app.tasksUnhealthy || 0, state: HealthStatus.UNHEALTHY}
+    { quantity: app.tasksHealthy || 0, state: HealthStatus.HEALTHY },
+    { quantity: app.tasksUnhealthy || 0, state: HealthStatus.UNHEALTHY }
   ]
   if (app.healthChecks && app.healthChecks.length === 0) {
     healthData.push({
@@ -19,7 +19,7 @@ export function countHealthyState (app) {
       state: HealthStatus.UNKNOWN
     })
   }
-  return {...app, healthData}
+  return { ...app, healthData }
 }
 
 export function transformEnvstoObj (envs = []) {
@@ -32,39 +32,47 @@ export function transformEnvstoObj (envs = []) {
 export function transformEnvtoArray (env = {}) {
   let res = []
   _.forOwn(env, (v, k) => {
-    res.push({key: k, value: v})
+    res.push({ key: k, value: v })
   })
   return res
 }
 
-export function transformHealthChecks (healthChecks = [], networkMode = 'BRIDGE') {
-  return healthChecks.map(health => _.omit(health, networkMode === 'BRIDGE' ? 'port' : 'portIndex'))
+export function transformHealthChecks (healthChecks = [], networkMode = 'bridge') {
+  return healthChecks.map(health => _.omit(health, networkMode === 'bridge' ? 'port' : 'portIndex'))
 }
 
 export const APP_BASE = {
+  name: null,
+  runAs: 'admin',
   cpus: 0.01,
   mem: 16,
   instances: '',
   envs: [],
   env: {},
   container: {
+    type: 'DOCKER',
     docker: {
-      network: 'BRIDGE',
+      network: 'bridge',
       parameters: [],
       portMappings: []
     },
     volumes: []
   },
   constraints: [
-    [
-      'vcluster',
-      'LIKE'
-    ]
+    {
+      attribute: 'vcluster',
+      operator: '==',
+      value: localStorage.getItem('bayname')
+    }
   ],
   healthChecks: [],
   labels: {
     PROLONGATIONTYPE: null,
     PROLONGATION4ROOTAPP: null
+  },
+  proxy: {
+    enabled: false,
+    alias: null
   },
   cmd: null
 }
@@ -101,26 +109,26 @@ export const DYNAMIC_CONFIG = {
 }
 
 export const APP_FORM_RULES = {
-  id: [
-    {required: true, message: '应用名不能为空'},
-    {pattern: /^[a-zA-Z0-9-]+$/, message: '应用名称只能包含数字、字母、中划线'},
-    {max: 48, message: '最大长度48个字符 (汉字占3个字符)'}
+  name: [
+    { required: true, message: '应用名不能为空' },
+    { pattern: /^[a-zA-Z0-9-]+$/, message: '应用名称只能包含数字、字母、中划线' },
+    { max: 48, message: '最大长度48个字符 (汉字占3个字符)' }
   ],
   selectCluster: [
-    {required: true, message: '集群不能为空'}
+    { required: true, message: '集群不能为空' }
   ],
   'container.docker.image': [
-    {required: true, message: '镜像地址不能为空'}
+    { required: true, message: '镜像地址不能为空' }
   ],
   cpus: [
-    {required: true, message: 'cpu不能为空'},
-    {type: 'number', min: 0.01, message: 'cpu最小值为0.01'}
+    { required: true, message: 'cpu不能为空' },
+    { type: 'number', min: 0.01, message: 'cpu最小值为0.01' }
   ],
   mem: [
-    {required: true, message: '内存不能为空最小值为16'}
+    { required: true, message: '内存不能为空最小值为16' }
   ],
   instances: [
-    {required: true, message: '容器个数不能为空'},
-    {type: 'number', min: 0, message: '容器个数最小为 0'}
+    { required: true, message: '容器个数不能为空' },
+    { type: 'number', min: 0, message: '容器个数最小为 0' }
   ]
 }
