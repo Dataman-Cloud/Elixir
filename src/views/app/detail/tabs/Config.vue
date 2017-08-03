@@ -71,7 +71,7 @@
           <dl class="detail-config">
             <dt>Http Proxy</dt>
             <dd>
-              <span>{{version.row.proxy.enabled ? '开启' : '关闭'}} 别名: {{version.row.proxy.alias ? version.row.proxy.alias : '-'}}</span>
+              <span>{{ (version.row.proxy && version.row.proxy.enable) ? '开启' : '关闭'}} 别名: {{ (version.row.proxy && version.row.proxy.alias) ? version.row.proxy.alias : '-'}}</span>
             </dd>
           </dl>
 
