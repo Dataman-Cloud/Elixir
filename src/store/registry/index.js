@@ -7,8 +7,12 @@ const state = {
     total: 0
   },
   registry: {},
-  audits: {
-    audits: [],
+  logs: {
+    logs: [],
+    count: 0
+  },
+  tags: {
+    tags: [],
     count: 0
   }
 }
