@@ -27,7 +27,7 @@
       </el-table-column>
       <el-table-column
         prop="before_inst_num"
-        label="扩缩钱实例数"
+        label="扩缩前实例数"
         width="160">
       </el-table-column>
       <el-table-column
