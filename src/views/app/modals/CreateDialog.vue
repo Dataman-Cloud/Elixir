@@ -47,7 +47,7 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item label="挂载路径">
-          <el-button type="primary" size="small" @click="addConfig('volumes')">添加挂在路径</el-button>
+          <el-button type="primary" size="small" @click="addConfig('volumes')">添加挂载路径</el-button>
         </el-form-item>
 
         <el-form-item v-for="(volume, index) in form.container.volumes"
