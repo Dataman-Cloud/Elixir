@@ -355,26 +355,18 @@ export default {
       }
     },
     onSubmit () {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(async (valid) => {
         if (valid) {
           this.setClusterConstraints()
           this.form.env = appUtil.transformEnvstoObj(this.form.envs)
           this.submitLoading = true
-          this.isUpdate ? fetchApp.update(this.id, this.form)
-            .then(() => {
-              this.dialogVisible = false
-              this.$store.dispatch(type.FETCH_APPS)
-            })
-            .catch(() => {
-              this.submitLoading = false
-            }) : fetchApp.create(this.form)
-              .then(() => {
-                this.dialogVisible = false
-                this.$store.dispatch(type.FETCH_APPS)
-              })
-              .catch(() => {
-                this.submitLoading = false
-              })
+          try {
+            this.isUpdate ? await fetchApp.update(this.id, this.form) : await fetchApp.create(this.form)
+            this.dialogVisible = false
+            this.fetchApps()
+          } catch (error) {
+            this.submitLoading = false
+          }
         } else {
           console.log('error submit!!')
           return false
