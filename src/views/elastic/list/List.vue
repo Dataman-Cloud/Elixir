@@ -36,6 +36,12 @@
         </template>
       </el-table-column>
       <el-table-column
+          label="告警规则">
+        <template scope="scope">
+          <span>{{scope.row.type}} {{scope.row.operator}} {{scope.row.set_value}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="monitor_cycle"
         label="监控周期(秒)">
       </el-table-column>
