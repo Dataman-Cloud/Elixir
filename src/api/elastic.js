@@ -6,21 +6,21 @@ import elasticUrl from 'elasticUrl'
 
 export function policyList () {
   return fetch({
-    url: `${elasticUrl}/policy/policies`,
+    url: `${elasticUrl}/v1/policy/policies`,
     method: 'get'
   })
 }
 
 export function getAppName () {
   return fetch({
-    url: `${elasticUrl}/app/filterNames`,
+    url: `${elasticUrl}/v1/policy/filterNames`,
     method: 'get'
   })
 }
 
 export function historyList (params = {}) {
   return fetch({
-    url: `${elasticUrl}/capability/capabilities`,
+    url: `${elasticUrl}/v1/policy/capabilities`,
     method: 'get',
     params: params
   })
@@ -28,14 +28,14 @@ export function historyList (params = {}) {
 
 export function getPolicy (id) {
   return fetch({
-    url: `${elasticUrl}/policy/policies/${id}`,
+    url: `${elasticUrl}/v1/policy/policies/${id}`,
     method: 'get'
   })
 }
 
 export function updatePolicy (data) {
   return fetch({
-    url: `${elasticUrl}/policy/update`,
+    url: `${elasticUrl}/v1/policy/update`,
     method: 'put',
     data: data
   })
@@ -43,7 +43,7 @@ export function updatePolicy (data) {
 
 export function createPolicy (data) {
   return fetch({
-    url: `${elasticUrl}/policy/create`,
+    url: `${elasticUrl}/v1/policy/create`,
     method: 'post',
     data: data
   })
@@ -51,7 +51,7 @@ export function createPolicy (data) {
 
 export function deletePolicy (id) {
   return fetch({
-    url: `${elasticUrl}/policy/${id}`,
+    url: `${elasticUrl}/v1/policy/${id}`,
     method: 'delete'
   })
 }
