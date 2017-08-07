@@ -4,7 +4,7 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="应用名称" prop="app_id">
           <el-select v-model="form.app_id" @visible-change="openAppNames" v-if="!isUpdate" v-loading="loading">
-            <el-option v-for="appName in appNames" :label="appName.appId" :value="appName.appId"></el-option>
+            <el-option v-for="appName in appNames" :key="appName.appId" :label="appName.appId" :value="appName.appId"></el-option>
           </el-select>
           <el-input v-model="form.app_id" v-if="isUpdate" disabled></el-input>
         </el-form-item>
