@@ -2,102 +2,99 @@
   <div>
     <div class="btn-group">
       <span>
-        <el-button type="primary" @click="reload"><i class="glyphicon glyphicon-repeat"></i></el-button>
-        <a class="pan-btn pink-btn" :href="stdObj.stdout">
-          <el-button type="primary" :disabled="!currentRow"><i class="el-icon-plus"></i> stdout 日志</el-button>
+        <el-button type="primary" @click="reload">
+          <i class="glyphicon glyphicon-repeat"></i>
+        </el-button>
+        <a class="pan-btn pink-btn margin-10" :href="stdObj.stdout">
+          <el-button type="primary" :disabled="!currentRow">
+            <i class="el-icon-plus"></i> stdout 日志</el-button>
         </a>
-        <a class="pan-btn pink-btn" :href="stdObj.stderr">
-          <el-button type="primary" :disabled="!currentRow"><i class="el-icon-plus"></i> stderr 日志</el-button>
+        <a class="pan-btn pink-btn margin-10" :href="stdObj.stderr">
+          <el-button type="primary" :disabled="!currentRow">
+            <i class="el-icon-plus"></i> stderr 日志</el-button>
         </a>
       </span>
     </div>
 
-    <el-table
-      :data="tasks"
-      stripe border
-      v-loading="listLoading"
-      @selection-change="handleCurrentChange"
-      style="width: 100%">
+    <el-table :data="tasks" stripe border v-loading="listLoading" @selection-change="handleCurrentChange" style="width: 100%">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column property="id" label="实例名称" width="150">
+      <el-table-column property="id" label="实例名称" width="200">
         <template scope="scope">
-          <router-link :title="scope.row.id" class="ellipsis"
-                       :to="{name: '实例详情', params: { host: scope.row.host, id: scope.row.id, slaveId: scope.row.slaveId}}">
+          <router-link :title="scope.row.id" class="ellipsis" :to="{name: '实例详情', params: { host: scope.row.ip, id: scope.row.id, slaveId: scope.row.agentId}}">
             {{scope.row.id}}
           </router-link>
-          <small>IP:{{scope.row.host}}
-            <span v-if="scope.row.ports.length">:[<a v-for="port in scope.row.ports"
-                                                     :href="'http://'+ scope.row.host + ':' + port" target="_blank"> {{port}} </a>]</span>
+           <small>IP:{{scope.row.ip}}
+            <span v-if="scope.row.port">:
+              <a :href="'http://'+ scope.row.ip + ':' + scope.row.port" target="_blank"> {{scope.row.port}} </a></span>
           </small>
         </template>
 
       </el-table-column>
-      <el-table-column
-        property="status"
-        label="状态">
+      <el-table-column property="status" label="状态">
       </el-table-column>
-      <el-table-column
-        property="healthStatus"
-        label="健康">
+      <el-table-column property="healthy" label="健康">
       </el-table-column>
-      <el-table-column
-        property="version"
-        label="版本">
+      <el-table-column property="version" label="版本">
       </el-table-column>
       <el-table-column label="创建" min-width="120">
         <template scope="scope">
-          <span>{{scope.row.startedAt | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+          <span>{{scope.row.created | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>
     </el-table>
   </div>
 </template>
 <script>
-  import {mapState} from 'vuex'
-  import * as type from '@/store/app/mutations_types'
-  import baseUrl from 'baseUrl'
+import { mapState } from 'vuex'
+import * as type from '@/store/app/mutations_types'
+import baseUrl from 'baseUrl'
+console.log(baseUrl)
 
-  export default {
-    data () {
-      return {
-        currentRows: [],
-        listLoading: false
+export default {
+  data () {
+    return {
+      currentRows: [],
+      listLoading: false
+    }
+  },
+  computed: {
+    ...mapState({
+      tasks ({ app }) {
+        return app.app.tasks
       }
+    }),
+    currentRow: function () {
+      return this.currentRows.length === 1 ? this.currentRows[0] : null
     },
-    computed: {
-      ...mapState({
-        tasks ({app}) {
-          return app.app.tasks
-        }
-      }),
-      currentRow: function () {
-        return this.currentRows.length === 1 ? this.currentRows[0] : null
-      },
-      stdObj: function () {
-        return this.currentRow ? {
-          stderr: `${baseUrl}/v1/apps/stdlog?hostip=${this.currentRow.host}&slaveid=${this.currentRow.slaveId}&taskid=${this.currentRow.id}&logtype=stderr`,
-          stdout: `${baseUrl}/v1/apps/stdlog?hostip=${this.currentRow.host}&slaveid=${this.currentRow.slaveId}&taskid=${this.currentRow.id}&logtype=stdout`
-        } : {
-          stderr: 'javascript:void(0);',
-          stdout: 'javascript:void(0);'
-        }
-      }
-    },
-    methods: {
-      handleCurrentChange (val) {
-        this.currentRows = val
-      },
-      reload () {
-        this.listLoading = true
-        this.$store.dispatch(type.FETCH_APP, this.$route.params.id)
-          .then(() => (this.listLoading = false))
-          .catch(() => (this.listLoading = false))
+    stdObj: function () {
+      return this.currentRow ? {
+        stderr: `${baseUrl}/v1/apps/stdlog?hostip=${this.currentRow.ip}&slaveid=${this.currentRow.agentId}&taskid=${this.currentRow.id}&logtype=stderr`,
+        stdout: `${baseUrl}/v1/apps/stdlog?hostip=${this.currentRow.ip}&slaveid=${this.currentRow.agentId}&taskid=${this.currentRow.id}&logtype=stdout`
+      } : {
+        stderr: 'javascript:void(0);',
+        stdout: 'javascript:void(0);'
       }
     }
+  },
+  methods: {
+    handleCurrentChange (val) {
+      this.currentRows = val
+    },
+    reload () {
+      this.listLoading = true
+      this.$store.dispatch(type.FETCH_APP, this.$route.params.id)
+        .then(() => (this.listLoading = false))
+        .catch(() => (this.listLoading = false))
+    }
   }
+}
 </script>
 <style scoped>
-  .btn-group {
-    justify-content: space-between;
-  }
+.btn-group {
+  justify-content: space-between;
+}
+
+.margin-10 {
+  margin-left: 10px
+}
 </style>

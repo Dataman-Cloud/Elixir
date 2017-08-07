@@ -66,6 +66,7 @@ export const APP_BASE = {
     }
   ],
   healthChecks: [],
+  healthCheck: {},
   labels: {
     PROLONGATIONTYPE: null,
     PROLONGATION4ROOTAPP: null
