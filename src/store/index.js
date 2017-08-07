@@ -5,6 +5,7 @@ import registry from './registry'
 import user from './user'
 import cicd from './cicd'
 import elastic from './elastic'
+import log from './log'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     registry,
     user,
     cicd,
-    elastic
+    elastic,
+    log
   }
 })
