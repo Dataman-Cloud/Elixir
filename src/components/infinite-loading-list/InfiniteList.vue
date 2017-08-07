@@ -32,7 +32,6 @@
     },
     methods: {
       onInfinite () {
-        console.log('erererer')
         this.$emit('onInfinite')
       }
     },
