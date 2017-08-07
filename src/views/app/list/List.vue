@@ -3,13 +3,12 @@
     <div class="btn-group">
       <span>
         <el-button type="primary" @click="reload"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></el-button>
-        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="ion-ios-minus-outline"></i> 删除应用</el-button>
         <el-button type="primary" @click="openCreate"><i class="ion-ios-plus-outline"></i> 创建应用</el-button>
-        <el-button type="primary" @click="openExtend" :disabled="!currentRow"><i
-          class="el-icon-edit"></i> 扩展应用
-        </el-button>
         <el-button type="primary" @click="openUpdate" :disabled="!currentRow"><i class="fa fa-refresh"></i>
           更新应用
+        </el-button>
+        <el-button type="primary" @click="openExtend" :disabled="!currentRow">
+          <i class="el-icon-edit"></i> 扩展应用
         </el-button>
         <el-button type="primary" @click="start" :disabled="!currentRow">
           <i class="fa fa-play-circle-o"></i> 启动
@@ -18,6 +17,7 @@
           <i class="fa fa-power-off"></i>
           停止
         </el-button>
+        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="ion-ios-minus-outline"></i> 删除应用</el-button>
       </span>
 
       <el-button-group style="display: flex">
@@ -36,25 +36,16 @@
       @selection-change="handleCurrentChange"
       style="width: 100%">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column property="id" label="应用" width="150" sortable show-overflow-tooltip>
+      <el-table-column property="id" label="应用" width="180" sortable show-overflow-tooltip>
         <template scope="app">
           <router-link :title="app.row.id" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
         </template>
       </el-table-column>
-      <el-table-column
-        property="labels.VCLUSTER"
-        label="集群">
-      </el-table-column>
-      <el-table-column
-        property="instances"
-        label="实例">
-      </el-table-column>
-      <el-table-column
-        property="appruntatus"
-        label="运行状态">
-      </el-table-column>
+      <el-table-column property="cluster" label="集群" width="150"></el-table-column>
+      <el-table-column property="task_count" label="实例" width="100"></el-table-column>
+      <el-table-column property="status" label="运行状态" width="100"></el-table-column>
       <el-table-column label="健康状态">
-        <template scope="app">
+        <!-- <template scope="app">
           <el-tooltip class="item" effect="dark" placement="top">
             <div slot="content">
                   <span v-for="(status, index) in app.row.healthData" :key="index" class="state">
@@ -66,12 +57,21 @@
                   :style="{width: (status.quantity / app.row.instances) * 100 + '%'}"></li>
             </ul>
           </el-tooltip>
-
+        </template> -->
+        <template scope="app">
+          <span>总数: </span>
+          <i>{{app.row.health.total}} </i>
+          <span> 健康: </span>
+          <i>{{app.row.health.healthy}} </i>
+          <span> 不健康: </span>
+          <i>{{app.row.health.unhealthy}} </i>
+          <span> 未设置: </span>
+          <i>{{app.row.health.unset}} </i>
         </template>
       </el-table-column>
-      <el-table-column property="versionInfo.lastConfigChangeAt" label="更新时间" min-width="120">
+      <el-table-column property="updated" label="更新时间" min-width="80">
         <template scope="scope">
-          <span>{{scope.row.versionInfo.lastConfigChangeAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
+          <span>{{scope.row.updated | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -158,30 +158,22 @@
           .then(() => (this.listLoading = false))
           .catch(() => (this.listLoading = false))
       },
-      start () {
-        if (this.currentRow.appruntatus === 'Suspended') {
-          Confirm.open(`确认启动 ${this.currentRow.id} 应用?`)
-            .then(() => {
-              app.start(this.currentRow.id)
-                .then(() => {
-                  this.$notify({message: `${this.currentRow.id} 启动成功`})
-                  this.fetchApps()
-                })
-            })
+      async start () {
+        if (this.currentRow.status === 'unavailable') {
+          await Confirm.open(`确认启动 ${this.currentRow.id} 应用?`)
+          await app.start(this.currentRow.id)
+          this.$notify({message: `${this.currentRow.id} 启动成功`})
+          this.fetchApps()
         } else {
           this.$notify({message: `${this.currentRow.id} 已运行`})
         }
       },
-      stop () {
-        if (this.currentRow.appruntatus !== 'Suspended') {
-          Confirm.open(`确认停止 ${this.currentRow.id} 应用?`)
-            .then(() => {
-              app.stop(this.currentRow.id)
-                .then(() => {
-                  this.$notify({message: `${this.currentRow.id} 已停止`})
-                  this.fetchApps()
-                })
-            })
+      async stop () {
+        if (this.currentRow.status !== 'unavailable') {
+          await Confirm.open(`确认停止 ${this.currentRow.id} 应用?`)
+          await app.stop(this.currentRow.id)
+          this.$notify({message: `${this.currentRow.id} 已停止`})
+          this.fetchApps()
         } else {
           this.$notify({message: `${this.currentRow.id} 已停止`})
         }

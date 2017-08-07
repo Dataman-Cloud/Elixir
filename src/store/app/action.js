@@ -16,6 +16,7 @@ export default {
     return api.getApp(id)
       .then(data => {
         context.commit(type.FETCH_APP, data.data)
+        context.commit(type.TRANSFORM_APP_VERSION, data.data.version)
         return data
       })
   }

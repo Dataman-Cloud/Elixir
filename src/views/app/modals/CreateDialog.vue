@@ -48,23 +48,23 @@
           <el-button type="primary" size="small" @click="addConfig('volumes')">添加挂在路径</el-button>
         </el-form-item>
 
-        <el-form-item v-for="(volume, index) in form.container.volumes" :key="index">
+        <el-form-item v-for="(volume, index) in form.container.volumes" :key="index" class="wrapContainerRow">
           <el-row :gutter="20">
-            <el-col :span="8">
+            <el-col :span="10">
               <el-form-item :prop="'container.volumes.' + index + '.containerPath'" :key="volume.index" :rules="[{ required: true, message: '容器路径不能为空' }]">
                 <el-input v-model="volume.containerPath">
                   <template slot="prepend">容器路径</template>
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="10">
               <el-form-item :prop="'container.volumes.' + index + '.hostPath'" :key="volume.index" :rules="[{ required: true, message: '主机路径不能为空' }]">
                 <el-input v-model="volume.hostPath">
                   <template slot="prepend">主机路径</template>
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="5">
               <el-form-item :prop="'container.volumes.' + index + '.mode'" :key="volume.index">
                 <el-select v-model="volume.mode">
                   <el-option value="RW">RW</el-option>
@@ -97,7 +97,7 @@
                 </el-row>
               </el-form-item>
 
-              <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings" :key="index" class="healthCheck">
+              <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings" :key="index" class="wrapContainerRow">
                 <el-row :gutter="12">
                   <el-col :span="9">
                     <el-form-item :prop="'container.docker.portMappings.' + index + '.containerPort'" :key="portMapping.index" :rules="[{ required: true, message: '容器端口不能为空' }]">
@@ -139,7 +139,7 @@
 
             <div v-if="form.container.docker.portMappings.length">
               <el-form-item label="健康检查"></el-form-item>
-              <el-form-item class="healthCheck">
+              <el-form-item class="wrapContainerRow">
                 <el-row :gutter="20">
                   <el-col :span="10">
                     <el-form-item :prop="'healthCheck.protocol'" :rules="[{ required: form.container.docker.portMappings.length, message: 'protocol is required' }]">
@@ -206,17 +206,17 @@
             <el-form-item label="环境变量">
               <el-button type="primary" size="small" @click="addConfig('envs')">添加环境变量</el-button>
             </el-form-item>
-            <el-form-item v-for="(env, index) in form.envs" :key="index" class="healthCheck">
+            <el-form-item v-for="(env, index) in form.envs" :key="index" class="wrapContainerRow">
               <el-row :gutter="12">
-                <el-col :span="8">
-                  <el-form-item :prop="'envs.' + index + '.key'" :key="env.index" :rules="[{ required: true, message: '环境变量的 KEY 个数不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: '环境变量的 KEY 不能包含中文' }]">
+                <el-col :span="9">
+                  <el-form-item :prop="'envs.' + index + '.key'" :key="env.index" :rules="[{ required: true, message: 'KEY 能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: 'KEY 不能包含中文' }]">
                     <el-input v-model="env.key">
                       <template slot="prepend">KEY</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
-                  <el-form-item :prop="'envs.' + index + '.value'" :key="env.index" :rules="[{ required: true, message: '环境变量的 VALUE 个数不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: '环境变量的 VALUE 不能包含中文' }]">
+                <el-col :span="9">
+                  <el-form-item :prop="'envs.' + index + '.value'" :key="env.index" :rules="[{ required: true, message: 'VALUE 不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: 'VALUE 不能包含中文' }]">
                     <el-input v-model="env.value">
                       <template slot="prepend">VALUE</template>
                     </el-input>
@@ -238,14 +238,14 @@
             <el-form-item v-for="(parameter, index) in form.container.docker.parameters" :key="index" class="parameters">
               <el-row :gutter="12">
                 <el-col :span="8">
-                  <el-form-item :prop="'container.docker.parameters.' + index + '.key'" :key="parameter.index" :rules="[{ required: true, message: 'Docker 参数的 KEY 个数不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: 'Docker 参数的 KEY 不能包含中文' }]">
+                  <el-form-item :prop="'container.docker.parameters.' + index + '.key'" :key="parameter.index" :rules="[{ required: true, message: 'KEY 不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: 'KEY 不能包含中文' }]">
                     <el-input v-model="parameter.key">
                       <template slot="prepend">KEY</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="9">
-                  <el-form-item :prop="'container.docker.parameters.' + index + '.value'" :key="parameter.index" :rules="[{ required: true, message: 'Docker 参数的 VALUE 个数不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: 'Docker 参数的 KEY 不能包含中文' }]">
+                  <el-form-item :prop="'container.docker.parameters.' + index + '.value'" :key="parameter.index" :rules="[{ required: true, message: 'VALUE 不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: 'VALUE 不能包含中文' }]">
                     <el-input v-model="parameter.value">
                       <template slot="prepend">VALUE</template>
                     </el-input>
@@ -399,16 +399,14 @@ export default {
     uniqueHostname () {
       // TODO: 一容器一主机
     },
-    updateInitFetch (appId) {
+    async updateInitFetch (appId) {
       this.loading = true
-      return fetchApp.getApp(appId)
-        .then((res) => {
-          this.loading = false
-          return res
-        })
+      let res = await fetchApp.getApp(appId)
+      this.loading = false
+      return res
     },
     updateInit (initFetchData) {
-      let formTemp = this._.merge({}, appUtil.APP_BASE, initFetchData.data, {
+      let formTemp = this._.merge({}, appUtil.APP_BASE, initFetchData.data.version, {
         selectCluster: ''
       })
       this.form = this._.pick(formTemp, Object.keys(appUtil.APP_BASE).concat(['id', 'selectCluster']))
@@ -448,7 +446,7 @@ export default {
   margin-right: 20px;
 }
 
-.healthCheck .el-row .el-col {
+.wrapContainerRow .el-row .el-col {
   margin-bottom: 20px;
   padding: 0 !important;
   margin-right: 20px;

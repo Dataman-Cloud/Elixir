@@ -5,7 +5,7 @@ import fetch from '@/utils/fetch'
 
 export function listApp () {
   return fetch({
-    url: 'v1/apps/user/list',
+    url: 'v1/apps',
     method: 'get'
   })
 }
@@ -48,7 +48,7 @@ export function stop (id) {
 
 export function extend (id, instances) {
   return fetch({
-    url: `v1/apps/${id}`,
+    url: `v1/apps/${id}/scale`,
     method: 'put',
     data: instances
   })

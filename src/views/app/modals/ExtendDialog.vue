@@ -13,37 +13,45 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        dialogVisible: false,
-        rules: {
-          instances: [
-            { required: true, message: '实例数不能为空' },
-            { type: 'number', message: '只能输入数字' }
-          ]
-        },
-        form: {
-          instances: null
-        }
-      }
-    },
-    methods: {
-      open: function (data = {}) {
-        this.form.instances = data.instances
-        this.$refs.dialog.open()
+export default {
+  data () {
+    return {
+      dialogVisible: false,
+      instancesTemp: null,
+      form: {
+        instances: null
       },
-      confirm: function (formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.$emit('ok', this.form)
-            this.dialogVisible = false
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
+      rules: {
+        instances: [
+          { required: true, message: '实例数不能为空' },
+          { type: 'number', message: '只能输入数字' }
+        ]
       }
     }
+  },
+  methods: {
+    open: function (data = {}) {
+      this.form.instances = data.task_count
+      this.instancesTemp = data.task_count
+      this.$refs.dialog.open()
+    },
+    confirm: function (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if (this.form.instances === this.instancesTemp) {
+            this.$notify({
+              message: '容器个数未变化'
+            })
+            return false
+          }
+          this.$emit('ok', this.form)
+          this.dialogVisible = false
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
   }
+}
 </script>
