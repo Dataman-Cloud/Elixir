@@ -1,33 +1,33 @@
 <template>
   <div>
-    <el-form ref="form" :model="form" label-width="100px" class="demo-form-inline" :inline="true" label-position="left">
-      <el-form-item label="集群名" required>
+    <el-form ref="form" :rules="rules" :model="form" label-width="100px" class="demo-form-inline" :inline="true" label-position="left">
+      <el-form-item label="集群名" prop="clusterName" required>
         <el-select v-model="form.clusterName" @change="clusterValChange" @visible-change="selectCluster" placeholder="请选择集群">
           <el-option :key="cluster.id" v-for="cluster in clusters" :value="cluster.clusterLabel">{{cluster.clusterLabel}}</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="应用名" required>
+      <el-form-item label="应用名" prop="appName" required>
         <el-select v-model="form.appName" @change="appValChange" @visible-change="selectApps" placeholder="请选择应用">
           <el-option :key="app.id" v-for="app in apps" :value="app.id">{{app.id}}</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="实例名">
+      <el-form-item label="实例名" prop="taskName">
         <el-select v-model="form.taskName" @visible-change="selectTasks" placeholder="请选择实例">
           <el-option :key="task.id" v-for="task in tasks" :value="task.name">{{task.name}}</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="关键字">
+      <el-form-item label="关键字" prop="keyWord">
         <el-input v-model="form.keyWord"></el-input>
       </el-form-item>
-      <el-form-item label="起始时间" required>
+      <el-form-item label="起始时间" prop="start">
         <el-date-picker type="datetime" placeholder="选择日期" v-model="form.start" style="width: 100%;"></el-date-picker>
       </el-form-item>
-      <el-form-item label="截止时间" required>
+      <el-form-item label="截止时间" prop="end">
         <el-date-picker type="datetime" placeholder="选择日期" v-model="form.end" style="width: 100%;"></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询
-        </el-button>
+        <el-button type="primary" @click="onSubmit('form')">查询</el-button>
+        <el-button type="primary" @click="resetForm('form')">重置</el-button>
       </el-form-item>
     </el-form>
 
@@ -70,6 +70,17 @@ export default {
         keyWord: '',
         start: '',
         end: ''
+      },
+      rules: {
+        clusterName: [
+            { required: true, message: '请选择集群名称' }
+        ],
+        appName: [
+            { required: true, message: '请选择应用名称' }
+        ],
+        taskName: [
+            { required: true, message: '请选择实例名称' }
+        ]
       }
     }
   },
@@ -91,10 +102,17 @@ export default {
       this.logs = []
       this.infinite()
     },
-    onSubmit () {
+    onSubmit (form) {
       this.isContext = false
       this.logs = []
       this.infinite()
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          return false
+        }
+      })
     },
     async selectCluster (flag) {
       if (flag) {
@@ -113,6 +131,9 @@ export default {
         let data = await this.fetchTasks(this.form.appName)
         this.tasks = data.data
       }
+    },
+    resetForm () {
+      this.$refs.form.resetFields()
     },
     infinite () {
       if (this.isContext) {
