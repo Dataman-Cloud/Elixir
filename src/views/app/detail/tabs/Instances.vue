@@ -20,15 +20,14 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column property="id" label="实例名称" width="200">
         <template scope="scope">
-          <router-link :title="scope.row.id" class="ellipsis" :to="{name: '实例详情', params: { host: scope.row.ip, id: scope.row.id, slaveId: scope.row.agentId}}">
+          <router-link v-if="scope.row.agentId" :title="scope.row.id" class="ellipsis" :to="{name: '实例详情', params: { host: scope.row.ip, id: scope.row.id, slaveId: scope.row.agentId}}">
             {{scope.row.id}}
           </router-link>
-           <small>IP:{{scope.row.ip}}
-            <span v-if="scope.row.port">:
-              <a :href="'http://'+ scope.row.ip + ':' + scope.row.port" target="_blank"> {{scope.row.port}} </a></span>
+          <span v-else class="ellipsis" :title="scope.row.id">{{scope.row.id}}</span>
+          <small v-if="scope.row.port">IP:{{scope.row.ip}}:
+            <a :href="'http://'+ scope.row.ip + ':' + scope.row.port" target="_blank"> {{scope.row.port}} </a>
           </small>
         </template>
-
       </el-table-column>
       <el-table-column property="status" label="状态">
       </el-table-column>
