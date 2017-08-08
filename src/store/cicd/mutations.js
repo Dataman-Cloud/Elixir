@@ -10,5 +10,8 @@ export default {
   },
   [type.FETCH_CICD] (state, cicd = []) {
     state.cicd = cicd
+  },
+  [type.FETCH_LISTJENKINS] (state, jenkins = []) {
+    state.jenkins.jenkins = jenkins
   }
 }

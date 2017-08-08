@@ -11,6 +11,9 @@ const state = {
   },
   cicd: {
     cicds: []
+  },
+  jenkins: {
+    jenkins: []
   }
 }
 
