@@ -96,7 +96,7 @@
         })
       },
       iniMonitorSSE () {
-        let monitorSseUrl = `${baseUrl}/v1/nodes/stats?ip=${this.$route.params.host}&slaveid=${this.$route.params.slaveId}&taskid=${this.$route.params.id}`
+        let monitorSseUrl = `${baseUrl}/v1/node/stats?ip=${this.$route.params.host}&slaveid=${this.$route.params.slaveId}&taskid=${this.$route.params.id}`
         this.sseInstance = new EventSource(monitorSseUrl)
         this.sseInstance.onmessage = e => this.pushMonitorData(e)
         this.sseInstance.error = e => this.sseInstance.close()

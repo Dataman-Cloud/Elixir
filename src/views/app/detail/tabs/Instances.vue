@@ -67,8 +67,8 @@ export default {
     },
     stdObj: function () {
       return this.currentRow ? {
-        stderr: `${baseUrl}/v1/apps/stdlog?hostip=${this.currentRow.ip}&slaveid=${this.currentRow.agentId}&taskid=${this.currentRow.id}&logtype=stderr`,
-        stdout: `${baseUrl}/v1/apps/stdlog?hostip=${this.currentRow.ip}&slaveid=${this.currentRow.agentId}&taskid=${this.currentRow.id}&logtype=stdout`
+        stderr: `${baseUrl}/v1/node/apps/stdlog?hostip=${this.currentRow.ip}&slaveid=${this.currentRow.agentId}&taskid=${this.currentRow.id}&logtype=stderr`,
+        stdout: `${baseUrl}/v1/node/apps/stdlog?hostip=${this.currentRow.ip}&slaveid=${this.currentRow.agentId}&taskid=${this.currentRow.id}&logtype=stdout`
       } : {
         stderr: 'javascript:void(0);',
         stdout: 'javascript:void(0);'

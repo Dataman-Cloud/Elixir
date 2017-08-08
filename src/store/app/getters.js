@@ -8,11 +8,11 @@ export default {
 }
 
 function checkOneHost (constraints = []) {
-  return constraints.some(item => item[0] === 'hostname')
+  return constraints.some(item => item.attribute === 'hostname')
 }
 
 function getSelectCluster (constraints = []) {
-  return constraints.find(item => item[0] === 'vcluster') ? constraints.find(item => item[0] === 'vcluster')[2] : ''
+  return constraints.find(item => item.attribute === 'vcluster') ? constraints.find(item => item.attribute === 'vcluster').value : ''
 }
 
 function getProlongations (topology = {}) {
