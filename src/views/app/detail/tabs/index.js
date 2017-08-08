@@ -9,3 +9,5 @@ export {default as Config} from './Config'
 export {default as Debug} from './Debug'
 
 export {default as Topology} from './Topology'
+
+export {default as GrayReleased} from './GrayReleased'
