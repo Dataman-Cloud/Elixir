@@ -48,7 +48,6 @@
 import { mapState } from 'vuex'
 import * as type from '@/store/app/mutations_types'
 import baseUrl from 'baseUrl'
-console.log(baseUrl)
 
 export default {
   data () {
