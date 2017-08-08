@@ -17,6 +17,10 @@
           <i class="fa fa-power-off"></i>
           停止
         </el-button>
+        <el-button type="primary" @click="openGrayReleased" :disabled="!currentRow">
+          <i class="fa fa-adjust"></i>
+          灰度发布
+          </el-button>
         <el-button type="danger" @click="openDelete" :disabled="!currentRows.length"><i class="ion-ios-minus-outline"></i> 删除应用</el-button>
       </span>
 
@@ -24,7 +28,7 @@
         <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入应用名称"></el-input>
       </el-button-group>
     </div>
-
+    <grayReleased-dialog @ok="grayReleasedOk" ref="grayReleasedDialog"></grayReleased-dialog>
     <extend-dialog @ok="extendOk" ref="extendDialog"></extend-dialog>
     <create-dialog @ok="createOk" ref="createDialog"></create-dialog>
 
@@ -83,13 +87,15 @@
   import Confirm from '@/utils/confirm'
   import ExtendDialog from '@/views/app/modals/ExtendDialog'
   import CreateDialog from '@/views/app/modals/CreateDialog'
+  import GrayReleasedDialog from '@/views/app/modals/GrayReleasedDialog'
   import * as type from '@/store/app/mutations_types'
   import * as app from '@/api/app'
 
   export default {
     components: {
       ExtendDialog,
-      CreateDialog
+      CreateDialog,
+      GrayReleasedDialog
     },
     data () {
       return {
@@ -119,6 +125,7 @@
         app.extend(this.currentRow.id, res)
           .then(data => this.fetchApps())
       },
+      grayReleasedOk () {},
       createOk () {
         app.extend(this.form)
           .then(data => this.fetchApps())
@@ -145,6 +152,9 @@
       },
       openExtend () {
         this.$refs.extendDialog.open(this.currentRow)
+      },
+      openGrayReleased () {
+        this.$refs.grayReleasedDialog.open(this.currentRow)
       },
       openCreate () {
         this.$refs.createDialog.open()
