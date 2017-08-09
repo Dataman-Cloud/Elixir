@@ -260,7 +260,7 @@
               <el-row :gutter="12">
                 <el-col :span="8">
                   <el-form-item prop="labels.PROLONGATIONTYPE" :rules="[{ required: form.labels.PROLONGATION4ROOTAPP, message: '拓扑选项不能为空' }]">
-                    <el-select v-model="form.labels.PROLONGATIONTYPE" placeholder="请选择">
+                    <el-select v-model="form.labels.JBORG_PROLONGATIONTYPE" placeholder="请选择">
                       <el-option value="">空</el-option>
                       <el-option value="CACHE">CACHE</el-option>
                       <el-option value="DB">DB</el-option>
@@ -270,7 +270,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item prop="labels.PROLONGATION4ROOTAPP" :rules="[{ required: form.labels.PROLONGATIONTYPE, message: '拓扑名称不能为空' }]">
-                    <el-input v-model="form.labels.PROLONGATION4ROOTAPP"></el-input>
+                    <el-input v-model="form.labels.JBORG_PROLONGATION4ROOTAPP"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>

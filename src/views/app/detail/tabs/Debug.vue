@@ -1,7 +1,7 @@
 <template>
   <div class="debug-content">
-    <ul class="debug-table" v-if="lastTaskFailure">
-      <li v-for="(value, key) in lastTaskFailure" :key="key">
+    <ul class="debug-table" v-if="taskFailure">
+      <li v-for="(value, key) in taskFailure[0]" :key="key">
         <div>
           <span>{{key}}</span>
         </div>
@@ -22,8 +22,8 @@ export default {
   },
   computed: {
     ...mapState({
-      lastTaskFailure (state) {
-        return state.app.app.lastTaskFailure
+      taskFailure ({app}) {
+        return app.app.taskFailure
       }
     })
   }
