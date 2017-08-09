@@ -6,6 +6,7 @@ import user from './user'
 import cicd from './cicd'
 import elastic from './elastic'
 import log from './log'
+import compose from './compose'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     user,
     cicd,
     elastic,
-    log
+    log,
+    compose
   }
 })

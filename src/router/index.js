@@ -3,20 +3,24 @@ import Router from 'vue-router'
 import Layout from '@/views/layout/Layout'
 import RegistryBase from '@/views/registry/index'
 import AppList from '@/views/app/list/List'
-import CicdList from '@/views/cicd/list/List'
-import ElasticList from '@/views/elastic/list/List'
-import LogList from '@/views/log/list/List'
+import RegistryList from '@/views/registry/list/List'
 
 const AppDetail = () => import('../views/app/detail/Detail')
 const AppInstance = () => import('../views/app/instance/Instance')
 
+const CicdList = () => import('../views/cicd/list/List')
 const BuildDetail = () => import('../views/cicd/detail/Detail')
 
-const RegistryList = () => import('../views/registry/list/List')
 const HistoryList = () => import('../views/registry/history/List')
 const WareHouse = () => import('../views/registry/detail/Detail')
 
+const ElasticList = () => import('../views/elastic/list/List')
 const HistoryDetail = () => import('../views/elastic/detail/Detail')
+
+const LogList = () => import('../views/log/list/List')
+
+const ComposeList = () => import('../views/compose/list/List')
+const ComposeDetail = () => import('../views/compose/detail/Detail')
 
 Vue.use(Router)
 
@@ -36,6 +40,16 @@ export const constantRouterMap = [
       { path: 'list', component: AppList, name: '应用列表' },
       { path: 'detail/:id', component: AppDetail, name: '应用详情' },
       { path: 'instances/:host/:id/:slaveId', component: AppInstance, name: '实例详情' }
+    ]
+  },
+  {
+    path: '/compose',
+    redirect: '/compose/list',
+    name: '编排',
+    component: Layout,
+    children: [
+      { path: 'list', component: ComposeList, name: '编排列表' },
+      { path: 'detail/:id', component: ComposeDetail, name: '编排详情' }
     ]
   },
   {
