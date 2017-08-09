@@ -10,9 +10,9 @@
         </slot>
       </ul>
     </div>
-    <infinite-loading spinner="bubbles" :on-infinite="onInfinite" ref="infiniteLoading">
+    <infinite-loading spinner="spiral" :on-infinite="onInfinite" ref="infiniteLoading">
         <span slot="no-more">
-          There is no more Hacker News :(
+          There is no more Log :(
         </span>
     </infinite-loading>
   </div>

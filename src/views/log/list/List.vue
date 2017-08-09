@@ -8,46 +8,49 @@
       </el-form-item>
       <el-form-item label="应用名" prop="appName" required>
         <el-select v-model="form.appName" @change="appValChange" @visible-change="selectApps" placeholder="请选择应用">
-          <el-option :key="app.id" v-for="app in apps" :value="app.id">{{app.id}}</el-option>
+          <el-option :key="app.id" v-for="app in apps" :label="app.name" :value="app.id">{{app.name}}</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="实例名" prop="taskName">
-        <el-select v-model="form.taskName" @visible-change="selectTasks" placeholder="请选择实例">
-          <el-option :key="task.id" v-for="task in tasks" :value="task.name">{{task.name}}</el-option>
+      <el-form-item label="实例名" prop="taskId">
+        <el-select v-model="form.taskId" @visible-change="selectTasks" placeholder="请选择实例">
+          <el-option value="''" label="全部实例">全部实例</el-option>
+          <el-option :key="task.id" v-for="task in tasks" :label="task.name" :value="task.id">{{task.name}}</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="关键字" prop="keyWord">
+      <el-form-item label="关键字" prop="key">
         <el-input v-model="form.keyWord"></el-input>
       </el-form-item>
-      <el-form-item label="起始时间" prop="start">
-        <el-date-picker type="datetime" placeholder="选择日期" v-model="form.start" style="width: 100%;"></el-date-picker>
+      <el-form-item label="起始时间" prop="beginTime">
+        <el-date-picker type="datetime" placeholder="选择日期" v-model="form.beginTime" style="width: 100%;"></el-date-picker>
       </el-form-item>
-      <el-form-item label="截止时间" prop="end">
-        <el-date-picker type="datetime" placeholder="选择日期" v-model="form.end" style="width: 100%;"></el-date-picker>
+      <el-form-item label="截止时间" prop="endTime">
+        <el-date-picker type="datetime" placeholder="选择日期" v-model="form.endTime" style="width: 100%;"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">查询</el-button>
         <el-button type="primary" @click="resetForm('form')">重置</el-button>
+        <a class="el-button link-button" v-if="logs.length" :href="downloadUrl">下载</a>
       </el-form-item>
     </el-form>
 
     <infinite-list :items="logs" ref="infiniteList" @onInfinite="infinite" class="log-list">
       <template slot="item" scope="props">
-        <p class="logItem" @click.stop.prevent="getContext">
-          <span>标题：</span>
-          <span>{{props.row.title}}</span>
+        <p class="logItem">
+          <span>{{props.row.fields.time[0] | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}} {{props.row.fields.log[0]}}</span>
         </p>
-        <!--<i class="fa fa-arrow-right" @click.stop.prevent="getContext"></i>-->
       </template>
     </infinite-list>
   </div>
 </template>
 <script>
 import InfiniteList from '@/components/infinite-loading-list/InfiniteList'
-import axios from 'axios'
 import { mapActions } from 'vuex'
 import * as type from '@/store/log/mutations_types'
-const api = 'http://hn.algolia.com/api/v1/search_by_date'
+import * as fetchLogs from '@/api/log'
+import BASE_URL from 'baseUrl'
+
+const MAX_ITEMS = 100
+const MAX_DOWNLOAD_ITEMS = 500
 
 export default {
   components: {
@@ -58,30 +61,40 @@ export default {
       clusters: [],
       apps: [],
       tasks: [],
-      logMaxLen: 1000,
       logs: [],
-      tag: 'story',
       isContext: false,
-      judgeValue: '',
+      ajaxLicense: false,
       form: {
         clusterName: '',
         appName: '',
-        taskName: '',
-        keyWord: '',
-        start: '',
-        end: ''
+        taskId: '',
+        key: '',
+        beginTime: '',
+        endTime: '',
+        page: 0,
+        size: 20
       },
       rules: {
         clusterName: [
-            { required: true, message: '请选择集群名称' }
+          { required: true, message: '请选择集群' }
         ],
         appName: [
-            { required: true, message: '请选择应用名称' }
+          { required: true, message: '请选择应用' }
         ],
-        taskName: [
-            { required: true, message: '请选择实例名称' }
+        taskId: [
+          { required: true, message: '请选择实例' }
         ]
       }
+    }
+  },
+  computed: {
+    base64Form: function () {
+      // 下载限制为 MAX_DOWNLOAD_ITEMS 条数据
+      let downQuery = this._.merge({}, this.form, { page: 0, size: MAX_DOWNLOAD_ITEMS })
+      return window.btoa(JSON.stringify(downQuery))
+    },
+    downloadUrl: function () {
+      return `${BASE_URL}/v1/logger/downloadESLogger?json=${this.base64Form}`
     }
   },
   methods: {
@@ -91,24 +104,21 @@ export default {
       fetchTasks: type.FETCH_SELECTTASKS
     }),
     appValChange () {
-      this.form.taskName = ''
+      this.form.taskId = ''
     },
     clusterValChange (val) {
       this.form.appName = ''
-      this.form.taskName = ''
+      this.form.taskId = ''
     },
-    getContext () {
-      this.isContext = true
-      this.logs = []
-      this.infinite()
+    download () {
+      this.$refs.form.validate((valid) => valid ? fetchLogs.download(this.base64Form) : false)
     },
     onSubmit (form) {
-      this.isContext = false
-      this.logs = []
-      this.infinite()
+      this.ajaxLicense = true
       this.$refs.form.validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.submitLoading = true
+          this.infinite()
         } else {
           return false
         }
@@ -139,22 +149,20 @@ export default {
       if (this.isContext) {
         // TODO 调用上下文的 ajax
       } else {
-        axios.get(api, {
-          params: {
-            tags: this.tag,
-            page: this.logs.length / 20 + 1
-          }
-        }).then((res) => {
-          if (res.data.hits.length) {
-            this.logs = this.logs.concat(res.data.hits)
-            this.$refs.infiniteList.$emit('InfiniteLoaded')
-            if (this.logs.length / 20 === 10) {
+        if (this.ajaxLicense) {
+          this.form.page = this.logs.length / this.form.size
+          fetchLogs.query(this.form).then((res) => {
+            if (res.data.hits.hits.length) {
+              this.logs = this.logs.concat(res.data.hits.hits)
+              this.$refs.infiniteList.$emit('InfiniteLoaded')
+              if (this.logs.length / this.form.size === MAX_ITEMS) {
+                this.$refs.infiniteList.$emit('InfiniteComplete')
+              }
+            } else {
               this.$refs.infiniteList.$emit('InfiniteComplete')
             }
-          } else {
-            this.$refs.infiniteList.$emit('InfiniteComplete')
-          }
-        })
+          })
+        }
       }
     }
   }
@@ -181,5 +189,15 @@ export default {
   background: rgba(52, 152, 219, 0.4) url(../../../assets/arrow-right.png) right no-repeat;
   color: #fff;
   background-size: 20px 20px;
+}
+
+.link-button {
+  color: #fff;
+  text-decoration: none;
+}
+
+.link-button:hover {
+  background-color: #358577;
+  border-color: #358577;
 }
 </style>
