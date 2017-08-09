@@ -4,7 +4,7 @@ import {countHealthyState} from '@/views/app/services/app'
 export default {
   oneContainer: state => checkOneHost(state.app.constraints),
   selectCluster: state => getSelectCluster(state.app.constraints),
-  prolongations: state => getProlongations(state.app.PROLONGATION)
+  prolongations: state => getProlongations(state.app.prolongation)
 }
 
 function checkOneHost (constraints = []) {

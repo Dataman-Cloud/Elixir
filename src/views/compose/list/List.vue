@@ -83,12 +83,9 @@ export default {
     },
     async listCompose () {
       this.listLoading = true
-      try {
-        this.composes = await this.fetchComposes()
-        this.listLoading = false
-      } catch (error) {
-        this.listLoading = false
-      }
+      this.composes = await this.fetchComposes().catch(() => {})
+      // await catch is a hack func to call this expression
+      this.listLoading = false
     },
     openCreate () {
       this.$refs.createCompose.open()
