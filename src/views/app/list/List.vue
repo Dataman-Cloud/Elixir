@@ -126,10 +126,7 @@
           .then(data => this.fetchApps())
       },
       grayReleasedOk () {},
-      createOk () {
-        app.extend(this.form)
-          .then(data => this.fetchApps())
-      },
+      createOk () {},
       handleCurrentChange (val) {
         this.currentRows = val
       },
