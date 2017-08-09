@@ -21,3 +21,21 @@ export function selectTasks (app) {
   })
 }
 
+export function query (data) {
+  return fetch({
+    url: 'v1/logger/eslogger',
+    method: 'post',
+    data: data
+  })
+}
+
+export function download (data) {
+  return fetch({
+    url: 'v1/logger/downloadESLogger',
+    method: 'get',
+    params: {
+      json: data
+    }
+  })
+}
+
