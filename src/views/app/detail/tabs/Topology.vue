@@ -10,18 +10,18 @@
             <el-table-column property="status" label="运行状态" width="100"></el-table-column>
             <el-table-column label="健康状态">
               <!-- <template scope="app">
-            <el-tooltip class="item" effect="dark" placement="top">
-              <div slot="content">
-                    <span v-for="(status, index) in app.row.healthData" :key="index" class="state">
-                      状态: <span :class="status.state"></span> {{status.state}} 数量: {{status.quantity}}<br>
-                    </span>
-              </div>
-              <ul class="progress">
-                <li v-for="(status, index) in app.row.healthData" :key="index" :class="status.state"
-                    :style="{width: (status.quantity / app.row.instances) * 100 + '%'}"></li>
-              </ul>
-            </el-tooltip>
-          </template> -->
+              <el-tooltip class="item" effect="dark" placement="top">
+                <div slot="content">
+                      <span v-for="(status, index) in app.row.healthData" :key="index" class="state">
+                        状态: <span :class="status.state"></span> {{status.state}} 数量: {{status.quantity}}<br>
+                      </span>
+                </div>
+                <ul class="progress">
+                  <li v-for="(status, index) in app.row.healthData" :key="index" :class="status.state"
+                      :style="{width: (status.quantity / app.row.instances) * 100 + '%'}"></li>
+                </ul>
+              </el-tooltip>
+            </template> -->
               <template scope="app">
                 <span>总数: </span>
                 <i>{{app.row.health.total}} </i>
@@ -64,8 +64,7 @@ export default {
     ])
   },
   methods: {},
-  mounted () {
-  }
+  mounted () {}
 }
 </script>
 

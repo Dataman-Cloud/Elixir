@@ -68,8 +68,8 @@ export const APP_BASE = {
   healthChecks: [],
   healthCheck: {},
   labels: {
-    PROLONGATIONTYPE: null,
-    PROLONGATION4ROOTAPP: null
+    JBORG_PROLONGATIONTYPE: null,
+    JBORG_PROLONGATION4ROOTAPP: null
   },
   proxy: {
     enabled: false,
