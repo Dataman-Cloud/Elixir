@@ -41,13 +41,36 @@
     </dl>
 
     <dl class="detail-config">
+      <dt>HTTP 代理</dt>
+      <dd>
+        <dl>
+          <dd>
+            <small>{{version.proxy.enabled ? '开启' : '关闭' }} </small>
+          </dd>
+        </dl>
+        <dl>
+          <dt>别名: </dt>
+          <dd>
+            <small>{{ version.proxy.alias ? version.proxy.alias: '-'}} </small>
+          </dd>
+        </dl>
+        <dl>
+          <dt>代理端口: </dt>
+          <dd>
+            <small>{{ version.proxy.listen ? version.proxy.listen : '-'}} </small>
+          </dd>
+        </dl>
+      </dd>
+    </dl>
+
+    <dl class="detail-config">
       <dt>端口映射</dt>
       <dd>
         <template v-if="version.container.docker.portMappings.length">
           <el-table :data="version.container.docker.portMappings" stripe style="width: 100%;">
             <el-table-column prop="containerPort" label="应用端口" width="200"></el-table-column>
             <el-table-column prop="protocol" label="协议" width="200"></el-table-column>
-            <el-table-column prop="servicePort" label="映射端口" width="200"></el-table-column>
+            <el-table-column prop="name" label="端口名称" width="200"></el-table-column>
           </el-table>
         </template>
         <span v-else>-</span>
@@ -122,22 +145,22 @@
 </template>
 
 <script>
-  import {mapState, mapGetters} from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
-  export default {
-    data () {
-      return {}
-    },
-    computed: {
-      ...mapState({
-        version (state) {
-          return state.app.app.version
-        }
-      }),
-      ...mapGetters([
-        'oneContainer'
-      ])
-    }
+export default {
+  data () {
+    return {}
+  },
+  computed: {
+    ...mapState({
+      version ({app}) {
+        return app.app.version
+      }
+    }),
+    ...mapGetters([
+      'oneContainer'
+    ])
   }
+}
 </script>
 
