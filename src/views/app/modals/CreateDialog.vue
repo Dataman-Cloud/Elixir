@@ -85,7 +85,7 @@
               <el-row :gutter="12">
                 <el-col :span="4">
                   <el-form-item prop="proxy.enabled">
-                    <el-switch on-text="" off-text="" v-model="form.proxy.enabled"></el-switch>
+                    <el-switch on-color="#01C4BC" v-model="form.proxy.enabled"></el-switch>
                   </el-form-item>
                 </el-col>
                 <el-col :span="7">
@@ -118,7 +118,7 @@
               <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings" :key="index" class="wrapContainerRow">
                 <el-row :gutter="12">
                   <el-col :span="9">
-                    <el-form-item :prop="'container.docker.portMappings.' + index + '.containerPort'" :key="portMapping.index" :rules="[{ required: true, message: '容器端口不能为空' }]">
+                    <el-form-item :prop="'container.docker.portMappings.' + index + '.containerPort'" :key="portMapping.index" :rules="[{ required: true, message: '容器端口不能为空' },{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
                       <el-input v-model.number="portMapping.containerPort">
                         <template slot="prepend">容器端口</template>
                       </el-input>
@@ -133,7 +133,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="9">
-                    <el-form-item :prop="'container.docker.portMappings.' + index + '.name'" :key="portMapping.index" :rules="[{ required: true, message: '端口名不能为空' }]">
+                    <el-form-item :prop="'container.docker.portMappings.' + index + '.name'" :key="portMapping.index" :rules="[{ required: true, message: '端口名不能为空' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
                       <el-input v-model="portMapping.name">
                         <template slot="prepend">端口名</template>
                       </el-input>
@@ -204,7 +204,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="10">
-                    <el-form-item :prop="'healthCheck.portName'" :rules="[{ required: form.container.docker.portMappings.length, message: 'portName is required' }]">
+                    <el-form-item :prop="'healthCheck.portName'" :rules="[{ required: form.container.docker.portMappings.length, message: 'portName is required' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
                       <el-input type="text" v-model.number="form.healthCheck.portName">
                         <template slot="prepend">端口名</template>
                       </el-input>
