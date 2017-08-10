@@ -45,3 +45,41 @@ export function create (data) {
     data: data
   })
 }
+
+export function build (data, jobid) {
+  return fetch({
+    url: `/v1/cicd/jenkins/jobs/${jobid}/build`,
+    method: 'post',
+    params: data
+  })
+}
+
+export function jenkins () {
+  return fetch({
+    url: 'v1/cicd/jenkins/credential/git',
+    method: 'get'
+  })
+}
+
+export function manage (data) {
+  return fetch({
+    url: 'v1/cicd/jenkins/credential',
+    method: 'post',
+    params: data
+  })
+}
+
+export function manageDel (id) {
+  return fetch({
+    url: `v1/cicd/jenkins/credential/${id}`,
+    method: 'delete'
+  })
+}
+
+export function listJenkins () {
+  return fetch({
+    url: 'v1/cicd/jenkins/credential',
+    method: 'get'
+  })
+}
+

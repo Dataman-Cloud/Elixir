@@ -27,12 +27,10 @@
         this.dialogVisible = false
         this.log = ''
       },
-      open: function (jobName, buildNum) {
+      async open (jobName, buildNum) {
         this.loading = true
-        fetchCicd.logDetail(this.$route.params.name, buildNum)
-          .then((res) => {
-            this.log = res.data
-          })
+        let res = await fetchCicd.logDetail(this.$route.params.name, buildNum)
+        this.log = res.resMsg
         this.$refs.dialog.open()
       }
     }
