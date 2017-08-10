@@ -74,7 +74,8 @@ export const APP_BASE = {
   proxy: {
     enabled: false,
     alias: null,
-    listen: null
+    listen: null,
+    sticky: false
   },
   cmd: null
 }

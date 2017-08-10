@@ -41,7 +41,7 @@
     </dl>
 
     <dl class="detail-config">
-      <dt>HTTP 代理</dt>
+      <dt>访问网关</dt>
       <dd>
         <dl>
           <dd>
@@ -55,7 +55,13 @@
           </dd>
         </dl>
         <dl>
-          <dt>代理端口: </dt>
+          <dt>会话保持: </dt>
+          <dd>
+            <small>{{ version.proxy.sticky ? '开启' : '关闭'}} </small>
+          </dd>
+        </dl>
+        <dl>
+          <dt>网关端口: </dt>
           <dd>
             <small>{{ version.proxy.listen ? version.proxy.listen : '-'}} </small>
           </dd>
