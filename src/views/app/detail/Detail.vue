@@ -23,10 +23,6 @@
         <span class="el-tab-label" slot="label">
           <a></a>拓扑图</span>
       </el-tab-pane>
-      <el-tab-pane name="grayReleased">
-        <span class="el-tab-label" slot="label">
-          <a></a>灰度</span>
-      </el-tab-pane>
 
       <transition name="fade" mode="out-in">
         <component v-bind:is="currentView"></component>
@@ -35,7 +31,7 @@
   </div>
 </template>
 <script>
-import { Instances, Config, Debug, Topology, GrayReleased } from './tabs'
+import { Instances, Config, Debug, Topology } from './tabs'
 import { mapState } from 'vuex'
 import store from '@/store'
 import * as type from '@/store/app/mutations_types'
@@ -45,8 +41,7 @@ export default {
     instances: Instances,
     config: Config,
     debug: Debug,
-    topology: Topology,
-    grayReleased: GrayReleased
+    topology: Topology
   },
   data () {
     return {
