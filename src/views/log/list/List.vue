@@ -8,7 +8,7 @@
       </el-form-item>
       <el-form-item label="应用名" prop="appName" required>
         <el-select v-model="form.appName" @change="appValChange" @visible-change="selectApps" placeholder="请选择应用">
-          <el-option :key="app.id" v-for="app in apps" :label="app.name" :value="app.id">{{app.name}}</el-option>
+          <el-option :key="app.name" v-for="app in apps" :label="app.name" :value="app.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="实例名" prop="taskId">
@@ -138,7 +138,9 @@ export default {
     },
     async selectTasks (flag) {
       if (flag) {
-        let data = await this.fetchTasks(this.form.appName)
+        const filterAppArray = value => value.name === this.form.appName
+        let appObj = this.apps.find(filterAppArray) || {}
+        let data = await this.fetchTasks(appObj.id)
         this.tasks = data.data
       }
     },
