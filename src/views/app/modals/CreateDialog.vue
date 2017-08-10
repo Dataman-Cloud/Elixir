@@ -81,27 +81,32 @@
         <el-collapse accordion class="advance" v-model="activeCollapse">
           <el-collapse-item name="advance" title="高级设置">
 
-            <el-form-item label=" Http 代理">
+            <el-form-item label="访问网关">
               <el-row :gutter="12">
                 <el-col :span="4">
-                  <el-form-item :prop="form.proxy.enabled">
+                  <el-form-item prop="proxy.enabled">
                     <el-switch on-text="" off-text="" v-model="form.proxy.enabled"></el-switch>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
-                  <el-form-item :prop="form.proxy.alias">
-                    <el-input v-model="form.proxy.alias" placeholder="代理别名"></el-input>
+                <el-col :span="7">
+                  <el-form-item prop="proxy.alias">
+                    <el-input v-model="form.proxy.alias" placeholder="网关别名" :disabled="!form.proxy.enabled"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
-                  <el-form-item :prop="form.proxy.listen" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
-                    <el-input v-model="form.proxy.listen" placeholder="端口"></el-input>
+                <el-col :span="7">
+                  <el-form-item prop="proxy.listen" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
+                    <el-input v-model.number="form.proxy.listen" placeholder="端口" :disabled="!form.proxy.enabled"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                  <el-form-item prop="proxy.sticky">
+                    <el-switch on-color="#01C4BC" v-model="form.proxy.sticky" :disabled="!form.proxy.enabled"></el-switch>
                   </el-form-item>
                 </el-col>
               </el-row>
             </el-form-item>
 
-            <div v-if="form.container.docker.network === 'bridge'">
+            <div>
               <el-form-item label="端口映射">
                 <el-row :gutter="5">
                   <el-col :span="9">
@@ -444,7 +449,8 @@ export default {
         this.$set(this.form, 'proxy', {
           enabled: false,
           alias: null,
-          listen: null
+          listen: null,
+          sticky: false
         })
       }
     }
