@@ -73,7 +73,8 @@ export const APP_BASE = {
   },
   proxy: {
     enabled: false,
-    alias: null
+    alias: null,
+    listen: null
   },
   cmd: null
 }
@@ -99,8 +100,7 @@ export const DYNAMIC_CONFIG = {
   },
   portMappings: {
     containerPort: '',
-    protocol: 'tcp',
-    servicePort: ''
+    protocol: 'tcp'
   },
   volumes: {
     containerPath: '',
@@ -126,7 +126,8 @@ export const APP_FORM_RULES = {
     { type: 'number', min: 0.01, message: 'cpu最小值为0.01' }
   ],
   mem: [
-    { required: true, message: '内存不能为空最小值为16' }
+    { required: true, message: '内存不能为空最小值为16' },
+    { type: 'number', min: 16, message: 'cpu最小值为0.01' }
   ],
   instances: [
     { required: true, message: '容器个数不能为空' },

@@ -17,8 +17,8 @@
         </el-form-item>
         <el-form-item label="网络模式" prop="container.docker.network">
           <el-radio-group v-model="form.container.docker.network" @change="networkChange">
-            <el-radio label="bridge" :disabled="isUpdate">网桥模式</el-radio>
-            <el-radio label="host" :disabled="isUpdate">HOST 模式</el-radio>
+            <el-radio label="bridge">网桥模式</el-radio>
+            <el-radio label="host">HOST 模式</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="容器规格" class="spec">
@@ -81,18 +81,31 @@
         <el-collapse accordion class="advance" v-model="activeCollapse">
           <el-collapse-item name="advance" title="高级设置">
 
+            <el-form-item label=" Http 代理">
+              <el-row :gutter="12">
+                <el-col :span="4">
+                  <el-form-item :prop="form.proxy.enabled">
+                    <el-switch on-text="" off-text="" v-model="form.proxy.enabled"></el-switch>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item :prop="form.proxy.alias">
+                    <el-input v-model="form.proxy.alias" placeholder="代理别名"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item :prop="form.proxy.listen" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
+                    <el-input v-model="form.proxy.listen" placeholder="端口"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form-item>
+
             <div v-if="form.container.docker.network === 'bridge'">
-              <el-form-item label="端口地址">
+              <el-form-item label="端口映射">
                 <el-row :gutter="5">
                   <el-col :span="9">
                     <el-button type="primary" size="small" @click="addConfig('portMappings')">添加应用端口地址</el-button>
-                  </el-col>
-                  <el-col :span="8">
-                    Http 代理
-                    <el-switch on-text="" off-text="" v-model="form.proxy.enabled" :disabled="!hasPortMapping"></el-switch>
-                  </el-col>
-                  <el-col :span="6">
-                    <el-input v-model="form.proxy.alias" placeholder="代理别名" :disabled="!hasPortMapping || !form.proxy.enabled"></el-input>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -112,13 +125,6 @@
                         <el-option value="tcp">tcp</el-option>
                         <el-option value="udp">udp</el-option>
                       </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="9">
-                    <el-form-item :prop="'container.docker.portMappings.' + index + '.hostPort'" :key="portMapping.index" :rules="[{ required: true, message: '映射端口不能为空' }]">
-                      <el-input v-model.number="portMapping.hostPort">
-                        <template slot="prepend">映射端口</template>
-                      </el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="9">
@@ -430,11 +436,16 @@ export default {
         })
       }
       if (newValue.length === 0) {
+        this.$delete(this.form, 'healthCheck')
+      }
+    },
+    'form.proxy.enabled': function (newValue) {
+      if (!newValue) {
         this.$set(this.form, 'proxy', {
           enabled: false,
-          alias: null
+          alias: null,
+          listen: null
         })
-        this.$delete(this.form, 'healthCheck')
       }
     }
   }
