@@ -106,113 +106,118 @@
               </el-row>
             </el-form-item>
 
-            <div>
-              <el-form-item label="端口映射">
-                <el-row :gutter="5">
-                  <el-col :span="9">
-                    <el-button type="primary" size="small" @click="addConfig('portMappings')">添加应用端口地址</el-button>
-                  </el-col>
-                </el-row>
-              </el-form-item>
+            <el-form-item label="端口映射">
+              <el-row :gutter="5">
+                <el-col :span="9">
+                  <el-button type="primary" size="small" @click="addConfig('portMappings')">添加应用端口地址</el-button>
+                </el-col>
+              </el-row>
+            </el-form-item>
 
-              <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings" :key="index" class="wrapContainerRow">
-                <el-row :gutter="12">
-                  <el-col :span="9">
-                    <el-form-item :prop="'container.docker.portMappings.' + index + '.containerPort'" :key="portMapping.index" :rules="[{ required: true, message: '容器端口不能为空' },{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
-                      <el-input v-model.number="portMapping.containerPort">
-                        <template slot="prepend">容器端口</template>
-                      </el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="9">
-                    <el-form-item :prop="'container.docker.portMappings.' + index + '.protocol'" :key="portMapping.index">
-                      <el-select v-model="portMapping.protocol">
-                        <el-option value="tcp">tcp</el-option>
-                        <el-option value="udp">udp</el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="9">
-                    <el-form-item :prop="'container.docker.portMappings.' + index + '.name'" :key="portMapping.index" :rules="[{ required: true, message: '端口名不能为空' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
-                      <el-input v-model="portMapping.name">
-                        <template slot="prepend">端口名</template>
-                      </el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="2">
-                    <el-button @click.prevent="removeConfig(index, 'portMappings')">
-                      <i class="el-icon-delete"></i>
-                    </el-button>
-                  </el-col>
-                </el-row>
-              </el-form-item>
-            </div>
+            <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings" :key="index" class="wrapContainerRow">
+              <el-row :gutter="12">
+                <el-col :span="9">
+                  <el-form-item :prop="'container.docker.portMappings.' + index + '.containerPort'" :key="portMapping.index" :rules="[{ required: true, message: '容器端口不能为空' },{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
+                    <el-input v-model.number="portMapping.containerPort">
+                      <template slot="prepend">容器端口</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="9">
+                  <el-form-item :prop="'container.docker.portMappings.' + index + '.protocol'" :key="portMapping.index">
+                    <el-select v-model="portMapping.protocol">
+                      <el-option value="tcp">tcp</el-option>
+                      <el-option value="udp">udp</el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="9">
+                  <el-form-item :prop="'container.docker.portMappings.' + index + '.name'" :key="portMapping.index" :rules="[{ required: true, message: '端口名不能为空' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
+                    <el-input v-model="portMapping.name">
+                      <template slot="prepend">端口名</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="2">
+                  <el-button @click.prevent="removeConfig(index, 'portMappings')">
+                    <i class="el-icon-delete"></i>
+                  </el-button>
+                </el-col>
+              </el-row>
+            </el-form-item>
 
-            <div v-if="form.container.docker.portMappings.length">
-              <el-form-item label="健康检查"></el-form-item>
-              <el-form-item class="wrapContainerRow">
-                <el-row :gutter="20">
-                  <el-col :span="10">
-                    <el-form-item :prop="'healthCheck.protocol'" :rules="[{ required: form.container.docker.portMappings.length, message: 'protocol is required' }]">
-                      <el-select v-model="form.healthCheck.protocol">
-                        <el-option value="">空</el-option>
-                        <el-option value="TCP">TCP</el-option>
-                        <el-option value="HTTP">HTTP</el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="10" v-if="form.healthCheck.protocol === 'HTTP'">
-                    <el-form-item :prop="'healthCheck.path'" :rules="[{ required: form.container.docker.portMappings.length, message: 'path is required' }]">
-                      <el-input v-model="form.healthCheck.path">
-                        <template slot="prepend">路径</template>
-                      </el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="10">
-                    <el-form-item :prop="'healthCheck.gracePeriodSeconds'" :rules="[{ type: 'integer', min: 1, message: '宽限时间为正整数' },{ required: form.container.docker.portMappings.length, message: 'gracePeriodSeconds is required' }]">
-                      <el-input type="number" v-model.number="form.healthCheck.gracePeriodSeconds">
-                        <template slot="prepend">宽限时间(秒)</template>
-                      </el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="10">
-                    <el-form-item :prop="'healthCheck.intervalSeconds'" :rules="[{ type: 'integer', min: 1, message: '检查间隔为正整数' },{ required: form.container.docker.portMappings.length, message: 'intervalSeconds is required' }]">
-                      <el-input type="number" v-model.number="form.healthCheck.intervalSeconds">
-                        <template slot="prepend">检查间隔(秒)</template>
-                      </el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="10">
-                    <el-form-item :prop="'healthCheck.delaySeconds'" :rules="[{ type: 'integer', min: 1, message: '延迟时间为正整数' },{ required: form.container.docker.portMappings.length, message: 'delaySeconds is required' }]">
-                      <el-input type="number" v-model.number="form.healthCheck.delaySeconds">
-                        <template slot="prepend">延迟时间(秒)</template>
-                      </el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="10">
-                    <el-form-item :prop="'healthCheck.timeoutSeconds'" :rules="[{ type: 'integer', min: 1, message: '检查超时时间为正整数' },{ required: form.container.docker.portMappings.length, message: 'timeoutSeconds is required' }]">
-                      <el-input type="number" v-model.number="form.healthCheck.timeoutSeconds">
-                        <template slot="prepend">检查超时(秒)</template>
-                      </el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="10">
-                    <el-form-item :prop="'healthCheck.consecutiveFailures'" :rules="[{ type: 'integer', min: 1, message: '最多失败次数为正整数' },{ required: form.container.docker.portMappings.length, message: 'consecutiveFailures is required' }]">
-                      <el-input type="number" v-model.number="form.healthCheck.consecutiveFailures">
-                        <template slot="prepend">最多失败次数</template>
-                      </el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="10">
-                    <el-form-item :prop="'healthCheck.portName'" :rules="[{ required: form.container.docker.portMappings.length, message: 'portName is required' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
-                      <el-input type="text" v-model.number="form.healthCheck.portName">
-                        <template slot="prepend">端口名</template>
-                      </el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </el-form-item>
-            </div>
+            <el-form-item label="健康检查" v-if="form.container.docker.portMappings.length">
+              <el-row :gutter="5">
+                <el-col :span="9">
+                  <el-button type="primary" size="small" @click="addHealthCheck">添加健康检查</el-button>
+                </el-col>
+              </el-row>
+            </el-form-item>
+            <el-form-item class="wrapContainerRow" v-if="form.healthCheck">
+              <el-row :gutter="20">
+                <el-col :span="10">
+                  <el-form-item :prop="'healthCheck.protocol'" :rules="[{ required: true, message: 'protocol is required' }]">
+                    <el-select v-model="form.healthCheck.protocol">
+                      <el-option value="">空</el-option>
+                      <el-option value="TCP">TCP</el-option>
+                      <el-option value="HTTP">HTTP</el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10" v-if="form.healthCheck.protocol === 'HTTP'">
+                  <el-form-item :prop="'healthCheck.path'" :rules="[{ required: form.healthCheck.protocol, message: 'path is required' }]">
+                    <el-input v-model="form.healthCheck.path">
+                      <template slot="prepend">路径</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item :prop="'healthCheck.gracePeriodSeconds'" :rules="[{ type: 'integer', min: 1, message: '宽限时间为正整数' },{ required: form.healthCheck.protocol, message: 'gracePeriodSeconds is required' }]">
+                    <el-input type="number" v-model.number="form.healthCheck.gracePeriodSeconds">
+                      <template slot="prepend">宽限时间(秒)</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item :prop="'healthCheck.intervalSeconds'" :rules="[{ type: 'integer', min: 1, message: '检查间隔为正整数' },{ required: form.healthCheck.protocol, message: 'intervalSeconds is required' }]">
+                    <el-input type="number" v-model.number="form.healthCheck.intervalSeconds">
+                      <template slot="prepend">检查间隔(秒)</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item :prop="'healthCheck.delaySeconds'" :rules="[{ type: 'integer', min: 1, message: '延迟时间为正整数' },{ required: form.healthCheck.protocol, message: 'delaySeconds is required' }]">
+                    <el-input type="number" v-model.number="form.healthCheck.delaySeconds">
+                      <template slot="prepend">延迟时间(秒)</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item :prop="'healthCheck.timeoutSeconds'" :rules="[{ type: 'integer', min: 1, message: '检查超时时间为正整数' },{ required: form.healthCheck.protocol, message: 'timeoutSeconds is required' }]">
+                    <el-input type="number" v-model.number="form.healthCheck.timeoutSeconds">
+                      <template slot="prepend">检查超时(秒)</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item :prop="'healthCheck.consecutiveFailures'" :rules="[{ type: 'integer', min: 1, message: '最多失败次数为正整数' },{ required: form.healthCheck.protocol, message: 'consecutiveFailures is required' }]">
+                    <el-input type="number" v-model.number="form.healthCheck.consecutiveFailures">
+                      <template slot="prepend">最多失败次数</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item :prop="'healthCheck.portName'" :rules="[{ required: form.healthCheck.protocol, message: 'portName is required' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
+                    <el-input type="text" v-model.number="form.healthCheck.portName">
+                      <template slot="prepend">端口名</template>
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+                <el-button @click.prevent="removeHealthCheck">
+                  <i class="el-icon-delete"></i>
+                </el-button>
+              </el-row>
+            </el-form-item>
 
             <el-form-item label="环境变量">
               <el-button type="primary" size="small" @click="addConfig('envs')">添加环境变量</el-button>
@@ -352,6 +357,25 @@ export default {
         this.form[configName].push(config[configName])
       }
     },
+    addHealthCheck () {
+      if (!this.form.healthCheck) {
+        this.$set(this.form, 'healthCheck', {
+          protocol: 'TCP',
+          path: '',
+          delaySeconds: null,
+          gracePeriodSeconds: null,
+          intervalSeconds: null,
+          portName: null,
+          timeoutSeconds: null,
+          consecutiveFailures: null
+        })
+      } else {
+        this.$notify({
+          title: '提示',
+          message: '健康检查只能添加一条'
+        })
+      }
+    },
     setClusterConstraints () {
       let clusterIndex = this.form.constraints.findIndex(item => item.attribute === 'vcluster')
       this.form.constraints[clusterIndex].value = this.form.selectCluster
@@ -404,6 +428,9 @@ export default {
         this.form[configName].splice(index, 1)
       }
     },
+    removeHealthCheck () {
+      this.$delete(this.form, 'healthCheck')
+    },
     resetForm () {
       this.$refs.form.resetFields()
     },
@@ -428,20 +455,8 @@ export default {
   },
   watch: {
     'form.container.docker.portMappings': function (newValue) {
-      if (newValue.length && !this.form.healthCheck) {
-        this.$set(this.form, 'healthCheck', {
-          protocol: null,
-          path: null,
-          delaySeconds: null,
-          gracePeriodSeconds: null,
-          intervalSeconds: null,
-          portName: null,
-          timeoutSeconds: null,
-          consecutiveFailures: null
-        })
-      }
       if (newValue.length === 0) {
-        this.$delete(this.form, 'healthCheck')
+        this.removeHealthCheck()
       }
     },
     'form.proxy.enabled': function (newValue) {
