@@ -24,8 +24,8 @@
             {{scope.row.id}}
           </router-link>
           <span v-else class="ellipsis" :title="scope.row.id">{{scope.row.id}}</span>
-          <small v-if="scope.row.port">IP:{{scope.row.ip}}:
-            <a :href="'http://'+ scope.row.ip + ':' + scope.row.port" target="_blank"> {{scope.row.port}} </a>
+          <small v-if="scope.row.ports && scope.row.ports.length">IP:{{scope.row.ip}}:
+            <a v-for="(port, index) in scope.row.ports" :key="index" :href="'http://'+ scope.row.ip + ':' + port" target="_blank"> {{port}} </a>
           </small>
         </template>
       </el-table-column>
