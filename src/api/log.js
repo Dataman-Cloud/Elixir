@@ -7,7 +7,7 @@ export function selectCluster () {
   })
 }
 
-export function selectApps (cluster = 'dataman') {
+export function selectApps (cluster) {
   return fetch({
     url: `v1/simple/cluster/${cluster}/apps`,
     method: 'get'

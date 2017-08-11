@@ -7,14 +7,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="应用名" prop="appName" required>
-        <el-select v-model="form.appName" @change="appValChange" @visible-change="selectApps" placeholder="请选择应用">
+        <el-select v-model="form.appName" :disabled="!form.clusterName" @change="appValChange" @visible-change="selectApps" placeholder="请选择应用">
           <el-option :key="app.name" v-for="app in apps" :label="app.name" :value="app.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="实例名" prop="taskId">
-        <el-select v-model="form.taskId" @visible-change="selectTasks" placeholder="请选择实例">
-          <el-option value="''" label="全部实例">全部实例</el-option>
-          <el-option :key="task.id" v-for="task in tasks" :label="task.name" :value="task.id">{{task.name}}</el-option>
+        <el-select v-model="form.taskId" :disabled="!form.appName" @visible-change="selectTasks" placeholder="请选择实例">
+          <el-option value="" label="全部实例">全部实例</el-option>
+          <el-option :key="task.name" v-for="task in tasks" :label="task.name" :value="task.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="关键字" prop="key">
@@ -132,7 +132,7 @@ export default {
     },
     async selectApps (flag) {
       if (flag) {
-        let data = await this.fetchApps()
+        let data = await this.fetchApps(this.form.clusterName)
         this.apps = data.data
       }
     },
