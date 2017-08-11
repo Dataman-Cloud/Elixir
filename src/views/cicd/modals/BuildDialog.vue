@@ -1,10 +1,10 @@
 <template>
-  <el-dialog title="构建" v-model="dialogVisible" size="tiny" ref="dialog">
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="镜像名称">
+  <el-dialog title="构建" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
+    <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+      <el-form-item label="镜像名称" prop="imageName" required>
         <el-input v-model="form.imageName"></el-input>
       </el-form-item>
-      <el-form-item label="镜像 Tag">
+      <el-form-item label="镜像 Tag" prop="tagName" required>
         <el-input v-model="form.tagName"></el-input>
       </el-form-item>
       <el-form-item label="分支名称">
@@ -32,10 +32,24 @@ export default {
         branch: '',
         jobid: '',
         tagName: ''
+      },
+      rules: {
+        tagName: [
+          { required: true, message: '镜像 Tag 不能为空' },
+          { pattern: /^[a-z0-9]+$/, message: '镜像 Tag 只能包含数字、小写字母' }
+        ],
+        imageName: [
+          { required: true, message: '镜像名称不能为空' },
+          { pattern: /^[a-z0-9]+$/, message: '镜像只能包含数字、小写字母' }
+        ]
       }
     }
   },
   methods: {
+    close () {
+      this.resetForm()
+      this.submitLoading = false
+    },
     open: function ({ imageName, name } = {}) {
       this.form.imageName = imageName
       this.form.jobid = name
@@ -56,6 +70,9 @@ export default {
           return false
         }
       })
+    },
+    resetForm () {
+      this.$refs.form.resetFields()
     }
   }
 }

@@ -8,16 +8,16 @@
         <el-form-item label="代码地址" prop="sourceUrl">
           <el-input v-model="form.sourceUrl" placeholder="请输入代码地址"></el-input>
         </el-form-item>
-        <el-form-item label="仓库认证">
-          <el-select v-model="form.credential" @visible-change="selectJenkins" placeholder="请选择credential">
-            <el-option :key="jenkin.id" v-for="jenkin in jenkins" :label="jenkin.displayName" :value="jenkin.id">{{jenkin.displayName}}</el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="镜像名称" prop="imageName">
+        <el-form-item label="镜像名称" prop="imageName" required>
           <el-input v-model="form.imageName" placeholder="请输入镜像名称"></el-input>
         </el-form-item>
         <el-form-item label="标签名称" prop="tagName">
           <el-input v-model="form.tagName" placeholder="请输入标签名称"></el-input>
+        </el-form-item>
+        <el-form-item label="仓库认证">
+          <el-select v-model="form.credential" @visible-change="selectJenkins" placeholder="请选择credential">
+            <el-option :key="jenkin.id" v-for="jenkin in jenkins" :label="jenkin.displayName" :value="jenkin.id">{{jenkin.displayName}}</el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="项目说明" prop="projectDesc">
           <el-input type="textarea" v-model="form.projectDesc" placeholder="请输入项目说明(可选)"></el-input>
@@ -72,7 +72,8 @@ export default {
       },
       rules: {
         projectName: [
-          { required: true, message: '项目名称不能为空' }
+          { required: true, message: '项目名称不能为空' },
+          { pattern: /^[a-z0-9]+$/, message: '项目名称只能包含数字、小写字母' }
         ],
         sourceUrl: [
           { required: true, message: '代码地址不能为空' }
@@ -80,6 +81,10 @@ export default {
         imageName: [
           { required: true, message: '镜像名称不能为空' },
           { pattern: /^[a-z0-9]+$/, message: '镜像只能包含数字、小写字母' }
+        ],
+        tagName: [
+          { required: true, message: '标签名称不能为空' },
+          { pattern: /^[a-z0-9]+$/, message: '标签名称只能包含数字、小写字母' }
         ],
         projectDesc: [
           { max: 256, message: '最大长度256个字符' }
