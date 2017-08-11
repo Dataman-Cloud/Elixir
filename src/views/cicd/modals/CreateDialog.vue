@@ -42,7 +42,7 @@
         <!--</el-radio-group>-->
         <!--</el-form-item>-->
         <el-form-item>
-          <el-button type="primary" @click="onSubmit()" :loading="submitLoading">立即创建</el-button>
+          <el-button type="primary" @click="onSubmit" :loading="submitLoading">立即创建</el-button>
           <el-button type="primary" @click="dialogVisible = false">取消</el-button>
         </el-form-item>
       </el-form>
@@ -111,12 +111,12 @@ export default {
     open: function () {
       this.$refs.dialog.open()
     },
-    onSubmit () {
-      this.$refs.form.validate((valid) => {
+    onSubmit: function () {
+      this.$refs.form.validate(async (valid) => {
         if (valid) {
           this.submitLoading = true
           try {
-            fetchCicd.create(this.form)
+            await fetchCicd.create(this.form)
             this.dialogVisible = false
             this.$store.dispatch(type.FETCH_CICDS)
           } catch (error) {
