@@ -32,7 +32,8 @@ export const ELASTIC_FORM_RULES = {
     {required: true, message: '请选择告警规则操作符'}
   ],
   set_value: [
-    {required: true, message: '告警规则value值不能为空'}
+    {required: true, message: '告警规则value值不能为空'},
+    { type: 'number', min: 0, message: '告警规则 value 值最小为 0' }
   ],
   requesturi: [
     {required: true, message: '请求的值不能为空'}

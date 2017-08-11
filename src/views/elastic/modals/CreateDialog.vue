@@ -29,7 +29,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item prop="set_value">
-                <el-input v-model.number="form.set_value" placeholder=""></el-input>
+                <el-input type="number" v-model.number="form.set_value" placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <span v-if="form.type === '响应时间'">ms</span>
