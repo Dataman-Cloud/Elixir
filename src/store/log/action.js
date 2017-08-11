@@ -6,8 +6,8 @@ export default {
     let data = await api.selectCluster()
     return data
   },
-  async [type.FETCH_SELECTAPPS] (context) {
-    let data = await api.selectApps()
+  async [type.FETCH_SELECTAPPS] (context, cluster) {
+    let data = await api.selectApps(cluster)
     return data
   },
   async [type.FETCH_SELECTTASKS] (context, app) {

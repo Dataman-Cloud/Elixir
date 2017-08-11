@@ -18,7 +18,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="关键字" prop="key">
-        <el-input v-model="form.keyWord"></el-input>
+        <el-input v-model="form.key"></el-input>
       </el-form-item>
       <el-form-item label="起始时间" prop="beginTime">
         <el-date-picker type="datetime" placeholder="选择日期" v-model="form.beginTime" style="width: 100%;"></el-date-picker>
@@ -80,9 +80,6 @@ export default {
         ],
         appName: [
           { required: true, message: '请选择应用' }
-        ],
-        taskId: [
-          { required: true, message: '请选择实例' }
         ]
       }
     }
@@ -118,6 +115,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.submitLoading = true
+          this.logs = []
           this.infinite()
         } else {
           return false
