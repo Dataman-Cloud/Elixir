@@ -126,15 +126,11 @@
       openCreate () {
         this.$refs.createDialog.open()
       },
-      openDelete () {
-        Confirm.open(`确认删除策略?`)
-          .then(() => {
-            fetchElastic.deletePolicy(this.currentRows.map(policy => policy.id))
-              .then(() => {
-                this.$notify({message: '删除成功'})
-                this.fetchElastic()
-              })
-          })
+      async openDelete () {
+        await Confirm.open(`确认删除策略?`)
+        await fetchElastic.deletePolicy(this.currentRows.map(policy => policy.id))
+        this.$notify({message: '删除成功'})
+        this.fetchElastic()
       },
       openUpdate () {
         this.$refs.createDialog.open(this.currentRow.id)

@@ -102,13 +102,11 @@
       }
     },
     methods: {
-      appNameInitFetch () {
+      async appNameInitFetch () {
         this.loading = true
-        return fetchElastic.getAppName()
-          .then((res) => {
-            this.loading = false
-            return res
-          })
+        let res = await fetchElastic.getAppName()
+        this.loading = false
+        return res
       },
       maxChange (value) {
         console.log(elasticUtil.ELASTIC_BASE)
