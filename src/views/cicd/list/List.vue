@@ -3,7 +3,7 @@
     <el-tabs type="card" :value="currentView" @tab-click="tabChange">
       <el-tab-pane name="jobs">
         <span class="el-tab-label" slot="label">
-          <a></a>镜像列表</span>
+          <a></a>项目列表</span>
       </el-tab-pane>
       <el-tab-pane name="jenkins">
         <span class="el-tab-label" slot="label">
