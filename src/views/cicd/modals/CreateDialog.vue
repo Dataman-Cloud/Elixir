@@ -84,7 +84,7 @@ export default {
         ],
         tagName: [
           { required: true, message: '标签名称不能为空' },
-          { pattern: /^[a-z0-9]+$/, message: '标签名称只能包含数字、小写字母' }
+          { pattern: /^[a-z0-9.]+$/, message: '标签名称只能包含数字、小写字母和小数点' }
         ],
         projectDesc: [
           { max: 256, message: '最大长度256个字符' }
