@@ -30,7 +30,7 @@
       async open (jobName, buildNum) {
         this.loading = true
         let res = await fetchCicd.logDetail(this.$route.params.name, buildNum)
-        this.log = res.resMsg
+        this.log = res.data
         this.$refs.dialog.open()
       }
     }
