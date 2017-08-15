@@ -5,13 +5,11 @@
         <el-form-item prop="composeStr">
           <json-editor ref="jsonEditor" v-model="form.composeStr"></json-editor>
         </el-form-item>
-
-        <el-form-item style="margin-left:30px;">
-          <el-button type="primary" @click="onSubmit">立即创建
-          </el-button>
-          <el-button type="primary" @click="dialogVisible = false">取消</el-button>
-        </el-form-item>
       </el-form>
+      <div slot="footer" class="dialog-footer left-space">
+        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+        <el-button type="primary" @click="dialogVisible = false">取消</el-button>
+      </div>
     </div>
   </el-dialog>
 </template>
@@ -51,9 +49,9 @@ export default {
     onSubmit () {
       this.$refs.form.validate(async (valid) => {
         try {
-          await compose.createCompose(JSON.parse(this.form.composeStr))
-          this.$store.dispatch(type.FETCH_COMPOSES)
+          await compose.createCompose(this.form.composeStr)
           this.dialogVisible = false
+          this.$store.dispatch(type.FETCH_COMPOSES)
         } catch (error) {
           this.submitLoading = false
         }
@@ -66,5 +64,8 @@ export default {
 <style scoped>
 .el-form-item__content {
   font-size: 14px;
+}
+.left-space{
+  margin-left: 50px;
 }
 </style>
