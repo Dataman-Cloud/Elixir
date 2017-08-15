@@ -18,12 +18,12 @@
 
     <el-table :data="tasks" stripe border v-loading="listLoading" @selection-change="handleCurrentChange" style="width: 100%">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column property="id" label="实例名称" width="200">
+      <el-table-column property="name" label="实例名称" width="200">
         <template scope="scope">
-          <router-link v-if="scope.row.agentId" :title="scope.row.id" class="ellipsis" :to="{name: '实例详情', params: { host: scope.row.ip, id: scope.row.id, slaveId: scope.row.agentId}}">
-            {{scope.row.id}}
+          <router-link v-if="scope.row.agentId" class="ellipsis" :to="{name: '实例详情', params: { host: scope.row.ip, id: scope.row.id, slaveId: scope.row.agentId}}">
+            {{scope.row.name}}
           </router-link>
-          <span v-else class="ellipsis" :title="scope.row.id">{{scope.row.id}}</span>
+          <span v-else class="ellipsis">{{scope.row.name}}</span>
           <small v-if="scope.row.ports && scope.row.ports.length">IP:{{scope.row.ip}}:
             <a v-for="(port, index) in scope.row.ports" :key="index" :href="'http://'+ scope.row.ip + ':' + port" target="_blank"> {{port}} </a>
           </small>

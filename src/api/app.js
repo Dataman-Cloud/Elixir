@@ -69,3 +69,20 @@ export function update (id, data) {
     data: data
   })
 }
+
+export function createCanary (id, data) {
+  return fetch({
+    url: `/v1/apps/${id}/canary`,
+    method: 'put',
+    data: data
+  })
+}
+
+export function changeWeight (id, data) {
+  return fetch({
+    url: `/v1/apps/${id}/weights`,
+    method: 'put',
+    data: data
+  })
+}
+

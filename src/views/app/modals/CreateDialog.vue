@@ -45,7 +45,7 @@
           <!-- <el-checkbox v-model="form.oneContainer" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox> -->
         </el-form-item>
         <el-form-item label="挂载路径">
-          <el-button type="primary" size="small" @click="addConfig('volumes')">添加挂在路径</el-button>
+          <el-button type="primary" size="small" @click="addConfig('volumes')">添加挂载路径</el-button>
         </el-form-item>
 
         <el-form-item v-for="(volume, index) in form.container.volumes" :key="index" class="wrapContainerRow">

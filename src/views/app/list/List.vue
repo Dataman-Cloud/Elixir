@@ -21,12 +21,14 @@
           <i class="fa fa-power-off"></i>
           停止
         </el-button>
-        <el-button type="primary" @click="openGrayReleased" :disabled="!currentRow">
+        <el-button type="primary" @click="openGrayReleased" :disabled="disableCanary">
           <i class="fa fa-adjust"></i>
           灰度发布
         </el-button>
-        <el-button type="primary" @click="openWeight" :disabled="!currentRow">
+        <el-button type="primary" @click="openWeight" :disabled="disableWeight">
           <i class="fa fa-balance-scale"></i> 权重</el-button>
+        <!-- <el-button type="primary" :disabled="!currentRow">
+          <i class="fa fa-balance-scale"></i> 全部权重</el-button> -->
         <el-button type="danger" @click="openDelete" :disabled="!currentRows.length">
           <i class="ion-ios-minus-outline"></i> 删除应用</el-button>
       </span>
@@ -35,6 +37,7 @@
         <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入应用名称"></el-input>
       </el-button-group>
     </div>
+
     <grayReleased-dialog @ok="grayReleasedOk" ref="grayReleasedDialog"></grayReleased-dialog>
     <extend-dialog @ok="extendOk" ref="extendDialog"></extend-dialog>
     <create-dialog @ok="createOk" ref="createDialog"></create-dialog>
@@ -49,21 +52,13 @@
       </el-table-column>
       <el-table-column property="cluster" label="集群" width="150"></el-table-column>
       <el-table-column property="task_count" label="实例" width="100"></el-table-column>
-      <el-table-column property="status" label="运行状态" width="100"></el-table-column>
+      <el-table-column property="status" label="运行状态" width="100">
+        <template scope="app">
+          <p>{{app.row.status}}</p>
+          <small v-if="app.row.progress !== -1">(灰度中)</small>
+        </template>
+      </el-table-column>
       <el-table-column label="健康状态">
-        <!-- <template scope="app">
-              <el-tooltip class="item" effect="dark" placement="top">
-                <div slot="content">
-                      <span v-for="(status, index) in app.row.healthData" :key="index" class="state">
-                        状态: <span :class="status.state"></span> {{status.state}} 数量: {{status.quantity}}<br>
-                      </span>
-                </div>
-                <ul class="progress">
-                  <li v-for="(status, index) in app.row.healthData" :key="index" :class="status.state"
-                      :style="{width: (status.quantity / app.row.instances) * 100 + '%'}"></li>
-                </ul>
-              </el-tooltip>
-            </template> -->
         <template scope="app">
           <span>总数: </span>
           <i>{{app.row.health.total}} </i>
@@ -119,6 +114,13 @@ export default {
     },
     currentRow: function () {
       return this.currentRows.length === 1 ? this.currentRows[0] : null
+    },
+    disableCanary: function () {
+      return this.currentRows.length === 1
+        ? this.currentRows[0].operationStatus !== 'noop' && this.currentRows[0].operationStatus !== 'canary_unfinished' : true
+    },
+    disableWeight: function () {
+      return this.currentRows.length === 1 ? this.currentRows[0].operationStatus !== 'canary_unfinished' : true
     }
   },
   methods: {
@@ -160,7 +162,7 @@ export default {
       this.$refs.createDialog.open(this.currentRow.id)
     },
     openWeight () {
-      this.$refs.weightDialog.open()
+      this.$refs.weightDialog.open(this.currentRow.id)
     },
     reload () {
       this.listLoading = true
