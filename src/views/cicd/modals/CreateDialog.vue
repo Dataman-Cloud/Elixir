@@ -27,7 +27,7 @@
         </el-form-item>
         <el-form-item label="自动构建">
           <el-switch v-model="form.resource" on-color="#01C4BC" off-color="#ff4949"></el-switch>
-          <p v-if="form.resource">如需自动构建请在gitlab上配置hook地址为：http://192.168.1.183:8081/v1/cicd/jenkins/hook/{{form.projectName}}</p>
+          <p v-if="form.resource">如需自动构建请在gitlab上配置hook地址为：{{url}}/v1/cicd/jenkins/hook/{{form.projectName}}</p>
         </el-form-item>
         <!--<el-form-item label="触发规则">-->
         <!--<el-radio-group v-model="form.resource">-->
@@ -53,6 +53,7 @@
 import * as fetchCicd from '@/api/cicd'
 import * as type from '@/store/cicd/mutations_types'
 import { mapActions } from 'vuex'
+import BASE_URL from 'baseUrl'
 
 export default {
   data () {
@@ -70,6 +71,7 @@ export default {
         resource: false,
         credential: ''
       },
+      url: BASE_URL,
       rules: {
         projectName: [
           { required: true, message: '项目名称不能为空' },
