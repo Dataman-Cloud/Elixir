@@ -164,3 +164,6 @@ dl {
 .CodeMirror-sizer{
   min-height: 400px;
 }
+.CodeMirror-code{
+  line-height: 24px;
+}
