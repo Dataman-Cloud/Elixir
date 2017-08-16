@@ -27,8 +27,8 @@
         <el-date-picker type="datetime" placeholder="选择日期" v-model="form.endTime" style="width: 100%;"></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit('form')">查询</el-button>
-        <el-button type="primary" @click="resetForm('form')">重置</el-button>
+        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" @click="resetForm">重置</el-button>
         <a class="el-button link-button" v-if="logs.length" :href="downloadUrl">下载</a>
       </el-form-item>
     </el-form>
@@ -110,10 +110,11 @@ export default {
     download () {
       this.$refs.form.validate((valid) => valid ? fetchLogs.download(this.base64Form) : false)
     },
-    onSubmit (form) {
+    onSubmit () {
       this.ajaxLicense = true
       this.$refs.form.validate((valid) => {
         if (valid) {
+          this.$refs.infiniteList.$emit('InfiniteReset')
           this.submitLoading = true
           this.logs = []
           this.infinite()
@@ -150,7 +151,7 @@ export default {
         // TODO 调用上下文的 ajax
       } else {
         if (this.ajaxLicense) {
-          this.form.page = this.logs.length / this.form.size
+          this.form.page = Math.round(this.logs.length / this.form.size)
           fetchLogs.query(this.form).then((res) => {
             if (res.data.hits.hits.length) {
               this.logs = this.logs.concat(res.data.hits.hits)
