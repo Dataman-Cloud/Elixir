@@ -51,7 +51,12 @@
         </template>
       </el-table-column>
       <el-table-column property="cluster" label="集群" width="150"></el-table-column>
-      <el-table-column property="task_count" label="实例" width="100"></el-table-column>
+      <el-table-column property="task_count" label="实例" width="100">
+        <template scope="app">
+            <span v-if="app.row.progress === -1">{{app.row.task_count}}</span>
+            <span v-else>{{app.row.progress}} / {{app.row.task_count}}</span>
+        </template>
+      </el-table-column>
       <el-table-column property="status" label="运行状态" width="100">
         <template scope="app">
           <p>{{app.row.status}}</p>
