@@ -9,6 +9,8 @@
       </ul>
     </div>
     <infinite-loading spinner="spiral" :on-infinite="onInfinite" ref="infiniteLoading">
+      <!-- hack: Hide the loading figure-->
+      <i slot="spinner"></i>
       <span slot="no-more">
         There is no more Log :(
       </span>
