@@ -10,8 +10,7 @@
 import router from '@/router'
 export default {
   data () {
-    return {
-    }
+    return {}
   },
   computed: {
     routes () {
