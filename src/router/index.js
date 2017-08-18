@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/views/layout/Layout'
-import RegistryBase from '@/views/registry/index'
+import Login from '@/views/login'
 import AppList from '@/views/app/list/List'
 import RegistryList from '@/views/registry/list/List'
 
@@ -25,12 +25,7 @@ const ComposeDetail = () => import('../views/compose/detail/Detail')
 Vue.use(Router)
 
 export const constantRouterMap = [
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/app',
-    hidden: true
-  },
+  { path: '/login', component: Login, hidden: true },
   {
     path: '/app',
     redirect: '/app/list',
@@ -56,12 +51,12 @@ export const constantRouterMap = [
     path: '/registry',
     redirect: '/registry/list',
     name: '镜像',
-    hidden: true,
-    component: RegistryBase,
+    component: Layout,
+    hasDropdown: true,
     children: [
       { path: 'list', component: RegistryList, name: '镜像列表' },
       { path: 'histories', component: HistoryList, name: '历史列表' },
-      { path: 'detail/:name', component: WareHouse, name: '镜像仓库' }
+      { path: 'detail/:name', component: WareHouse, name: '镜像仓库', hidden: true }
     ]
   },
   {
@@ -92,7 +87,8 @@ export const constantRouterMap = [
     children: [
       { path: 'list', component: LogList, name: '日志查询' }
     ]
-  }
+  },
+  { path: '*', redirect: '/app', hidden: true }
 ]
 
 const router = new Router({
