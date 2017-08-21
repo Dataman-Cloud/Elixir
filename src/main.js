@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
           const roles = res.role
           store.dispatch(permiType.SET_ROUTERS, roles).then(() => { // 生成可访问的路由表
             router.addRoutes(store.state.permissions.addRouters) // 动态添加可访问路由表
-            next()
+            next({...to})
           })
         }).catch(() => {
           // TODO: 获取信息失败 则返回登录页 store.dispatch('LOGOUT')

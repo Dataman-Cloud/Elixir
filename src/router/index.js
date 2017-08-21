@@ -37,8 +37,7 @@ export const constantRouterMap = [
       { path: 'detail/:id', component: AppDetail, name: '应用详情' },
       { path: 'instances/:host/:id/:slaveId', component: AppInstance, name: '实例详情' }
     ]
-  },
-  { path: '*', redirect: '/app', hidden: true }
+  }
 ]
 
 export const asyncRouterMap = [
@@ -97,7 +96,8 @@ export const asyncRouterMap = [
     children: [
       { path: 'list', component: LogList, name: '日志查询' }
     ]
-  }
+  },
+  { path: '*', redirect: '/app', hidden: true }
 ]
 
 const router = new Router({
