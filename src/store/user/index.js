@@ -1,11 +1,7 @@
 import actions from './action'
 import mutations from './mutations'
 
-const state = {
-  userid: null,
-  projectid: null,
-  bayname: null
-}
+const state = {}
 
 export default {
   state,
