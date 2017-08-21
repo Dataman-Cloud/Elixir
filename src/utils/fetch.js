@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { Notification } from 'element-ui'
 import baseUrl from 'baseUrl'
+import store from '../store'
+import { getToken } from '../utils/auth'
 
 // 创建axios实例
 const service = axios.create({
@@ -11,6 +13,9 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(
   config => {
+    if (store.state.user.token) {
+      config.headers['token'] = getToken()
+    }
     return config
   },
   error => {

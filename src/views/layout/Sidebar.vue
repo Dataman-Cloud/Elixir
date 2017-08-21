@@ -1,17 +1,18 @@
 <template>
   <el-menu :default-active="$route.path" class="el-menu-vertical-demo" unique-opened theme="dark">
-    <sidebar-item :routes='routes'></sidebar-item>
+    <sidebar-item :routes='routers'></sidebar-item>
   </el-menu>
 </template>
 <script>
 import SidebarItem from './SidebarItem'
+import { mapState } from 'vuex'
 
 export default {
   components: { SidebarItem },
   computed: {
-    routes () {
-      return this.$router.options.routes
-    }
+    ...mapState({
+      routers: state => state.permissions.routers
+    })
   },
   methods: {}
 }
