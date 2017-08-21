@@ -6,31 +6,39 @@
           <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
         </el-button>
         <el-button type="primary" @click="openCreate">
-          <i class="ion-ios-plus-outline"></i> 创建应用</el-button>
-        <el-button type="primary" @click="openUpdate" :disabled="!currentRow">
-          <i class="fa fa-refresh"></i>
-          更新应用
-        </el-button>
-        <el-button type="primary" @click="openExtend" :disabled="!currentRow">
-          <i class="el-icon-edit"></i> 扩展应用
-        </el-button>
-        <el-button type="primary" @click="start" :disabled="!currentRow">
-          <i class="fa fa-play-circle-o"></i> 启动
-        </el-button>
-        <el-button type="primary" @click="stop" :disabled="!currentRow">
-          <i class="fa fa-power-off"></i>
-          停止
-        </el-button>
-        <el-button type="primary" @click="openGrayReleased" :disabled="disableCanary">
-          <i class="fa fa-adjust"></i>
-          灰度发布
-        </el-button>
-        <el-button type="primary" @click="openWeight" :disabled="disableWeight">
-          <i class="fa fa-balance-scale"></i> 权重</el-button>
+          <i class="ion-ios-plus-outline"></i> 创建应用
+          </el-button>
+          <el-button type="primary" @click="openUpdate" :disabled="!currentRow">
+              <i class="fa fa-refresh"></i> 更新应用
+            </el-button>
+            <el-button type="danger" @click="openDelete" :disabled="!currentRows.length">
+              <i class="ion-ios-minus-outline"></i> 删除应用
+            </el-button>
+        <el-dropdown>
+          <el-button type="primary">
+            更多操作
+            <i class="el-icon-more el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click="openExtend" :disabled="!currentRow">
+              <i class="el-icon-edit"></i> 扩展应用
+            </el-dropdown-item>
+            <el-dropdown-item @click="start" :disabled="!currentRow">
+              <i class="fa fa-play-circle-o"></i> 启动
+            </el-dropdown-item>
+            <el-dropdown-item @click="stop" :disabled="!currentRow">
+              <i class="fa fa-power-off"></i> 停止
+            </el-dropdown-item>
+            <el-dropdown-item @click="openGrayReleased" :disabled="disableCanary">
+              <i class="fa fa-adjust"></i> 灰度发布
+            </el-dropdown-item>
+            <el-dropdown-item @click="openWeight" :disabled="disableWeight">
+              <i class="fa fa-balance-scale"></i> 权重
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <!-- <el-button type="primary" :disabled="!currentRow">
-          <i class="fa fa-balance-scale"></i> 全部权重</el-button> -->
-        <el-button type="danger" @click="openDelete" :disabled="!currentRows.length">
-          <i class="ion-ios-minus-outline"></i> 删除应用</el-button>
+                <i class="fa fa-balance-scale"></i> 全部权重</el-button> -->
       </span>
 
       <el-button-group style="display: flex">
@@ -53,8 +61,8 @@
       <el-table-column property="cluster" label="集群" width="150"></el-table-column>
       <el-table-column property="task_count" label="实例" width="100">
         <template scope="app">
-            <span v-if="app.row.progress === -1">{{app.row.task_count}}</span>
-            <span v-else>{{app.row.progress}} / {{app.row.task_count}}</span>
+          <span v-if="app.row.progress === -1">{{app.row.task_count}}</span>
+          <span v-else>{{app.row.progress}} / {{app.row.task_count}}</span>
         </template>
       </el-table-column>
       <el-table-column property="status" label="运行状态" width="100">
@@ -215,5 +223,9 @@ export default {
 <style scoped>
 .btn-group {
   justify-content: space-between;
+}
+
+.el-dropdown {
+  margin-left: 10px;
 }
 </style>

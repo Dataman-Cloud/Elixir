@@ -2,19 +2,19 @@
   <div class="app-wrapper">
     <Sidebar class="sidebar-container"></Sidebar>
     <section class="main-content">
-      <Breadcrumb class="bread-header"></Breadcrumb>
+      <navbar></navbar>
       <App-main/>
     </section>
   </div>
 </template>
 
 <script>
-import { Breadcrumb, AppMain, Sidebar } from './index'
+import { Navbar, AppMain, Sidebar } from './index'
 
 export default {
   name: 'layout',
   components: {
-    Breadcrumb,
+    Navbar,
     AppMain,
     Sidebar
   }
@@ -48,6 +48,5 @@ export default {
 .main-content {
   min-height: 100%;
   margin-left: 180px;
-  padding: 20px;
 }
 </style>
