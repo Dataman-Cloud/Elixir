@@ -30,6 +30,7 @@ export const constantRouterMap = [
     path: '/app',
     redirect: '/app/list',
     name: '应用',
+    icon: 'fa fa-cubes',
     component: Layout,
     children: [
       { path: 'list', component: AppList, name: '应用列表' },
@@ -45,6 +46,7 @@ export const asyncRouterMap = [
     path: '/compose',
     redirect: '/compose/list',
     name: '编排',
+    icon: 'fa fa-database',
     component: Layout,
     children: [
       { path: 'list', component: ComposeList, name: '编排列表' },
@@ -55,6 +57,7 @@ export const asyncRouterMap = [
     path: '/registry',
     redirect: '/registry/list',
     name: '镜像',
+    icon: 'fa fa-stack-overflow',
     component: Layout,
     hasDropdown: true,
     children: [
@@ -67,6 +70,7 @@ export const asyncRouterMap = [
     path: '/cicd',
     redirect: '/cicd/list',
     name: '镜像构建',
+    icon: 'fa fa-building',
     component: Layout,
     children: [
       { path: 'list', component: CicdList, name: '构建列表' },
@@ -77,6 +81,7 @@ export const asyncRouterMap = [
     path: '/elastic',
     redirect: '/elastic/list',
     name: '弹性扩缩',
+    icon: 'fa fa-arrows',
     component: Layout,
     children: [
       { path: 'list', component: ElasticList, name: '策略列表' },
@@ -87,6 +92,7 @@ export const asyncRouterMap = [
     path: '/log',
     redirect: '/log/list',
     name: '日志监控',
+    icon: 'fa fa-sticky-note',
     component: Layout,
     children: [
       { path: 'list', component: LogList, name: '日志查询' }

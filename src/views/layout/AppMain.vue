@@ -18,3 +18,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .app-main{
+    padding: 20px;
+  }
+</style>
