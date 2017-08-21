@@ -2,9 +2,12 @@ import * as type from './mutations_types'
 import { setToken } from '@/utils/auth'
 
 export default {
-  [type.SET_TOKEN] (state, payload) {
-    state.token = payload.token
+  [type.SET_TOKEN] (state, token) {
+    state.token = token
     setToken(state.token)
+  },
+  [type.SET_ROLES] (state, roles) {
+    state.roles = roles
   },
   [type.SET_USER_INFO] (state, { name, role }) {
     state.name = name
