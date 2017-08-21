@@ -116,7 +116,8 @@ export const asyncRouterMap = [
     children: [
       { path: 'list', component: LogList, name: '日志查询' }
     ]
-  }
+  },
+  { path: '*', redirect: '/app', hidden: true }
 ]
 
 const router = new Router({
