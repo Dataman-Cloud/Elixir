@@ -1,11 +1,12 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <div class="navicon"><i class="fa fa-bars" aria-hidden="true"></i></div>
+    <div class="navicon">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
     <Breadcrumb class="bread-header"></Breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <i style="font-size:24px;" class="fa fa-user-circle" aria-hidden="true"></i>
-        <!-- <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'"> -->
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -15,7 +16,7 @@
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">退出登录</span>
+          <span @click="exit" style="display:block;">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -24,21 +25,26 @@
 
 <script>
 import Breadcrumb from './Breadcrumb'
+import { mapActions } from 'vuex'
+import * as type from '@/store/user/mutations_types'
 
 export default {
   components: {
     Breadcrumb
   },
   data () {
-    return {
-    }
+    return {}
   },
   methods: {
+    ...mapActions({
+      logout: type.LOGOUT
+    }),
     toggleSideBar () {
       // TODO
     },
-    logout () {
-      // TODO
+    async exit () {
+      await this.logout()
+      location.reload()
     }
   }
 }
@@ -56,7 +62,7 @@ export default {
     position: absolute;
     margin-left: 15px;
   }
-  .navicon{
+  .navicon {
     display: inline-block;
     margin-left: 15px;
     cursor: pointer;
