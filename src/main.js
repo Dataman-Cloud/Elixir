@@ -15,8 +15,6 @@ import './styles/index.css' // 全局自定义的css样式
 // import './styles/element-ui.css' // 覆盖 Element-UI 的样式
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条 样式
-import * as userType from '@/store/user/mutations_types'
-import {saveUserToLocal, hasFieldsInLocal} from '@/utils/handleStorage'
 // import './mock' // Mock 测试, 生产环境需注释
 
 Vue.config.productionTip = false
@@ -34,33 +32,10 @@ Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
 })
 
-// 全局 beforeEach, 每次路由前检查 userid, projectid 及 bayname
+// 全局 beforeEach
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  // 判断 Iframe 是否传入 userid, projectid, bayname
-  if (to.query.userid && to.query.projectid && to.query.bayname) {
-    saveUserToLocal(to.query)
-    store.dispatch(userType.SET_USER_INFO, {
-      userid: to.query.userid,
-      projectid: to.query.projectid,
-      bayname: to.query.bayname
-    })
-    next()
-  } else if (hasFieldsInLocal('userid', 'projectid', 'projectid')) {
-    store.dispatch(userType.SET_USER_INFO, {
-      userid: localStorage.getItem('userid'),
-      projectid: localStorage.getItem('projectid'),
-      bayname: localStorage.getItem('bayname')
-    })
-    next()
-  } else {
-    NProgress.done()
-    ElementUI.Notification({
-      title: '警告',
-      message: '无法获取 userid、projectid 或 bayname',
-      type: 'error'
-    })
-  }
+  next()
 })
 
 router.afterEach(() => {

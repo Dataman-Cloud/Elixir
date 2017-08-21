@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {Notification} from 'element-ui'
+import { Notification } from 'element-ui'
 import baseUrl from 'baseUrl'
 
 // 创建axios实例
@@ -11,11 +11,6 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(
   config => {
-    config.params = Object.assign({}, config.params, {
-      userid: localStorage.getItem('userid'),
-      projectid: localStorage.getItem('projectid'),
-      bayname: localStorage.getItem('bayname')
-    })
     return config
   },
   error => {
