@@ -17,4 +17,15 @@ export default {
   methods: {}
 }
 </script>
+<style>
+.sidebar-container .el-menu-item {
+  width: 100%!important;
+  min-height: 100%;
+}
+
+.sidebar-container .el-submenu__title i,
+.sidebar-container .el-menu-item i {
+  margin-right: 16px;
+}
+</style>
 
