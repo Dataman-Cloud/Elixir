@@ -4,7 +4,8 @@ import mutations from './mutations'
 const state = {
   name: '',
   token: '',
-  roles: []
+  roles: [],
+  isCollapse: false
 }
 
 export default {

@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
     <Sidebar class="sidebar-container"></Sidebar>
-    <section class="main-content">
+    <section :class="[isCollapse ? 'main-content-collapse' : 'main-content']">
       <navbar></navbar>
       <App-main/>
     </section>
@@ -17,36 +17,33 @@ export default {
     Navbar,
     AppMain,
     Sidebar
+  },
+  computed: {
+    isCollapse () {
+      return this.$store.state.user.isCollapse
+    }
   }
 }
 </script>
 
 <style scoped>
-.app-wrapper {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
 .sidebar-container {
-  width: 180px;
+  transition: width 0.28s ease-out;
   height: 100%;
   position: fixed;
-  top: 0;
-  bottom: 0;
   left: 0;
   z-index: 1001;
-  overflow-y: auto;
-}
-
-.bread-header {
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
 }
 
 .main-content {
+  transition: margin-left 0.28s ease-out;
   min-height: 100%;
-  margin-left: 180px;
+  margin-left: 160px;
+}
+
+.main-content-collapse {
+  transition: margin-left 0.28s ease-out;
+  min-height: 100%;
+  margin-left: 60px;
 }
 </style>
