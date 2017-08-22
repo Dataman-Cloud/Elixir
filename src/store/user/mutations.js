@@ -12,5 +12,8 @@ export default {
   [type.SET_USER_INFO] (state, { name, role }) {
     state.name = name
     state.roles = role
+  },
+  [type.SET_COLLAPSE] (state) {
+    state.isCollapse = !state.isCollapse
   }
 }

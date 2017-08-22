@@ -33,5 +33,8 @@ export default {
       context.commit(type.SET_TOKEN, data.token)
       resolve(data)
     })
+  },
+  [type.SET_COLLAPSE] (context) {
+    context.commit(type.SET_COLLAPSE)
   }
 }
