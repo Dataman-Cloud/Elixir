@@ -3,7 +3,7 @@
     <div class="btn-group">
       <span>
         <el-button type="primary" @click="reload"><i class="glyphicon glyphicon-repeat"></i></el-button>
-        <el-button type="danger" @click="openDelete" :disabled="!currentRow"><i class="ion-ios-minus-outline"></i> 删除镜像</el-button>
+        <el-button type="danger" @click="openDelete" :disabled="!currentRow"><i class="ion-ios-minus-outline"></i> 删除仓库</el-button>
         <router-link class="primary" to="/registry/histories" tag="el-button"><i class="fa fa-history"></i> 历史</router-link>
       </span>
       <el-button-group style="display: flex">

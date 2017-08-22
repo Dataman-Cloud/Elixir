@@ -9,7 +9,7 @@
           <i class="glyphicon glyphicon-repeat"></i>
         </el-button>
         <el-button type="danger" @click="openDelete" :disabled="!currentRow">
-          <i class="ion-ios-minus-outline"></i> 删除仓库</el-button>
+          <i class="ion-ios-minus-outline"></i> 删除镜像</el-button>
       </span>
       <el-button-group style="display: flex">
         <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入内容"></el-input>
