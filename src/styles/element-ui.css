@@ -18,7 +18,7 @@
 .el-dialog{
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  min-width: 400px;
+  min-width: 600px;
 }
 .el-form-item__label{
   color: #333;
@@ -26,9 +26,7 @@
 .el-form-item.is-required .el-form-item__label:before{
   color: #333;
 }
-.el-dialog--small{
-  width: 40%;
-}
+
 .el-button.is-disabled, .el-button.is-disabled:hover, .el-button.is-disabled:focus{
   cursor: default;
   color: #fff;
