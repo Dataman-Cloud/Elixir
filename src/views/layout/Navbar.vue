@@ -1,7 +1,7 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <div class="navicon">
-      <i class="fa fa-bars" aria-hidden="true"></i>
+      <i class="fa fa-bars" aria-hidden="true" @click="toggleSideBar"></i>
     </div>
     <Breadcrumb class="bread-header"></Breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
@@ -37,10 +37,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      logout: type.LOGOUT
+      logout: type.LOGOUT,
+      setCollapse: type.SET_COLLAPSE
     }),
     toggleSideBar () {
-      // TODO
+      this.setCollapse()
     },
     async exit () {
       await this.logout()
