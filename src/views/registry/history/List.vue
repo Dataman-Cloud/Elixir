@@ -29,6 +29,10 @@
         sortable label="标签">
       </el-table-column>
       <el-table-column
+        property="operation"
+        sortable label="操作">
+      </el-table-column>
+      <el-table-column
         property="op_time"
         sortable label="时间戳">
         <template scope="scope">

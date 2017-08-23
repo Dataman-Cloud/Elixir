@@ -128,7 +128,7 @@ export const APP_FORM_RULES = {
   ],
   mem: [
     { required: true, message: '内存不能为空最小值为16' },
-    { type: 'number', min: 16, message: 'cpu最小值为0.01' }
+    { type: 'number', min: 16, message: '内存不能为空最小值为16' }
   ],
   instances: [
     { required: true, message: '容器个数不能为空' },

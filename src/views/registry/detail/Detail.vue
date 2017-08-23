@@ -9,7 +9,7 @@
           <i class="glyphicon glyphicon-repeat"></i>
         </el-button>
         <el-button type="danger" @click="openDelete" :disabled="!currentRow">
-          <i class="ion-ios-minus-outline"></i> 删除仓库</el-button>
+          <i class="ion-ios-minus-outline"></i> 删除镜像</el-button>
       </span>
       <el-button-group style="display: flex">
         <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入内容"></el-input>
@@ -42,14 +42,16 @@ export default {
     return {
       listLoading: false,
       currentRows: [],
-      searchWord: '',
-      auth: 'dataman'
+      searchWord: ''
     }
   },
   computed: {
     ...mapState({
       tags (state) {
         return state.registry.tags.tags
+      },
+      projectid ({user}) {
+        return user.projectid
       },
       filterTags: function () {
         return this.searchWord ? this.tags.filter(tag => tag.imageName.toLowerCase().includes(this.searchWord)) : this.tags
@@ -69,7 +71,7 @@ export default {
     async openDelete () {
       if (this.currentRow) {
         await Confirm.open(`确认删除 ${this.currentRow.imageName} 镜像仓库?`)
-        let res = await registryApi.deleteTags(this.$route.params.name, this.currentRow.tag)
+        let res = await registryApi.deleteTags(this.projectid, this.$route.params.name, this.currentRow.tag)
         if (res.code === '01') {
           this.$notify({ message: res.message })
         } else {

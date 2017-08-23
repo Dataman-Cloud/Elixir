@@ -1,66 +1,126 @@
 export const COMPOSE_BASE = {
-  name: 'b',
-  desc: 'demo instance',
-  version_id: 'xxx',
-  service_group: {},
-  yaml_raw: 'version: \'3\'\n\nservices:\n  web:\n    cap_add:\n      - ALL\n    cap_drop:\n      - NET_ADMIN\n      - SYS_ADMIN\n    command: \'sleep 100d\'\n    # cgroup_parent: \'/system.slice\'\n    container_name: \'my-web-container\'\n    deploy:\n      mode: replicated\n      replicas: 3\n    devices:\n        - \'/dev/tty10:/dev/tty10\'  \n    depends_on:\n      - cache\n      - dbmaster\n      - dbslave\n    dns:\n      - 114.114.114.114\n      - 8.8.8.8\n    dns_search:\n      - swan.local \n    tmpfs:\n      - /run\n      - /tmp\n    environment:\n      - DEMO=true\n      - PROD=false\n    expose:\n      - 80\n      - 443\n    extra_hosts:\n      - \'bbk:127.0.0.1\'\n      - \'google-dns:8.8.8.8\'\n    healthcheck:\n      test: [\'CMD\', \'echo\', \'ok\']\n      interval: 30s\n      timeout: 10s\n      retries: 3\n    image: \'nginx:latest\'\n    labels:\n      - \'name=bbklab\'\n      - \'description=bbklab desc\'\n    logging:\n      driver: syslog\n      # options:\n      # syslog-address: \'tcp://127.0.0.1:123\'\n    network_mode: \'bridge\'\n    pid: \'host\'\n    ipc: \'host\'\n    ports:\n      - \'3000-3003/udp\'\n      - \'8080:800/tcp\'\n      - \'8090:443\'\n    security_opt:\n      - label:user:USER\n      - label:role:ROLE\n    stop_grace_period: 10s\n    stop_signal: SIGTERM\n    ulimits:\n      nproc: 65535\n      nofile:\n        soft: 20000\n        hard: 40000\n    volumes:\n      - /tmp:/data:rw\n      - /var/log:/log:ro\n    restart: \'no\'\n    user: \'root\'\n    working_dir: \'/\'\n    domainname: \'foo.com\'\n    hostname: \'foo\'\n    mac_address: 02:42:ac:11:65:43\n    privileged: true\n    read_only: true\n    stdin_open: true\n    tty: true\n\n  cache:\n    image: \'redis:alpine\'\n    network_mode: \'bridge\'\n    deploy:\n      mode: replicated\n      replicas: 1\n    depends_on:\n      - dbmaster\n      - dbslave\n\n  dbslave:\n    image: \'busybox:latest\'\n    command: \'sleep 100d\'\n    network_mode: \'host\'\n    depends_on:\n      - dbmaster\n\n  dbmaster:\n    image: \'busybox:latest\'\n    command: \'sleep 100d\'\n    network_mode: \'host\'\n',
-  yaml_env: {
-    WORKDIR: '/bbklab',
-    HOSTNAME: 'damn'
-  },
-  yaml_extra: {
-    web: {
-      priority: 4,
-      runas: 'bbk',
-      wait_delay: 1,
-      pull_always: false,
-      constraints: [],
-      uris: null,
-      ips: null,
-      resource: {
-        cpu: 0.01,
-        mem: 50,
-        disk: 100
+  'name': 'wordpressbp',
+  'desc': 'wordpressbp',
+  'yaml_raw': 'version: "3"\n\nservices:\n  wordpress:\n    image: "wordpress"\n    network_mode: "bridge"\n    environment:\n      - WORDPRESS_DB_HOST=db:3306\n      - WORDPRESS_DB_PASSWORD=Password\n    ports:\n      - 8080:80\n    depends_on:\n      - wordpressdb\n    dns:\n      - 192.168.0.10  # swan dns server\n\n  wordpressdb:\n    image: "mariadb"\n    network_mode: "host"\n    environment:\n      - MYSQL_ROOT_PASSWORD=Password\n    dns:\n      - 192.168.0.10  # swan dns server\n',
+  'yaml_extra': {
+    'wordpress': {
+      'runas': 'bbk',
+      'cluster': 'clusterest5555',
+      'wait_delay': 180,
+      'pull_always': false,
+      'constraints': [{
+        'attribute': 'vcluster',
+        'operator': '==',
+        'value': 'clusterest5555'
+      }],
+      'uris': null,
+      'ips': null,
+      'resource': {
+        'cpu': 0.01,
+        'mem': 64
+      },
+      'container': {
+        'docker': {
+          'parameters': [
+            {
+              'key': 'label',
+              'value': 'JBORG_APP_ID=wordpress'
+            },
+            {
+              'key': 'log-opt',
+              'value': 'labels=JBORG_VCLUSTER,JBORG_USER_ID,JBORG_GROUP_ID,BEAT_EXCLUDE,JBORG_APP_ID'
+            },
+            {
+              'key': 'log-opt',
+              'value': 'env=SWAN_TASK_ID,SWAN_TASK_NAME,SWAN_PORTS,SWAN_HOST,SWAN_PORT0,SWAN_APP_ID,SWAN_APP_VERSION'
+            },
+            {
+              'key': 'label',
+              'value': 'JBORG_VCLUSTER=clusterest5555'
+            },
+            {
+              'key': 'label',
+              'value': 'JBORG_USER_ID=1'
+            },
+            {
+              'key': 'label',
+              'value': 'JBORG_GROUP_ID=1'
+            },
+            {
+              'key': 'label',
+              'value': 'BEAT_EXCLUDE=false'
+            }
+          ]
+
+        }
+
+      },
+      'labels': {
+        'JBORG_ESPROJECTID': 'projectid8888',
+        'JBORG_ESUSERID': 'userid8888',
+        'JBORG_GROUP_ID': '1',
+        'JBORG_USER_ID': '1',
+        'JBORG_VCLUSTER': 'clusterest5555'
       }
     },
-    cache: {
-      priority: 3,
-      runas: 'bbk',
-      wait_delay: 1,
-      pull_always: false,
-      constraints: [],
-      uris: null,
-      ips: null,
-      resource: {
-        cpu: 0.02,
-        mem: 100,
-        disk: 33
-      }
-    },
-    dbmaster: {
-      priority: 2,
-      runas: 'bbk',
-      wait_delay: 1,
-      pull_always: false,
-      constraints: [],
-      uris: null,
-      ips: null,
-      resource: {
-        cpu: 0.03,
-        mem: 100
-      }
-    },
-    dbslave: {
-      priority: 1,
-      runas: 'bbk',
-      wait_delay: 1,
-      pull_always: false,
-      constraints: [],
-      uris: null,
-      ips: null,
-      resource: {
-        cpu: 0.03,
-        mem: 100
+    'wordpressdb': {
+      'runas': 'bbk',
+      'cluster': 'clusterest5555',
+      'wait_delay': 10,
+      'pull_always': false,
+      'constraints': [{
+        'attribute': 'vcluster',
+        'operator': '==',
+        'value': 'clusterest5555'
+      }],
+      'uris': null,
+      'ips': null,
+      'resource': {
+        'cpu': 0.01,
+        'mem': 64
+      },
+      'container': {
+        'docker': {
+          'parameters': [
+            {
+              'key': 'label',
+              'value': 'JBORG_APP_ID=wordpressdb'
+            },
+            {
+              'key': 'log-opt',
+              'value': 'labels=JBORG_VCLUSTER,JBORG_USER_ID,JBORG_GROUP_ID,BEAT_EXCLUDE,JBORG_APP_ID'
+            },
+            {
+              'key': 'log-opt',
+              'value': 'env=SWAN_TASK_ID,SWAN_TASK_NAME,SWAN_PORTS,SWAN_HOST,SWAN_PORT0,SWAN_APP_ID,SWAN_APP_VERSION'
+            },
+            {
+              'key': 'label',
+              'value': 'JBORG_VCLUSTER=clusterest5555'
+            },
+            {
+              'key': 'label',
+              'value': 'JBORG_USER_ID=1'
+            },
+            {
+              'key': 'label',
+              'value': 'JBORG_GROUP_ID=1'
+            },
+            {
+              'key': 'label',
+              'value': 'BEAT_EXCLUDE=false'
+            }
+          ]
+
+        }
+
+      },
+      'labels': {
+        'JBORG_ESPROJECTID': 'projectid8888',
+        'JBORG_ESUSERID': 'userid8888',
+        'JBORG_GROUP_ID': '1',
+        'JBORG_USER_ID': '1',
+        'JBORG_VCLUSTER': 'clusterest5555'
       }
     }
   }

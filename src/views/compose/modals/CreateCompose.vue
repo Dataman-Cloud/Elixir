@@ -49,7 +49,7 @@ export default {
     onSubmit () {
       this.$refs.form.validate(async (valid) => {
         try {
-          await compose.createCompose(this.form.composeStr)
+          await compose.createCompose(JSON.parse(this.form.composeStr))
           this.dialogVisible = false
           this.$store.dispatch(type.FETCH_COMPOSES)
         } catch (error) {

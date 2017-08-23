@@ -27,21 +27,23 @@ export function listLogs () {
   })
 }
 
-export function deleteHarbor (name) {
+export function deleteHarbor (projectid, name) {
   return fetch({
     url: 'v1/api/repository',
     method: 'delete',
     params: {
+      auth: projectid,
       repositoryName: name
     }
   })
 }
 
-export function deleteTags (name, tagName) {
+export function deleteTags (projectid, name, tagName) {
   return fetch({
     url: 'v1/api/repository/tag',
     method: 'delete',
     params: {
+      auth: projectid,
       repositoryName: name,
       tagName: tagName
     }
