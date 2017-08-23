@@ -317,7 +317,8 @@ export default {
       rules: appUtil.APP_FORM_RULES,
       submitLoading: false,
       loading: false,
-      id: null
+      id: null,
+      activeCollapse: ''
     }
   },
   computed: {
@@ -326,9 +327,6 @@ export default {
         return user.bayname
       }
     }),
-    activeCollapse: function () {
-      return this.isUpdate ? 'advance' : ''
-    },
     hasPortMapping: function () {
       return !!this.form.container.docker.portMappings.length
     },
@@ -408,13 +406,15 @@ export default {
         }
       })
     },
-    open: function (id) {
+    open (id) {
       this.id = id
       this.form = this._.merge({}, appUtil.APP_BASE)
       if (this.isUpdate) {
+        this.activeCollapse = 'advance'
         this.updateInitFetch(this.id)
           .then(res => this.updateInit(res))
       } else {
+        this.activeCollapse = ''
         this.form.selectCluster = this.bayname
       }
       this.$refs.dialog.open()
@@ -432,6 +432,7 @@ export default {
       this.$delete(this.form, 'healthCheck')
     },
     resetForm () {
+      this.id = null
       this.$refs.form.resetFields()
     },
     uniqueHostname () {
