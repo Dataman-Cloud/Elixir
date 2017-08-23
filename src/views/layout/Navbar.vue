@@ -25,7 +25,7 @@
 
 <script>
 import Breadcrumb from './Breadcrumb'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import * as type from '@/store/user/mutations_types'
 
 export default {
@@ -35,13 +35,18 @@ export default {
   data () {
     return {}
   },
+  computed: {
+    ...mapState({
+      isCollapse: state => state.user.isCollapse
+    })
+  },
   methods: {
     ...mapActions({
       logout: type.LOGOUT,
       setCollapse: type.SET_COLLAPSE
     }),
     toggleSideBar () {
-      this.setCollapse()
+      this.setCollapse(!this.isCollapse)
     },
     async exit () {
       await this.logout()

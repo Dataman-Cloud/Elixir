@@ -5,7 +5,7 @@ const state = {
   name: '',
   token: '',
   roles: [],
-  isCollapse: false
+  isCollapse: JSON.parse(localStorage.getItem('isCollapse'))
 }
 
 export default {
