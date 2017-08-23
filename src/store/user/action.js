@@ -34,7 +34,8 @@ export default {
       resolve(data)
     })
   },
-  [type.SET_COLLAPSE] (context) {
-    context.commit(type.SET_COLLAPSE)
+  [type.SET_COLLAPSE] (context, isCollapse = false) {
+    context.commit(type.SET_COLLAPSE, isCollapse)
+    localStorage.setItem('isCollapse', isCollapse)
   }
 }
