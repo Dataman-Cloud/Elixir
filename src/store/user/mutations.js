@@ -13,7 +13,7 @@ export default {
     state.name = name
     state.roles = role
   },
-  [type.SET_COLLAPSE] (state) {
-    state.isCollapse = !state.isCollapse
+  [type.SET_COLLAPSE] (state, isCollapse = false) {
+    state.isCollapse = isCollapse
   }
 }
