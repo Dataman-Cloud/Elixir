@@ -44,10 +44,10 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
-      if (store.state.user.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
+      if (store.state.user.currentPerms.length === 0) { // 判断当前用户是否已拉取完user_info信息
         store.dispatch(userType.FETCH_USER_INFO).then(res => { // 拉取user_info
-          const roles = res.role
-          store.dispatch(permiType.SET_ROUTERS, roles).then(() => { // 生成可访问的路由表
+          const currentPerms = res.currentPerms
+          store.dispatch(permiType.SET_ROUTERS, currentPerms).then(() => { // 生成可访问的路由表
             router.addRoutes(store.state.permissions.addRouters) // 动态添加可访问路由表
             next({...to})
           })
