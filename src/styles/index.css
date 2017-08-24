@@ -77,21 +77,13 @@
 .el-menu--collapse .el-submenu .el-menu{
   z-index: 999;
 }
-.user-menu{
-  width: 100px;
-  background: none;
+.userGroup{
+  position: absolute;
+  right: 100px;
 }
-.user-menu .el-submenu__title{
-  height: 36px;
-  line-height: 36px;
-  padding-left: 0px!important;
+.userGroup .el-input__inner{
+  border: none;
 }
-.user-menu .el-submenu__title i{
-  margin-right: 10px!important;
-  font-style: normal;
-  margin-left: -10px;
-  color: #000
-}
-.user-menu .el-submenu .el-menu{
-  left: -210%;
+.navbar .avatar-container .avatar-wrapper .el-icon-caret-center{
+  top:17px!important;
 }
