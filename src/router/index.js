@@ -19,6 +19,9 @@ const HistoryDetail = () => import('../views/elastic/detail/Detail')
 
 const LogList = () => import('../views/log/list/List')
 
+const ClusterList = () => import('../views/cluster/list/List')
+const ClusterDetail = () => import('../views/cluster/detail/Detail')
+
 const ComposeList = () => import('../views/compose/list/List')
 const ComposeDetail = () => import('../views/compose/detail/Detail')
 
@@ -42,6 +45,18 @@ export const constantRouterMap = [
 ]
 
 export const asyncRouterMap = [
+  {
+    path: '/cluster',
+    redirect: '/cluster/list',
+    name: '集群',
+    icon: 'fa fa-server',
+    component: Layout,
+    meta: { role: ['get-cluster'] },
+    children: [
+      { path: 'list', component: ClusterList, name: '集群列表' },
+      { path: 'detail', component: ClusterDetail, name: '集群详情' }
+    ]
+  },
   {
     path: '/compose',
     redirect: '/compose/list',
