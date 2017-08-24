@@ -4,10 +4,14 @@
       <i class="fa fa-bars" aria-hidden="true" @click="toggleSideBar"></i>
     </div>
     <Breadcrumb class="bread-header"></Breadcrumb>
+    <el-select class="userGroup" v-model="value" placeholder="请选择">
+      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+      </el-option>
+    </el-select>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <i style="font-size:24px;" class="fa fa-user-circle" aria-hidden="true"></i>
-        <i class="el-icon-caret-bottom"></i>
+        <i class="el-icon-caret-bottom el-icon-caret-center"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class='inlineBlock' to="/">
@@ -15,15 +19,6 @@
             首页
           </el-dropdown-item>
         </router-link>
-        <el-menu class="user-menu" default-active="1-1" :collapse="true">
-          <el-submenu index="1">
-            <template slot="title">
-              <i>用户组</i>
-            </template>
-            <el-menu-item index="1-1">李丽丽</el-menu-item>
-            <el-menu-item index="1-2">李华华</el-menu-item>
-          </el-submenu>
-        </el-menu>
         <el-dropdown-item divided>
           <span @click="exit" style="display:block;">退出登录</span>
         </el-dropdown-item>
@@ -42,7 +37,25 @@ export default {
     Breadcrumb
   },
   data () {
-    return {}
+    return {
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
+      value: ''
+    }
   },
   computed: {
     ...mapState({
