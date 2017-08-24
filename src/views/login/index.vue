@@ -108,11 +108,11 @@ export default {
   }
   .login-form {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 50%;
+    top: 50%;
     width: 400px;
     padding: 35px 35px 15px 35px;
-    margin: 120px auto;
+    transform:translate(-50%,-50%);
   }
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
