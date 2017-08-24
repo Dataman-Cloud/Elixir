@@ -15,12 +15,12 @@
             首页
           </el-dropdown-item>
         </router-link>
-        <el-menu class="user-menu" default-active="1-4-1" :collapse="true">
+        <el-menu class="user-menu" default-active="1-1" :collapse="true">
           <el-submenu index="1">
             <template slot="title">
-              <i>管理员</i>
+              <i>用户组</i>
             </template>
-            <el-menu-item index="1-1" class="is-active">李丽丽</el-menu-item>
+            <el-menu-item index="1-1">李丽丽</el-menu-item>
             <el-menu-item index="1-2">李华华</el-menu-item>
           </el-submenu>
         </el-menu>
