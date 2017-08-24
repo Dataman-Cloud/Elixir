@@ -32,6 +32,7 @@ export const constantRouterMap = [
     name: '应用',
     icon: 'fa fa-cubes',
     component: Layout,
+    meta: { role: ['get-apps'] },
     children: [
       { path: 'list', component: AppList, name: '应用列表' },
       { path: 'detail/:id', component: AppDetail, name: '应用详情' },
@@ -47,6 +48,7 @@ export const asyncRouterMap = [
     name: '编排',
     icon: 'fa fa-database',
     component: Layout,
+    meta: { role: ['get-compose'] },
     children: [
       { path: 'list', component: ComposeList, name: '编排列表' },
       { path: 'detail/:id', component: ComposeDetail, name: '编排详情' }
@@ -60,9 +62,9 @@ export const asyncRouterMap = [
     component: Layout,
     hasDropdown: true,
     children: [
-      { path: 'list', component: RegistryList, name: '镜像列表' },
-      { path: 'histories', component: HistoryList, name: '历史列表' },
-      { path: 'detail/:name', component: WareHouse, name: '镜像仓库', hidden: true }
+      { path: 'list', component: RegistryList, name: '镜像列表', meta: { role: ['get-registry'] } },
+      { path: 'histories', component: HistoryList, name: '历史列表', meta: { role: ['get-registry-histry'] } },
+      { path: 'detail/:name', component: WareHouse, name: '镜像仓库', hidden: true, meta: { role: ['get-registry'] } }
     ]
   },
   {
@@ -71,6 +73,7 @@ export const asyncRouterMap = [
     name: '镜像构建',
     icon: 'fa fa-building',
     component: Layout,
+    meta: { role: ['get-cicd', 'get-cicd-auth'] },
     children: [
       { path: 'list', component: CicdList, name: '构建列表' },
       { path: 'detail/:name', component: BuildDetail, name: '构建详情' }
@@ -82,6 +85,7 @@ export const asyncRouterMap = [
     name: '弹性扩缩',
     icon: 'fa fa-arrows',
     component: Layout,
+    meta: { role: ['get-policy'] },
     children: [
       { path: 'list', component: ElasticList, name: '策略列表' },
       { path: 'detail/:name', component: HistoryDetail, name: '扩缩历史' }
@@ -93,6 +97,7 @@ export const asyncRouterMap = [
     name: '日志监控',
     icon: 'fa fa-sticky-note',
     component: Layout,
+    meta: { role: ['get-logs'] },
     children: [
       { path: 'list', component: LogList, name: '日志查询' }
     ]

@@ -2,9 +2,9 @@
   <div class="login-container">
     <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px" class="card-box login-form">
       <h3 class="title">系统登录</h3>
-      <el-form-item prop="email">
+      <el-form-item prop="username">
         <span class="svg-container"></span>
-        <el-input name="email" type="text" v-model="loginForm.email" autoComplete="on" placeholder="邮箱"></el-input>
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="账号"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container"></span>
@@ -29,11 +29,11 @@ export default {
   data () {
     return {
       loginForm: {
-        email: '',
+        username: '',
         password: ''
       },
       loginRules: {
-        email: [
+        username: [
           { required: true, trigger: 'blur' }
         ],
         password: [

@@ -2,9 +2,15 @@ import actions from './action'
 import mutations from './mutations'
 
 const state = {
+  id: null,
   name: '',
-  token: '',
-  roles: [],
+  email: '',
+  phone: '',
+  title: '',
+  userName: '',
+  currentPerms: [],
+  currentGroupId: null,
+  accountGroups: [],
   isCollapse: JSON.parse(localStorage.getItem('isCollapse'))
 }
 
