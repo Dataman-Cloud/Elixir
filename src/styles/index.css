@@ -77,3 +77,21 @@
 .el-menu--collapse .el-submenu .el-menu{
   z-index: 999;
 }
+.user-menu{
+  width: 100px;
+  background: none;
+}
+.user-menu .el-submenu__title{
+  height: 36px;
+  line-height: 36px;
+  padding-left: 0px!important;
+}
+.user-menu .el-submenu__title i{
+  margin-right: 10px!important;
+  font-style: normal;
+  margin-left: -10px;
+  color: #000
+}
+.user-menu .el-submenu .el-menu{
+  left: -210%;
+}
