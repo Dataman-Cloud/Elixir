@@ -3,6 +3,7 @@ import Vue from 'vue'
 import app from './app'
 import registry from './registry'
 import user from './user'
+import userGroup from './user-group'
 import permissions from './permissions'
 import cicd from './cicd'
 import elastic from './elastic'
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     app,
     registry,
     user,
+    userGroup,
     permissions,
     cicd,
     elastic,
