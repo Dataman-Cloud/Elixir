@@ -1,5 +1,7 @@
 import * as type from './mutations_types'
+import * as permiType from '../permissions/mutations_types'
 import * as user from '../../api/user'
+import router from '@/router'
 
 export default {
   async [type.LOGIN] (context, playload = {}) {
@@ -8,6 +10,10 @@ export default {
   },
   async [type.LOGOUT] (context, playload = {}) {
     await user.logout()
+    context.commit(type.CLEAR_TOKEN)
+    context.commit(type.SET_ROLES, [])
+  },
+  [type.FRONTEND_LOGOUT] (context) {
     context.commit(type.CLEAR_TOKEN)
     context.commit(type.SET_ROLES, [])
   },
@@ -20,13 +26,10 @@ export default {
     context.commit(type.SET_COLLAPSE, isCollapse)
     localStorage.setItem('isCollapse', isCollapse)
   },
-  [type.SWITCH_USER_GROUP] (context) {
-    // MOCK
-    return new Promise((resolve, reject) => {
-      // 切换用户
-      resolve()
-    }).then(() => {
-
-    })
+  async [type.SWITCH_USER_GROUP] ({ dispatch, context }, id) {
+    await user.switchGroup(id)
+    let { currentPerms } = await dispatch(type.FETCH_USER_INFO)
+    await dispatch(permiType.SET_ROUTERS, currentPerms)
+    router.push({ name: '应用' })
   }
 }

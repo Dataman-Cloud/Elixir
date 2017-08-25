@@ -21,3 +21,10 @@ export function getUserInfo () {
     method: 'get'
   })
 }
+
+export function switchGroup (id) {
+  return fetch({
+    url: `v1/groups/currentgroup/${id}`,
+    method: 'patch'
+  })
+}

@@ -38,22 +38,21 @@ Object.keys(directives).forEach(key => {
 
 // 全局 beforeEach
 const whiteList = ['/login']// 不重定向白名单
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   NProgress.start()
   if (getToken()) { // 判断是否有token
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
       if (store.state.user.currentPerms.length === 0) { // 判断当前用户是否已拉取完user_info信息
-        store.dispatch(userType.FETCH_USER_INFO).then(res => { // 拉取user_info
-          const currentPerms = res.currentPerms
-          store.dispatch(permiType.SET_ROUTERS, currentPerms).then(() => { // 生成可访问的路由表
-            router.addRoutes(store.state.permissions.addRouters) // 动态添加可访问路由表
-            next({...to})
-          })
-        }).catch(() => {
-          // TODO: 获取信息失败 则返回登录页 store.dispatch('LOGOUT')
-        })
+        try {
+          let { currentPerms } = await store.dispatch(userType.FETCH_USER_INFO) // 拉取user_info
+          await store.dispatch(permiType.SET_ROUTERS, currentPerms) // 生成可访问的路由表
+          router.addRoutes(store.state.permissions.addRouters) // 动态添加可访问路由表
+          next({ ...to })
+        } catch (error) {
+          await store.dispatch(userType.LOGOUT)
+        }
       } else {
         next()
       }
@@ -78,5 +77,5 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: {App}
+  components: { App }
 })
