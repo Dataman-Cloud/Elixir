@@ -1,2 +1,1 @@
 export const SET_ROUTERS = 'SET_ROUTERS'
-export const CLEAR_ROUTERS = 'CLEAR_ROUTERS'
