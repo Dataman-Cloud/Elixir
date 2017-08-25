@@ -1,0 +1,2 @@
+export const FETCH_CLUSTERS = 'FETCH_CLUSTERS'
+export const FETCH_CLUSTER = 'FETCH_CLUSTER'

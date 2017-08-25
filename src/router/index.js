@@ -19,8 +19,9 @@ const HistoryDetail = () => import('../views/elastic/detail/Detail')
 
 const LogList = () => import('../views/log/list/List')
 
-const ClusterList = () => import('../views/cluster/list/List')
-const ClusterDetail = () => import('../views/cluster/detail/Detail')
+const ClusterLayout = () => import('../views/resource/cluster')
+const ClusterList = () => import('../views/resource/cluster/list/List')
+const ClusterDetail = () => import('../views/resource/cluster/detail/Detail')
 
 const ComposeList = () => import('../views/compose/list/List')
 const ComposeDetail = () => import('../views/compose/detail/Detail')
@@ -49,15 +50,24 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-    path: '/cluster',
-    redirect: '/cluster/list',
-    name: '集群',
+    path: '/resource',
+    redirect: '/resource/cluster',
+    name: '资源',
     icon: 'fa fa-server',
     component: Layout,
-    meta: { role: ['get-cluster'] },
+    hasDropdown: true,
     children: [
-      { path: 'list', component: ClusterList, name: '集群列表' },
-      { path: 'detail', component: ClusterDetail, name: '集群详情' }
+      {
+        path: '/resource/cluster',
+        redirect: '/resource/cluster/list',
+        name: '集群',
+        component: ClusterLayout,
+        meta: { role: ['get-cluster'] },
+        children: [
+          { path: 'list', component: ClusterList, name: '集群列表' },
+          { path: 'detail/:name', component: ClusterDetail, name: '集群详情', hidden: true }
+        ]
+      }
     ]
   },
   {
@@ -129,9 +139,9 @@ export const asyncRouterMap = [
     hasDropdown: true,
     children: [
       {
-        name: '组管理',
         path: '/system/usrgroup',
         redirect: '/system/usrgroup/list',
+        name: '组管理',
         component: UserGroupLayout,
         meta: { role: ['get-usergroup'] },
         children: [
