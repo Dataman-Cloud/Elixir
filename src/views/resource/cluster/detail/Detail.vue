@@ -1,40 +1,38 @@
 <template>
   <div>
 
-    <el-card :body-style="{ padding: '0px 10px 0 0' }">
+    <el-card v-loading="listLoading" :body-style="{ padding: '0px 10px 0 0' }">
       <div style="padding: 14px;">
-        <router-link class="ellipsis" :to="{name: '集群详情'}">
-          集群名
-        </router-link>
+        <span>{{cluster.clusterLabel}}</span>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-row :gutter="20">
-              <el-col :span="8">
+              <el-col :span="10">
                 <div class="bottom clearfix">
                   <time class="time">用户组</time>
-                  <el-button type="text" class="button">lll</el-button>
+                  <span class="clusterDetail">{{cluster.groupNam}}</span>
                 </div>
                 <div class="bottom clearfix">
                   <time class="time">创建时间</time>
-                  <el-button type="text" class="button">lll</el-button>
+                  <span class="clusterDetail">{{cluster.createAt}}</span>
                 </div>
                 <div class="bottom clearfix">
                   <time class="time">创建者</time>
-                  <el-button type="text" class="button">lll</el-button>
+                  <span class="clusterDetail">{{cluster.accountName}}</span>
                 </div>
 
               </el-col>
-              <el-col :span="8" class="cluster-right">
+              <el-col :span="5" class="cluster-right">
 
               </el-col>
-              <el-col :span="8" class="cluster-right">
+              <el-col :span="5" class="cluster-right">
 
               </el-col>
             </el-row>
 
           </el-col>
           <el-col :span="12">
-            <el-row :gutter="20"  type="flex" class="row-bg" justify="end">
+            <el-row :gutter="20" type="flex" class="row-bg" justify="end">
               <div class="btn-group">
                 <span>
                   <el-button type="danger" @click="openDelete">
@@ -55,7 +53,7 @@
     <delete-dialog ref="deleteDialog"></delete-dialog>
     <add-dialog ref="addHost"></add-dialog>
 
-    <el-card :body-style="{ padding: '0px 10px', marginTop: '20px' }" class="cluster-detail">
+    <el-card v-loading="listLoading" :body-style="{ padding: '0px 10px', marginTop: '20px' }" class="cluster-detail">
       <div class="btn-group">
         <el-button type="danger" @click="openDelete" :disabled="!currentRow">
           <i class="ion-ios-plus-outline"></i> 删除
@@ -77,23 +75,14 @@
   </div>
 </template>
 <script>
-import DeleteDialog from '@/views/cluster/modals/DeleteDialog'
-import AddDialog from '@/views/cluster/modals/AddDialog'
+import DeleteDialog from '@/views/resource/cluster/modals/DeleteDialog'
+import AddDialog from '@/views/resource/cluster/modals/AddDialog'
+import { mapActions } from 'vuex'
+import * as type from '@/store/cluster/mutations_types'
 export default {
   components: {
     DeleteDialog,
     AddDialog
-  },
-  methods: {
-    openDelete () {
-      this.$refs.deleteDialog.open()
-    },
-    addHost () {
-      this.$refs.addHost.open()
-    },
-    handleSelectionChange (val) {
-      this.currentRows = val
-    }
   },
   data () {
     return {
@@ -127,12 +116,41 @@ export default {
         address: '上海市普陀区金沙江路 1518 弄'
       }],
       multipleSelection: '',
-      currentRows: []
+      currentRows: [],
+      listLoading: false,
+      cluster: {}
     }
   },
   computed: {
     currentRow: function () {
-      return this.currentRows.length >= 1 ? this.currentRows[0] : null
+      return this.currentRows.length === 1 ? this.currentRows[0] : null
+    }
+  },
+  methods: {
+    ...mapActions({
+      fetchCluster: type.FETCH_CLUSTER
+    }),
+    openDelete () {
+      this.$refs.deleteDialog.open()
+    },
+    addHost () {
+      this.$refs.addHost.open()
+    },
+    handleSelectionChange (val) {
+      this.currentRows = val
+    }
+  },
+  created () {
+    this.listLoading = true
+    this.fetchCluster(this.$route.params.name)
+      .then((res) => {
+        this.cluster = res
+        this.listLoading = false
+      })
+  },
+  watch: {
+    $route (to) {
+      this.$store.dispatch(type.FETCH_CLUSTER, this.$route.params.name)
     }
   }
 }
@@ -143,7 +161,7 @@ export default {
   line-height: 12px;
 }
 
-.button {
+.clusterDetail {
   padding: 0;
   float: right;
 }

@@ -17,37 +17,37 @@
 
     <create-dialog ref="createDialog"></create-dialog>
     <el-row>
-      <el-col class="cluster-card" :span="8" v-for="(o, index) in 4" :key="o">
+      <el-col v-loading="listLoading" class="cluster-card" :span="8" v-for="(cluster, index) in clusters" :key="index">
         <el-card :body-style="{ padding: '0px' }">
           <div style="padding: 14px;">
-            <router-link class="ellipsis" :to="{name: '集群详情'}">
-              集群名
+            <router-link class="ellipsis" :to="{name: '集群详情',params:{name : cluster.clusterLabel}}">
+              {{cluster.clusterLabel}}
             </router-link>
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-row :gutter="20">
-                  <el-col :span="8">
+                  <el-col :span="10">
                     <div class="bottom clearfix">
-                      <time class="time">用户组</time>
-                      <el-button type="text" class="button">lll</el-button>
+                      <span class="time">用户组</span>
+                      <span class="clusterDetail">{{cluster.groupNam}}</span>
                     </div>
                     <div class="bottom clearfix">
                       <time class="time">创建时间</time>
-                      <el-button type="text" class="button">lll</el-button>
+                      <span class="clusterDetail">{{cluster.createAt}}</span>
                     </div>
                     <div class="bottom clearfix">
-                      <time class="time">创建者</time>
-                      <el-button type="text" class="button">lll</el-button>
+                      <span class="time">创建者</span>
+                      <span class="clusterDetail">{{cluster.groupId}}</span>
                     </div>
 
                   </el-col>
-                  <el-col :span="8" class="cluster-right">
-                    <h2>11</h2>
-                    <p>fjeoiw</p>
+                  <el-col :span="5" class="cluster-right">
+                    <h2>主机</h2>
+                    <p>2</p>
                   </el-col>
-                  <el-col :span="8" class="cluster-right">
-                    <h2>11</h2>
-                    <p>fjeoiw</p>
+                  <el-col :span="5" class="cluster-right">
+                    <h2>应用</h2>
+                    <p>2</p>
                   </el-col>
                 </el-row>
 
@@ -80,9 +80,11 @@
   </div>
 </template>
 <script>
-import CreateDialog from '@/views/cluster/modals/CreateDialog'
-import DeleteDialog from '@/views/cluster/modals/DeleteDialog'
-import AddDialog from '@/views/cluster/modals/AddDialog'
+import { mapState, mapActions } from 'vuex'
+import * as type from '@/store/cluster/mutations_types'
+import CreateDialog from '@/views/resource/cluster/modals/CreateDialog'
+import DeleteDialog from '@/views/resource/cluster/modals/DeleteDialog'
+import AddDialog from '@/views/resource/cluster/modals/AddDialog'
 export default {
   components: {
     CreateDialog,
@@ -90,9 +92,28 @@ export default {
     AddDialog
   },
   data () {
-    return {}
+    return {
+      listLoading: false
+    }
+  },
+  computed: {
+    ...mapState({
+      clusters (state) {
+        return state.cluster.clusters.clusters
+      }
+    })
   },
   methods: {
+    ...mapActions({
+      fetchClusters: type.FETCH_CLUSTERS
+    }),
+    listApp () {
+      return this.fetchClusters().then(() => {
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     openCreate () {
       this.$refs.createDialog.open()
     },
@@ -105,6 +126,13 @@ export default {
     addHost () {
       this.$refs.addHost.open()
     }
+  },
+  mounted () {
+    this.listLoading = true
+    this.fetchClusters()
+      .then(() => {
+        this.listLoading = false
+      })
   }
 }
 </script>
@@ -128,7 +156,7 @@ export default {
   line-height: 12px;
 }
 
-.button {
+.clusterDetail {
   padding: 0;
   float: right;
 }
