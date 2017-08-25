@@ -25,6 +25,9 @@ const ClusterDetail = () => import('../views/cluster/detail/Detail')
 const ComposeList = () => import('../views/compose/list/List')
 const ComposeDetail = () => import('../views/compose/detail/Detail')
 
+const UserGroupLayout = () => import('../views/system/user-group')
+const UserGroupList = () => import('../views/system/user-group/list/List')
+
 Vue.use(Router)
 
 export const constantRouterMap = [
@@ -115,6 +118,26 @@ export const asyncRouterMap = [
     meta: { role: ['get-logs'] },
     children: [
       { path: 'list', component: LogList, name: '日志查询' }
+    ]
+  },
+  {
+    path: '/system',
+    redirect: '/system/usrgroup',
+    name: '系统',
+    icon: 'fa fa-user-o',
+    component: Layout,
+    hasDropdown: true,
+    children: [
+      {
+        name: '组管理',
+        path: '/system/usrgroup',
+        redirect: '/system/usrgroup/list',
+        component: UserGroupLayout,
+        meta: { role: ['get-usergroup'] },
+        children: [
+          { path: 'list', component: UserGroupList, name: '用户组列表' }
+        ]
+      }
     ]
   },
   { path: '*', redirect: '/app', hidden: true }
