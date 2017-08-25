@@ -8,6 +8,7 @@ import cicd from './cicd'
 import elastic from './elastic'
 import log from './log'
 import compose from './compose'
+import cluster from './cluster'
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     cicd,
     elastic,
     log,
-    compose
+    compose,
+    cluster
   }
 })
