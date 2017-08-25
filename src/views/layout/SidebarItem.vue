@@ -6,7 +6,7 @@
         <span slot="title">{{item.name}}</span>
       </el-menu-item>
 
-      <el-submenu :index="item.name" v-if="item.hasDropdown&&!item.hidden" :key="index">
+      <el-submenu :index="item.name" v-if="item.hasDropdown&&!item.hidden&&item.children.length" :key="index">
         <template slot="title">
           <i v-if='item.icon' :class="[item.icon, 'clearance']" aria-hidden="true"></i>
           <span>{{item.name}}</span>

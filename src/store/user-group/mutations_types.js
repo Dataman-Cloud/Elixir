@@ -1,0 +1,2 @@
+export const FETCH_USER_GROUPS = 'FETCH_USER_GROUPS'
+
