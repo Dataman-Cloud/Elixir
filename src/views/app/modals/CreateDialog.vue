@@ -81,25 +81,25 @@
         <el-collapse accordion class="advance" v-model="activeCollapse">
           <el-collapse-item name="advance" title="高级设置">
 
-            <el-form-item label="访问网关">
+            <el-form-item label="访问网关" class="proxy-label">
               <el-row :gutter="12">
-                <el-col :span="4">
-                  <el-form-item prop="proxy.enabled">
+                <el-col :span="20" class="proxy-spec">
+                  <el-form-item prop="proxy.enabled" label="网关开关">
                     <el-switch on-color="#01C4BC" v-model="form.proxy.enabled"></el-switch>
                   </el-form-item>
                 </el-col>
-                <el-col :span="7">
+                <el-col :span="10">
                   <el-form-item prop="proxy.alias">
                     <el-input v-model="form.proxy.alias" placeholder="网关别名" :disabled="!form.proxy.enabled"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="7">
+                <el-col :span="10">
                   <el-form-item prop="proxy.listen" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
                     <el-input v-model.number="form.proxy.listen" placeholder="端口" :disabled="!form.proxy.enabled"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="4">
-                  <el-form-item prop="proxy.sticky">
+                <el-col :span="20">
+                  <el-form-item prop="proxy.sticky" label="会话保持">
                     <el-switch on-color="#01C4BC" v-model="form.proxy.sticky" :disabled="!form.proxy.enabled"></el-switch>
                   </el-form-item>
                 </el-col>
@@ -478,7 +478,10 @@ export default {
   padding: 0 !important;
   margin-right: 20px;
 }
-
+.proxy-spec{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 .wrapContainerRow .el-row .el-col {
   margin-bottom: 20px;
   padding: 0 !important;
