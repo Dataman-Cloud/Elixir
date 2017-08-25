@@ -5,9 +5,5 @@ export default {
   [type.SET_ROUTERS] (state, routers) {
     state.addRouters = routers
     state.routers = constantRouterMap.concat(routers)
-  },
-  [type.CLEAR_ROUTERS] (state) {
-    state.addRouters = []
-    state.routers = constantRouterMap
   }
 }
