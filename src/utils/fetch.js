@@ -2,6 +2,8 @@ import axios from 'axios'
 import { Notification } from 'element-ui'
 import baseUrl from 'baseUrl'
 import { getToken } from '../utils/auth'
+import store from '@/store'
+import * as type from '@/store/user/mutations_types'
 
 // 创建axios实例
 const service = axios.create({
@@ -33,6 +35,10 @@ service.interceptors.response.use(
       message: error.message,
       type: 'error'
     })
+    if (error.response.status === 401) {
+      store.dispatch(type.FRONTEND_LOGOUT)
+      location.reload()
+    }
     return Promise.reject(error)
   }
 )
