@@ -1,5 +1,6 @@
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const FRONTEND_LOGOUT = 'FRONTEND_LOGOUT'
 export const SET_TOKEN = 'SET_TOKEN'
 export const CLEAR_TOKEN = 'CLEAR_TOKEN'
 export const SET_ROLES = 'SET_ROLES'
