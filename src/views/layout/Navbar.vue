@@ -4,8 +4,8 @@
       <i class="fa fa-bars" aria-hidden="true" @click="toggleSideBar"></i>
     </div>
     <Breadcrumb class="bread-header"></Breadcrumb>
-    <el-select class="userGroup" v-model="value" placeholder="请选择">
-      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+    <el-select class="userGroup" v-model="userGroup" placeholder="请选择" @change="changeGroup">
+      <el-option v-for="group in accountGroups" :key="group.id" :label="group.group.name" :value="group.groupId">
       </el-option>
     </el-select>
     <el-dropdown class="avatar-container" trigger="click">
@@ -38,35 +38,25 @@ export default {
   },
   data () {
     return {
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
-      value: ''
+      userGroup: this.$store.state.user.currentGroupId
     }
   },
   computed: {
     ...mapState({
-      isCollapse: state => state.user.isCollapse
+      isCollapse: state => state.user.isCollapse,
+      accountGroups: state => state.user.accountGroups,
+      currentGroupId: state => state.user.currentGroupId
     })
   },
   methods: {
     ...mapActions({
       logout: type.LOGOUT,
-      setCollapse: type.SET_COLLAPSE
+      setCollapse: type.SET_COLLAPSE,
+      switchGroup: type.SWITCH_USER_GROUP
     }),
+    changeGroup (groupId) {
+      this.switchGroup(groupId)
+    },
     toggleSideBar () {
       this.setCollapse(!this.isCollapse)
     },
