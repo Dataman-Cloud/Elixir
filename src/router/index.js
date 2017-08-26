@@ -59,6 +59,16 @@ export const constantRouterMap = [
         ]
       }
     ]
+  },
+  {
+    path: '/eams',
+    name: 'eams',
+    icon: 'fa fa-cubes',
+    component: Layout,
+    children: [
+      { path: 'list', component: EamsList, name: 'eams列表', hidden: true },
+      { path: 'octopus', component: OctopusCreate, name: 'octopus', hidden: true }
+    ]
   }
 ]
 
@@ -163,4 +173,3 @@ const router = new Router({
 })
 
 export default router
-
