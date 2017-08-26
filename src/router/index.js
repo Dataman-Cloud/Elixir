@@ -28,6 +28,9 @@ const ComposeDetail = () => import('../views/compose/detail/Detail')
 
 const UserGroupLayout = () => import('../views/system/user-group')
 const UserGroupList = () => import('../views/system/user-group/list/List')
+// new modules
+const EamsList = () => import('../views/eams/list/List')
+const OctopusCreate = () => import('../views/eams/octopus/create')
 
 Vue.use(Router)
 
@@ -44,6 +47,16 @@ export const constantRouterMap = [
       { path: 'list', component: AppList, name: '应用列表' },
       { path: 'detail/:id', component: AppDetail, name: '应用详情' },
       { path: 'instances/:host/:id/:slaveId', component: AppInstance, name: '实例详情' }
+    ]
+  },
+  {
+    path: '/eams',
+    name: 'eams',
+    icon: 'fa fa-cubes',
+    component: Layout,
+    children: [
+      { path: 'list', component: EamsList, name: 'eams列表', hidden: true },
+      { path: 'octopus', component: OctopusCreate, name: 'octopus', hidden: true }
     ]
   }
 ]
@@ -161,4 +174,3 @@ const router = new Router({
 })
 
 export default router
-
