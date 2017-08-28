@@ -69,6 +69,16 @@ export const constantRouterMap = [
       { path: 'list', component: EamsList, name: 'eams列表', hidden: true },
       { path: 'octopus', component: OctopusCreate, name: 'octopus', hidden: true }
     ]
+  },
+  {
+    path: '/minihost',
+    name: 'eams',
+    icon: 'fa fa-cubes',
+    component: Layout,
+    children: [
+      { path: 'list', component: EamsList, name: 'minihost列表', hidden: true },
+      { path: 'minihostcreate', component: MinihostCreate, name: 'minihost', hidden: true }
+    ]
   }
 ]
 
