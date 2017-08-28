@@ -45,7 +45,7 @@ export default {
         accessedRouters = filterAsyncRouter(tempAsyncRouterMap, currentPerms)
       }
       commit(type.SET_ROUTERS, accessedRouters)
-      resolve()
+      resolve(accessedRouters)
     })
   }
 }
