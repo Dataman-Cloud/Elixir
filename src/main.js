@@ -47,8 +47,8 @@ router.beforeEach(async (to, from, next) => {
       if (store.state.user.currentPerms.length === 0) { // 判断当前用户是否已拉取完user_info信息
         try {
           let { currentPerms } = await store.dispatch(userType.FETCH_USER_INFO) // 拉取user_info
-          await store.dispatch(permiType.SET_ROUTERS, currentPerms) // 生成可访问的路由表
-          router.addRoutes(store.state.permissions.addRouters) // 动态添加可访问路由表
+          let dynamicRoutes = await store.dispatch(permiType.SET_ROUTERS, currentPerms) // 生成可访问的路由表
+          router.addRoutes(dynamicRoutes) // 动态添加可访问路由表
           next({ ...to })
         } catch (error) {
           await store.dispatch(userType.LOGOUT)
