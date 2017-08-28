@@ -1,7 +1,5 @@
 import * as type from './mutations_types'
-import * as permiType from '../permissions/mutations_types'
 import * as user from '../../api/user'
-import router from '@/router'
 
 export default {
   async [type.LOGIN] (context, playload = {}) {
@@ -28,8 +26,7 @@ export default {
   },
   async [type.SWITCH_USER_GROUP] ({ dispatch, context }, id) {
     await user.switchGroup(id)
-    let { currentPerms } = await dispatch(type.FETCH_USER_INFO)
-    await dispatch(permiType.SET_ROUTERS, currentPerms)
-    router.push({ name: '应用' })
+    // 切换成功后 reload 页面, 重新调用全局 beforeEach 校验 权限
+    location.reload()
   }
 }
