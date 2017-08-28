@@ -11,5 +11,9 @@ export default {
     let data = await api.clusterDetail(name)
     context.commit(type.FETCH_CLUSTER, data.data)
     return data.data
+  },
+  async [type.FETCH_DEL_CLUSTER] (context, vclusterLabel) {
+    let data = await api.delCluster(vclusterLabel)
+    return data.data
   }
 }
