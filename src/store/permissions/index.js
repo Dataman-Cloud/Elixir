@@ -1,5 +1,6 @@
 import actions from './action'
 import mutations from './mutations'
+import getters from './getters'
 import { constantRouterMap } from '@/router'
 
 const state = {
@@ -10,5 +11,6 @@ const state = {
 export default {
   state,
   actions,
+  getters,
   mutations
 }
