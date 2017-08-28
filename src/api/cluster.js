@@ -13,3 +13,18 @@ export function clusterDetail (vclusterLabel) {
     method: 'get'
   })
 }
+
+export function create (data) {
+  return fetch({
+    url: 'v1/clusters',
+    method: 'post',
+    data: data
+  })
+}
+
+export function delCluster (vclusterLabel) {
+  return fetch({
+    url: `/v1/clusters/${vclusterLabel}`,
+    method: 'delete'
+  })
+}
