@@ -68,7 +68,7 @@
 
             </el-row>
             <el-button-group>
-              <el-button type="danger" icon="delete" @click="openDelete"></el-button>
+              <el-button type="danger" icon="delete" @click="openDelete(cluster.clusterLabel)"></el-button>
               <el-button type="primary" @click="addHost" icon="plus"></el-button>
             </el-button-group>
           </div>
@@ -105,23 +105,21 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchClusters: type.FETCH_CLUSTERS
+      fetchClusters: type.FETCH_CLUSTERS,
+      fetchDelCluster: type.FETCH_DEL_CLUSTER
     }),
-    listApp () {
-      return this.fetchClusters().then(() => {
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
-    },
     openCreate () {
       this.$refs.createDialog.open()
     },
     reload () {
-
+      this.listLoading = true
+      this.fetchClusters()
+        .then(() => (this.listLoading = false))
+        .catch(() => (this.listLoading = false))
     },
-    openDelete () {
-      this.$refs.deleteDialog.open()
+    async openDelete (clusterLabel) {
+      // TODO: Determine whether there is any application
+      // TODO: Delete cluster
     },
     addHost () {
       this.$refs.addHost.open()
