@@ -1,4 +1,5 @@
 import actions from './action'
+import getters from './getters'
 import mutations from './mutations'
 
 const state = {
@@ -17,5 +18,6 @@ const state = {
 export default {
   state,
   actions,
+  getters,
   mutations
 }

@@ -3,7 +3,6 @@
  */
 import actions from './action'
 import mutations from './mutations'
-import getters from './getters'
 
 const state = {
   apps: {
@@ -16,6 +15,5 @@ const state = {
 export default {
   state,
   actions,
-  getters,
   mutations
 }
