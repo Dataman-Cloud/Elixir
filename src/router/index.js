@@ -31,6 +31,7 @@ const UserGroupList = () => import('../views/system/user-group/list/List')
 // new modules
 const EamsList = () => import('../views/eams/list/List')
 const OctopusCreate = () => import('../views/eams/octopus/create')
+const MinihostCreate = () => import('../views/minihost/create')
 
 Vue.use(Router)
 
@@ -57,6 +58,16 @@ export const constantRouterMap = [
     children: [
       { path: 'list', component: EamsList, name: 'eams列表', hidden: true },
       { path: 'octopus', component: OctopusCreate, name: 'octopus', hidden: true }
+    ]
+  },
+  {
+    path: '/minihost',
+    name: 'eams',
+    icon: 'fa fa-cubes',
+    component: Layout,
+    children: [
+      { path: 'list', component: EamsList, name: 'minihost列表', hidden: true },
+      { path: 'minihostcreate', component: MinihostCreate, name: 'minihost', hidden: true }
     ]
   }
 ]

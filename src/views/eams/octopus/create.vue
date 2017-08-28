@@ -2,7 +2,7 @@
   <div class="">
     <el-row :gutter="12">
       <el-col :span="10">
-        <el-form ref="octopusForm" :model="form" :rules="rules" label-width="150px" v-loading="loading" element-loading-text="数据加载中...">
+        <el-form ref="octopusForm" :model="form" :rules="rules" label-width="150px" element-loading-text="数据加载中...">
           <!-- 服务名称 -->
           <el-form-item label="服务名称" prop="serviceName">
             <el-input v-model="form.serviceName">
@@ -135,6 +135,15 @@
         </el-form>
       </el-col>
     </el-row>
+    <el-row>
+      <el-col :span="10">
+        <el-row type="flex" justify="center">
+          <el-button type="primary" :loading="wait5seconds" @click="submit">
+            创建
+          </el-button>
+        </el-row>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -144,7 +153,10 @@ export default {
   data () {
     return {
       form: service.octopusForm,
-      rules: {}
+      rules: {},
+      wait5seconds: false,
+      tagsFront: [],
+      imagesFront: []
     }
   },
   methods: {
@@ -156,6 +168,35 @@ export default {
     },
     removeConfig (index) {
       this.form.zookeeperList.splice(index, 1)
+    },
+    changeImageFront () {
+
+    },
+    submit () {
+      this.$msgbox({
+        message: '确定提交？',
+        // confirmButtonClass: 'none',
+        closeOnPressEscape: true,
+        showCancelButton: true,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true
+            instance.confirmButtonText = '发布中...'
+            instance.showCancelButton = false
+            instance.message = 'octopus-demo'
+            setTimeout(() => {
+              instance.confirmButtonLoading = false
+              done()
+            }, 10000)
+          }
+        }
+      }).then(action => {
+        if (action === 'confirm') {
+          this.$router.push({name: 'eams列表'})
+        }
+      })
     }
   }
 }
@@ -164,5 +205,8 @@ export default {
 <style lang="css">
 .no-padding {
   margin-left: -6px;
+}
+.none {
+  display: none;
 }
 </style>
