@@ -22,3 +22,24 @@ export function groupUsersList (groupId) {
   })
 }
 
+export function getGroup (groupId) {
+  return fetch({
+    url: `v1/groups/getGroup/${groupId}`,
+    method: 'get'
+  })
+}
+
+export function updateGroup (data) {
+  return fetch({
+    url: 'v1/groups/update',
+    method: 'put',
+    data: data
+  })
+}
+
+export function delGroup (groupId) {
+  return fetch({
+    url: `v1/groups/delete/${groupId}`,
+    method: 'delete'
+  })
+}
