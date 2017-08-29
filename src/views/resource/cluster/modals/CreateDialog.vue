@@ -5,17 +5,17 @@
         <el-input v-model.number="form.clusterLabel" auto-complete="off"></el-input>
       </el-form-item>
       <el-form-item label="所属用户组" prop="userGroup">
-          <el-select v-model="form.userGroup" @visible-change="openUserGroup" v-loading="loading">
-            <el-option v-for="(userGroup, index) in userGroups" :key="index" :value="userGroup.name"></el-option>
-          </el-select>
-        </el-form-item>
+        <el-select v-model="form.userGroup" @visible-change="openUserGroup" v-loading="loading">
+          <el-option v-for="(userGroup, index) in userGroups" :key="index" :value="userGroup.name"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="描述" prop="desc">
         <el-input v-model.number="form.desc" auto-complete="off"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="onSubmit" :loading="submitLoading">确 定</el-button>
+      <el-button @click="dialogVisible = false">取 消</el-button>
     </div>
   </el-dialog>
 </template>
