@@ -19,15 +19,15 @@ const HistoryDetail = () => import('../views/elastic/detail/Detail')
 
 const LogList = () => import('../views/log/list/List')
 
-const ClusterLayout = () => import('../views/resource/cluster')
-const ClusterList = () => import('../views/resource/cluster/list/List')
-const ClusterDetail = () => import('../views/resource/cluster/detail/Detail')
+const ClusterLayout = () => import('../views/cluster')
+const ClusterList = () => import('../views/cluster/list/List')
+const ClusterDetail = () => import('../views/cluster/detail/Detail')
 
 const ComposeList = () => import('../views/compose/list/List')
 const ComposeDetail = () => import('../views/compose/detail/Detail')
 
-const UserGroupLayout = () => import('../views/system/user-group')
-const UserGroupList = () => import('../views/system/user-group/list/List')
+const UserGroupLayout = () => import('../views/user-group')
+const UserGroupList = () => import('../views/user-group/list/List')
 
 Vue.use(Router)
 
