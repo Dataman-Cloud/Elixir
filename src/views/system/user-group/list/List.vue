@@ -2,74 +2,199 @@
   <div>
     <div class="btn-group">
       <span>
-        <el-button type="primary">
-          <i class="ion-ios-plus-outline"></i> 新建用户组</el-button>
+        <el-button type="primary" @click="openCreate">
+          <i class="el-icon-plus"></i> 新建用户组</el-button>
       </span>
       <el-button-group style="display: flex">
         <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入内容"></el-input>
       </el-button-group>
     </div>
 
-    <el-table ref="multipleTable" :data="tableData3" border v-loading="listLoading" tooltip-effect="dark" style="width: 100%" @selection-change="handleCurrentChange">
-      <el-table-column type="selection" width="55">
+    <create-dialog ref="createDialog"></create-dialog>
+    <add-user-dialog ref="addUserDialog"></add-user-dialog>
+
+    <el-table :data="groups" style="width: 100%" @expand="expand">
+      <el-table-column type="expand">
+        <template scope="group">
+          <div class="btn-group">
+            <span></span>
+            <span>
+              <el-button type="primary">
+                <i class="el-icon-edit"></i> 修改用户组
+              </el-button>
+
+              <el-button type="danger" @click="delUser">
+                <i class="el-icon-delete"></i> 删除用户组
+              </el-button>
+            </span>
+          </div>
+          <el-badge>集群列表</el-badge>
+          <el-row>
+            <el-col :span="6" v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 2 : 0">
+              <el-card :body-style="{ padding: '0px' }">
+                <div style="padding: 14px;">
+                  <span>好吃的汉堡</span>
+                  <div class="bottom clearfix">
+                    <span class="time">正常主机 <i>1</i></span>
+                  </div>
+                  <div class="bottom clearfix">
+                    <span class="time">异常主机 <i>2</i></span>
+                    <el-button type="danger" class="button" icon="delete"></el-button>
+                  </div>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+          <el-badge>用户列表</el-badge>
+          <div class="btn-group">
+            <span>
+              <el-button type="primary" @click="addUser(group.row)">
+                <i class="el-icon-plus"></i> 添加新用户
+              </el-button>
+
+              <el-button type="danger" :disabled="!currentRow" @click="delUser(group.row)">
+                <i class="el-icon-minus"></i> 移除用户
+              </el-button>
+            </span>
+          </div>
+          <el-table ref="multipleTable" :data="group.row.users" @selection-change="handleCurrentChange" border tooltip-effect="dark" style="width: 100%">
+            <el-table-column type="selection" width="55">
+            </el-table-column>
+            <el-table-column prop="name" label="成员名称" width="120">
+            </el-table-column>
+            <el-table-column prop="currentPerms" label="权限" width="120">
+            </el-table-column>
+            <el-table-column prop="createAt" label="创建时间" show-overflow-tooltip>
+            </el-table-column>
+          </el-table>
+        </template>
       </el-table-column>
-      <el-table-column label="日期" width="120">
-        <template scope="scope">{{ scope.row.date }}</template>
+      <el-table-column label="组 ID" prop="id">
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="120">
+      <el-table-column label="组名称" prop="name">
       </el-table-column>
-      <el-table-column prop="address" label="地址" show-overflow-tooltip>
+      <el-table-column label="描述" prop="description">
       </el-table-column>
     </el-table>
   </div>
 </template>
 <script>
+import * as user from '@/api/user'
+import { mapState, mapActions } from 'vuex'
+import * as userGroups from '@/api/user-group'
+import Confirm from '@/utils/confirm'
+import CreateDialog from '@/views/system/user-group/modals/CreateDialog'
+import AddUserDialog from '@/views/system/user-group/modals/AddUserDialog'
+import * as type from '@/store/user-group/mutations_types'
+
 export default {
+  components: {
+    CreateDialog,
+    AddUserDialog
+  },
   data () {
     return {
       listLoading: false,
       searchWord: '',
-      tableData3: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-08',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-06',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-07',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }]
+      groupId: '',
+      currentRows: []
     }
   },
-  methods: {
-    handleCurrentChange (val) { },
-    reload () { }
+  computed: {
+    ...mapState({
+      groups (state) {
+        return state.userGroup.groups.groups
+      },
+      currentRow: function () {
+        return this.currentRows.length === 1 ? this.currentRows[0] : null
+      }
+    })
   },
-  created () { }
+  methods: {
+    ...mapActions({
+      fetchUserGroups: type.FETCH_USER_GROUPS
+    }),
+    addUser (groupId) {
+      this.$refs.addUserDialog.open(groupId)
+    },
+    async delUser (group) {
+      console.log(group)
+      await Confirm.open(`确认移除改用户?`)
+      await user.removeUser(this.currentRows.map(user => user.id), group.id)
+      this.$notify({message: '删除成功'})
+      let { data } = await userGroups.groupUsersList(group.id)
+      group.users = data
+    },
+    async expand (row, expanded) {
+      if (expanded) {
+        let { data } = await userGroups.groupUsersList(row.id)
+        this.$set(row, 'users', data)
+      }
+    },
+    handleCurrentChange (val) {
+      this.currentRows = val
+    },
+    reload () { },
+    openCreate () {
+      this.$refs.createDialog.open()
+    }
+  },
+  created () {
+    this.listLoading = true
+    this.fetchUserGroups()
+      .then(() => {
+        this.listLoading = false
+      })
+  }
 }
 
 </script>
 <style scoped>
 .btn-group {
   justify-content: space-between;
+}
+
+.demo-table-expand {
+  font-size: 0;
+}
+
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
+
+.time {
+  font-size: 13px;
+  color: #999;
+}
+
+.bottom {
+  margin-top: 13px;
+  line-height: 12px;
+}
+
+.button {
+  padding: 0;
+  float: right;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both
+}
+.el-badge{
+  font-size: 18px;
+  margin: 10px 0;
 }
 </style>
