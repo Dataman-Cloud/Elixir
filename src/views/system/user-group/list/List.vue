@@ -19,11 +19,11 @@
           <div class="btn-group">
             <span></span>
             <span>
-              <el-button type="primary">
+              <el-button type="primary" @click="editorGroup(group.row)">
                 <i class="el-icon-edit"></i> 修改用户组
               </el-button>
 
-              <el-button type="danger" @click="delUser">
+              <el-button type="danger" @click="delGroup(group.row)">
                 <i class="el-icon-delete"></i> 删除用户组
               </el-button>
             </span>
@@ -118,7 +118,6 @@ export default {
       this.$refs.addUserDialog.open(groupId)
     },
     async delUser (group) {
-      console.log(group)
       await Confirm.open(`确认移除改用户?`)
       await user.removeUser(this.currentRows.map(user => user.id), group.id)
       this.$notify({message: '删除成功'})
@@ -130,6 +129,15 @@ export default {
         let { data } = await userGroups.groupUsersList(row.id)
         this.$set(row, 'users', data)
       }
+    },
+    async delGroup (group) {
+      await Confirm.open(`确认删除改组?`)
+      await userGroups.delGroup(group.id)
+      this.$notify({message: '删除成功'})
+      this.$store.dispatch(type.FETCH_USER_GROUPS)
+    },
+    editorGroup (group) {
+      this.$refs.createDialog.open(group.id)
     },
     handleCurrentChange (val) {
       this.currentRows = val

@@ -58,7 +58,7 @@
           <el-input v-model.number="form.min_instance"></el-input>
         </el-form-item>
         <el-form-item v-if="form.action === 1" label="最大实例数" prop="max_instance">
-          <el-input v-model.number="form.max_instance" @change="maxChange"></el-input>
+          <el-input v-model.number="form.max_instance"></el-input>
         </el-form-item>
         <el-form-item label="步长" prop="step">
           <el-input v-model="form.step" placeholder="1"></el-input>
@@ -108,33 +108,22 @@ export default {
       this.loading = false
       return res
     },
-    maxChange (value) {
-      console.log(elasticUtil.ELASTIC_BASE)
-    },
     close () {
       this.resetForm()
       this.submitLoading = false
     },
     onSubmit () {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(async (valid) => {
         if (valid) {
           this.submitLoading = true
           this.form.status = this.form.status ? 'start' : 'disable'
-          this.isUpdate ? fetchElastic.updatePolicy(this.form)
-            .then(() => {
-              this.dialogVisible = false
-              this.$store.dispatch(type.FETCH_POLICY)
-            })
-            .catch(() => {
-              this.submitLoading = false
-            }) : fetchElastic.createPolicy(this.form)
-              .then(() => {
-                this.dialogVisible = false
-                this.$store.dispatch(type.FETCH_POLICY)
-              })
-              .catch(() => {
-                this.submitLoading = false
-              })
+          try {
+            this.isUpdate ? await fetchElastic.updatePolicy(this.form) : await fetchElastic.createPolicy(this.form)
+            this.dialogVisible = false
+            this.$store.dispatch(type.FETCH_POLICY)
+          } catch (error) {
+            this.submitLoading = false
+          }
         } else {
           console.log('error submit!!')
           return false
@@ -155,6 +144,7 @@ export default {
       }) : null
     },
     resetForm () {
+      this.id = null
       this.$refs.form.resetFields()
     },
     updateInitFetch (appId) {
