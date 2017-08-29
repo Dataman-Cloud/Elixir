@@ -1,7 +1,7 @@
 <template>
   <el-dialog :title="isUpdate ? '更新策略' : '创建策略'" v-model="dialogVisible" size="small" ref="dialog" @close="close">
-    <div style="height: 60vh; overflow-y:scroll; overflow-x: hidden" v-scroll="dialogVisible">
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+      <div style="height: 60vh; overflow-y:scroll; overflow-x: hidden" v-scroll="dialogVisible">
         <el-form-item label="应用名称" prop="app_id">
           <el-select v-model="form.app_id" @visible-change="openAppNames" v-if="!isUpdate" v-loading="loading">
             <el-option v-for="appName in appNames" :key="appName.appId" :label="appName.appId" :value="appName.appId"></el-option>
@@ -63,128 +63,128 @@
         <el-form-item label="步长" prop="step">
           <el-input v-model="form.step" placeholder="1"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}
-          </el-button>
-          <el-button type="primary" @click="dialogVisible = false">取消</el-button>
-        </el-form-item>
-      </el-form>
+      </div>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}
+      </el-button>
+      <el-button @click="dialogVisible = false">取消</el-button>
     </div>
   </el-dialog>
 </template>
 <script>
-  import * as elasticUtil from '@/views/elastic/services/elastic'
-  import * as fetchElastic from '@/api/elastic'
-  import * as type from '@/store/elastic/mutations_types'
+import * as elasticUtil from '@/views/elastic/services/elastic'
+import * as fetchElastic from '@/api/elastic'
+import * as type from '@/store/elastic/mutations_types'
 
-  export default {
-    data () {
-      return {
-        appNames: [],
-        loading: false,
-        dialogVisible: false,
-        form: this._.merge({}, elasticUtil.ELASTIC_BASE),
-        rules: elasticUtil.ELASTIC_FORM_RULES,
-        id: null,
-        submitLoading: false
-      }
-    },
-    computed: {
-      isUpdate: function () {
-        return !!this.id
-      }
-    },
-    directives: {
-      scroll: function (el, bind) {
-        if (!bind.value) {
-          el.scrollTop = 0
-        }
-      }
-    },
-    methods: {
-      async appNameInitFetch () {
-        this.loading = true
-        let res = await fetchElastic.getAppName()
-        this.loading = false
-        return res
-      },
-      maxChange (value) {
-        console.log(elasticUtil.ELASTIC_BASE)
-      },
-      close () {
-        this.resetForm()
-        this.submitLoading = false
-      },
-      onSubmit () {
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            this.submitLoading = true
-            this.form.status = this.form.status ? 'start' : 'disable'
-            this.isUpdate ? fetchElastic.updatePolicy(this.form)
-              .then(() => {
-                this.dialogVisible = false
-                this.$store.dispatch(type.FETCH_POLICY)
-              })
-              .catch(() => {
-                this.submitLoading = false
-              }) : fetchElastic.createPolicy(this.form)
-              .then(() => {
-                this.dialogVisible = false
-                this.$store.dispatch(type.FETCH_POLICY)
-              })
-              .catch(() => {
-                this.submitLoading = false
-              })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      },
-      open: function (id) {
-        this.id = id
-        if (this.isUpdate) {
-          this.updateInitFetch(this.id)
-            .then(res => this.updateInit(res.policy))
-        }
-        this.$refs.dialog.open()
-      },
-      openAppNames (isOpen) {
-        return isOpen ? this.appNameInitFetch().then(res => {
-          this.appNames = res.data
-        }) : null
-      },
-      resetForm () {
-        this.$refs.form.resetFields()
-      },
-      updateInitFetch (appId) {
-        this.loading = true
-        return fetchElastic.getPolicy(appId)
-          .then((res) => {
-            this.loading = false
-            return res
-          })
-      },
-      updateInit (initFetchData) {
-        this.form = initFetchData
-        this.form.status = (initFetchData.status === 'start')
+export default {
+  data () {
+    return {
+      appNames: [],
+      loading: false,
+      dialogVisible: false,
+      form: this._.merge({}, elasticUtil.ELASTIC_BASE),
+      rules: elasticUtil.ELASTIC_FORM_RULES,
+      id: null,
+      submitLoading: false
+    }
+  },
+  computed: {
+    isUpdate: function () {
+      return !!this.id
+    }
+  },
+  directives: {
+    scroll: function (el, bind) {
+      if (!bind.value) {
+        el.scrollTop = 0
       }
     }
+  },
+  methods: {
+    async appNameInitFetch () {
+      this.loading = true
+      let res = await fetchElastic.getAppName()
+      this.loading = false
+      return res
+    },
+    maxChange (value) {
+      console.log(elasticUtil.ELASTIC_BASE)
+    },
+    close () {
+      this.resetForm()
+      this.submitLoading = false
+    },
+    onSubmit () {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.submitLoading = true
+          this.form.status = this.form.status ? 'start' : 'disable'
+          this.isUpdate ? fetchElastic.updatePolicy(this.form)
+            .then(() => {
+              this.dialogVisible = false
+              this.$store.dispatch(type.FETCH_POLICY)
+            })
+            .catch(() => {
+              this.submitLoading = false
+            }) : fetchElastic.createPolicy(this.form)
+              .then(() => {
+                this.dialogVisible = false
+                this.$store.dispatch(type.FETCH_POLICY)
+              })
+              .catch(() => {
+                this.submitLoading = false
+              })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    open: function (id) {
+      this.id = id
+      if (this.isUpdate) {
+        this.updateInitFetch(this.id)
+          .then(res => this.updateInit(res.policy))
+      }
+      this.$refs.dialog.open()
+    },
+    openAppNames (isOpen) {
+      return isOpen ? this.appNameInitFetch().then(res => {
+        this.appNames = res.data
+      }) : null
+    },
+    resetForm () {
+      this.$refs.form.resetFields()
+    },
+    updateInitFetch (appId) {
+      this.loading = true
+      return fetchElastic.getPolicy(appId)
+        .then((res) => {
+          this.loading = false
+          return res
+        })
+    },
+    updateInit (initFetchData) {
+      this.form = initFetchData
+      this.form.status = (initFetchData.status === 'start')
+    }
   }
+}
 </script>
 <style scoped>
-  .spec .el-row .el-col-6 {
-    padding: 0 !important;
-    margin-right: 20px;
-  }
+.spec .el-row .el-col-6 {
+  padding: 0 !important;
+  margin-right: 20px;
+}
 
-  .healthCheck .el-row .el-col {
-    margin-bottom: 20px;
-    padding: 0 !important;
-    margin-right: 20px;
-  }
+.healthCheck .el-row .el-col {
+  margin-bottom: 20px;
+  padding: 0 !important;
+  margin-right: 20px;
+}
 
-  .advance {
-    margin-bottom: 20px;
-  }
+.advance {
+  margin-bottom: 20px;
+}
 </style>

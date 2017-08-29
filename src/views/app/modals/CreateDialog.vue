@@ -1,7 +1,7 @@
 <template>
   <el-dialog :title="isUpdate ? '更新应用' : '创建应用'" v-model="dialogVisible" size="small" ref="dialog" @close="close">
-    <div style="height: 60vh; overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-loading="loading" element-loading-text="数据加载中...">
+    <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-loading="loading" element-loading-text="数据加载中...">
+      <div style="height: 50vh; overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
         <el-form-item label="应用名称" prop="name">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
@@ -293,13 +293,13 @@
             </el-form-item>
           </el-collapse-item>
         </el-collapse>
+      </div>
 
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}
-          </el-button>
-          <el-button type="primary" @click="dialogVisible = false">取消</el-button>
-        </el-form-item>
-      </el-form>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}
+      </el-button>
+      <el-button @click="dialogVisible = false">取消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -478,10 +478,12 @@ export default {
   padding: 0 !important;
   margin-right: 20px;
 }
-.proxy-spec{
+
+.proxy-spec {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+
 .wrapContainerRow .el-row .el-col {
   margin-bottom: 20px;
   padding: 0 !important;

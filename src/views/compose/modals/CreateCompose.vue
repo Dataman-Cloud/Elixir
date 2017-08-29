@@ -1,16 +1,14 @@
 <template>
   <el-dialog title="创建编排" v-model="dialogVisible" size="small" ref="dialog" @close="close">
-    <div style="height: 60vh; overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
-      <el-form ref="form" :model="form">
+      <el-form ref="form" :model="form" style="height: 60vh; overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
         <el-form-item prop="composeStr">
           <json-editor ref="jsonEditor" v-model="form.composeStr"></json-editor>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer left-space">
         <el-button type="primary" @click="onSubmit">立即创建</el-button>
-        <el-button type="primary" @click="dialogVisible = false">取消</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
       </div>
-    </div>
   </el-dialog>
 </template>
 

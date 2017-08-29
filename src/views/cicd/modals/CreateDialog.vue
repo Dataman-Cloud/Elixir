@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="新建项目" v-model="dialogVisible" size="small" ref="dialog" @close="close">
-    <div style="height: 60vh; overflow-y:scroll; overflow-x: hidden" v-scroll="dialogVisible">
-      <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+    <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+      <div style="height: 60vh; overflow-y:scroll; overflow-x: hidden" v-scroll="dialogVisible">
         <el-form-item label="项目名称" prop="projectName">
           <el-input v-model="form.projectName" placeholder="请输入项目名称"></el-input>
         </el-form-item>
@@ -41,11 +41,11 @@
         <!--<el-radio label="HOST 模式"></el-radio>-->
         <!--</el-radio-group>-->
         <!--</el-form-item>-->
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit" :loading="submitLoading">立即创建</el-button>
-          <el-button type="primary" @click="dialogVisible = false">取消</el-button>
-        </el-form-item>
-      </el-form>
+      </div>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="onSubmit" :loading="submitLoading">立即创建</el-button>
+      <el-button @click="dialogVisible = false">取消</el-button>
     </div>
   </el-dialog>
 </template>
