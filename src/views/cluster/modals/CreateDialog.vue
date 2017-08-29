@@ -77,7 +77,7 @@ export default {
             this.submitLoading = false
           }
         } else {
-          console.log('error submit!!')
+          console.log('error submit!!！')
           return false
         }
       })
