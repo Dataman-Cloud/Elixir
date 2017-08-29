@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <el-row :gutter="12">
-      <el-col :span="10">
+      <el-col :span="12">
         <el-form ref="octopusForm" :model="form" :rules="rules" label-width="150px" element-loading-text="数据加载中...">
           <!-- 服务名称 -->
           <el-form-item label="服务名称" prop="serviceName">
@@ -13,17 +13,27 @@
           <!-- 实例模式 -->
           <el-form-item label="实例模式" prop="instanceMode">
             <el-radio-group v-model="form.instanceMode">
-              <el-radio label="local">单机模式</el-radio>
-              <el-radio label="cluster">集群模式</el-radio>
+              <el-tooltip class="item" effect="dark" content="单机模式" placement="top-start">
+                <el-radio label="local">单机模式</el-radio>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="集群模式" placement="top-start">
+                <el-radio label="cluster">集群模式</el-radio>
+              </el-tooltip>
             </el-radio-group>
           </el-form-item>
 
           <!-- 服务器规格配置 -->
           <el-form-item label="服务器规格配置" prop="containerSizeMode">
             <el-radio-group v-model="form.containerSizeMode">
-              <el-radio label="low">基础配置</el-radio>
-              <el-radio label="medium">中等配置</el-radio>
-              <el-radio label="high">高级配置</el-radio>
+              <el-tooltip class="item" effect="dark" content="1核1G" placement="top-start">
+                <el-radio label="low">基础配置</el-radio>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="2核2G" placement="top-start">
+                <el-radio label="medium">中等配置</el-radio>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="4核4G" placement="top-start">
+                <el-radio label="high">高级配置</el-radio>
+              </el-tooltip>
             </el-radio-group>
           </el-form-item>
 
@@ -34,20 +44,20 @@
           <el-form-item v-for="(zk, index) in form.zookeeperList" :key="index" class="parameters">
             <el-row :gutter="12">
               <el-col :span="12">
-                <el-form-item :prop="'zookeeperList.' + index + '.ip'" :key="zk.ip" :rules="[{ required: true, message: 'KEY 不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: 'KEY 不能包含中文' }]">
+                <el-form-item :prop="'zookeeperList.' + index + '.ip'" :key="zk.index" :rules="[{ required: true, message: 'ip 不能为空' },{ pattern: ipRule, message: 'ip格式不对' }]">
                   <el-input v-model="zk.ip">
                     <template slot="prepend">ip</template>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item :prop="'zookeeperList.' + index + '.port'" :key="zk.port" :rules="[{ required: true, message: 'VALUE 不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: 'VALUE 不能包含中文' }]">
-                  <el-input v-model="zk.port">
+                <el-form-item :prop="'zookeeperList.' + index + '.port'" :key="zk.index" :rules="[{ required: true, message: 'port 不能为空' },{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
+                  <el-input v-model.number="zk.port">
                     <template slot="prepend">port</template>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-button @click.prevent="removeConfig(index, 'parameters')">
+              <el-button @click.prevent="removeConfig(index, 'parameters')" :disabled="zkDelete">
                 <i class="el-icon-delete"></i>
               </el-button>
             </el-row>
@@ -57,14 +67,14 @@
           <el-form-item class="wrapContainerRow" label="Mysql">
             <el-row :gutter="12">
               <el-col :span="12" class="no-padding">
-                <el-form-item :prop="'mysql.ip'" :rules="[,{ required: true, message: 'gracePeriodSeconds is required' }]">
+                <el-form-item :prop="'mysql.ip'" :rules="[{ required: true, message: 'gracePeriodSeconds is required' },{ pattern: ipRule, message: 'ip格式不对' }]">
                   <el-input v-model="form.mysql.ip">
                     <template slot="prepend">IP</template>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item :prop="'mysql.port'" :rules="[{ type: 'integer', min: 1, message: '宽限时间为正整数' },{ required: true, message: 'gracePeriodSeconds is required' }]">
+                <el-form-item :prop="'mysql.port'" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' },{ required: true, message: 'gracePeriodSeconds is required' }]">
                   <el-input type="number" v-model.number="form.mysql.port">
                     <template slot="prepend">端口</template>
                   </el-input>
@@ -75,14 +85,14 @@
           <el-form-item>
             <el-row :gutter="12">
               <el-col :span="12">
-                <el-form-item :prop="'mysql.username'" :rules="[{ required: true, message: 'gracePeriodSeconds is required' }]">
+                <el-form-item :prop="'mysql.username'" :rules="[{ required: true, message: '用户名 不能为空' }]">
                   <el-input v-model.number="form.mysql.username">
                     <template slot="prepend">用户名</template>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item :prop="'mysql.password'" :rules="[{ required: true, message: 'gracePeriodSeconds is required' }]">
+                <el-form-item :prop="'mysql.password'" :rules="[{ required: true, message: '密码 不能为空' }]">
                   <el-input v-model.number="form.mysql.password">
                     <template slot="prepend">密码</template>
                   </el-input>
@@ -92,18 +102,22 @@
           </el-form-item>
 
           <!-- 镜像 -->
-          <el-form-item label="镜像 web" prop="image">
+          <el-form-item label="镜像 web">
             <el-row :gutter="8">
               <el-col :span="12">
-                <el-select ref="registryCatalogSel" v-model="form.image.Image" @change="changeImageFront">
-                  <el-option v-for="(image, index) in imagesFront" :key="index" :label="repository"
-                             :value="image"></el-option>
-                </el-select>
+                <el-form-item prop="image.Image" :rules="[{ required: true, message: 'gracePeriodSeconds is required' }]">
+                  <el-select ref="registryCatalogSel" v-model="form.image.Image" @change="changeImageFront">
+                    <el-option v-for="(image, index) in imagesFront" :key="index" :label="repository"
+                               :value="image"></el-option>
+                  </el-select>
+                </el-form-item>
               </el-col>
               <el-col :span="9">
-                <el-select ref="registryCatalogTagSel" v-model="form.image.tag">
-                  <el-option v-for="(tag, index) in tagsFront" :key="index" :label="tag" :value="tag"></el-option>
-                </el-select>
+                <el-form-item>
+                  <el-select ref="registryCatalogTagSel" v-model="form.image.tag">
+                    <el-option v-for="(tag, index) in tagsFront" :key="index" :label="tag" :value="tag"></el-option>
+                  </el-select>
+                </el-form-item>
               </el-col>
             </el-row>
           </el-form-item>
@@ -148,16 +162,27 @@
 </template>
 
 <script>
-import * as service from '@/views/eams/services/form'
+import * as form from '@/views/eams/services/form'
+import * as handle from '@/views/eams/services/handle'
 export default {
   data () {
     return {
-      form: service.octopusForm,
-      rules: {},
+      form: form.octopusForm,
+      submitForm: form.submitForm(),
+      rules: form.octopusRules,
       wait5seconds: false,
       tagsFront: [],
-      imagesFront: []
+      imagesFront: [],
+      ipRule: form.ipRule
     }
+  },
+  computed: {
+    zkDelete () {
+      return this.form.zookeeperList.length < 2
+    }
+  },
+  mounted () {
+
   },
   methods: {
     addZK () {
@@ -173,6 +198,14 @@ export default {
 
     },
     submit () {
+      this.$refs.octopusForm.validate((valid) => {
+        if (valid) {
+          handle.formatForm(this.form, this.submitForm)
+          this.msg(this.form, this.submitForm)
+        }
+      })
+    },
+    msg (form, submitForm) {
       this.$msgbox({
         message: '确定提交？',
         // confirmButtonClass: 'none',
@@ -185,11 +218,13 @@ export default {
             instance.confirmButtonLoading = true
             instance.confirmButtonText = '发布中...'
             instance.showCancelButton = false
-            instance.message = 'octopus-demo'
+            instance.message = submitForm.appName
             setTimeout(() => {
               instance.confirmButtonLoading = false
               done()
             }, 10000)
+          } else {
+            done()
           }
         }
       }).then(action => {
