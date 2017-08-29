@@ -22,7 +22,8 @@
 
 <script>
 import * as cluster from '@/api/cluster'
-import * as type from '@/store/user-group/mutations_types'
+import * as groupType from '@/store/user-group/mutations_types'
+import * as clusterType from '@/store/cluster/mutations_types'
 import { mapActions } from 'vuex'
 export default {
   data () {
@@ -47,7 +48,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchUserGroups: type.FETCH_USER_GROUPS
+      fetchUserGroups: groupType.FETCH_USER_GROUPS
     }),
     close () {
       this.resetForm()
@@ -67,7 +68,7 @@ export default {
           try {
             await cluster.create(this.form)
             this.dialogVisible = false
-            this.$store.dispatch(type.FETCH_CLUSTERS)
+            this.$store.dispatch(clusterType.FETCH_CLUSTERS)
             this.loading = false
           } catch (error) {
             this.submitLoading = false
