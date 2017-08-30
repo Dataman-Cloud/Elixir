@@ -47,7 +47,7 @@ export const constantRouterMap = [
       { path: 'detail/:id', component: AppDetail, name: '应用详情', hidden: true, meta: { role: ['get-apps'] } },
       { path: 'instances/:host/:id/:slaveId', component: AppInstance, name: '实例详情', hidden: true, meta: { role: ['get-apps'] } },
       {
-        path: 'compose',
+        path: '/application/compose',
         redirect: '/application/compose/list',
         component: ComposeLayout,
         name: '编排',
