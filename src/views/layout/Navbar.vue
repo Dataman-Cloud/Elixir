@@ -85,6 +85,9 @@ export default {
     margin-left: 15px;
     cursor: pointer;
   }
+  .userGroup{
+    width: 180px;
+  }
   .avatar-container {
     height: 50px;
     display: inline-block;
