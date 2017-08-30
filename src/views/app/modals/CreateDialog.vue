@@ -94,7 +94,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item prop="proxy.listen" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
+                  <el-form-item prop="proxy.listen" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 1 - 65535 范围内' }]">
                     <el-input v-model.number="form.proxy.listen" placeholder="端口" :disabled="!form.proxy.enabled"></el-input>
                   </el-form-item>
                 </el-col>
@@ -132,7 +132,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="9">
-                  <el-form-item :prop="'container.docker.portMappings.' + index + '.name'" :key="portMapping.index" :rules="[{ required: true, message: '端口名不能为空' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
+                  <el-form-item :prop="'container.docker.portMappings.' + index + '.name'" :key="portMapping.index" :rules="[{ required: true, message: '端口名不能为空' },{ pattern: /^[a-zA-Z0-9]+$/, message: '端口名称只能包含字母和数字' }]">
                     <el-input v-model="portMapping.name">
                       <template slot="prepend">端口名</template>
                     </el-input>
