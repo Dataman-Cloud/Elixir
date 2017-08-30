@@ -87,3 +87,6 @@
 .navbar .avatar-container .avatar-wrapper .el-icon-caret-center{
   top:15px!important;
 }
+.el-select{
+  width: 100%;
+}
