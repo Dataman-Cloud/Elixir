@@ -28,7 +28,7 @@
         <el-button type="primary" @click="openWeight" :disabled="disableWeight">
           <i class="fa fa-balance-scale"></i> 权重</el-button>
         <!-- <el-button type="primary" :disabled="!currentRow">
-          <i class="fa fa-balance-scale"></i> 全部权重</el-button> -->
+            <i class="fa fa-balance-scale"></i> 全部权重</el-button> -->
         <el-button type="danger" @click="openDelete" :disabled="!currentRows.length">
           <i class="ion-ios-minus-outline"></i> 删除应用</el-button>
       </span>
@@ -53,14 +53,15 @@
       <el-table-column property="cluster" label="集群" width="150"></el-table-column>
       <el-table-column property="task_count" label="实例" width="100">
         <template scope="app">
-            <span v-if="app.row.progress === -1">{{app.row.task_count}}</span>
-            <span v-else>{{app.row.progress}} / {{app.row.task_count}}</span>
+          <span v-if="app.row.progress === -1">{{app.row.task_count}}</span>
+          <span v-else>{{app.row.progress}} / {{app.row.task_count}}</span>
         </template>
       </el-table-column>
       <el-table-column property="status" label="运行状态" width="100">
         <template scope="app">
           <p>{{app.row.status}}</p>
-          <small v-if="app.row.progress !== -1">(灰度中)</small>
+          <small v-if="app.row.operationStatus === 'canary_updating' || app.row.operationStatus === 'canary_unfinished'">(灰度中)</small>
+          <small v-if="app.row.operationStatus === 'updating'">(更新中)</small>
         </template>
       </el-table-column>
       <el-table-column label="健康状态">
