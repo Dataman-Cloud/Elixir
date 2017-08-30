@@ -23,7 +23,7 @@
       </el-table-column>
       <el-table-column property="tag" sortable label="标签">
       </el-table-column>
-      <el-table-column property="created" sortable label="时间戳">
+      <el-table-column property="created" sortable label="时间戳(build 镜像)">
         <template scope="scope">
           <span>{{scope.row.created | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
