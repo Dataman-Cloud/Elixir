@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Layout from '@/views/layout/Layout'
 import Login from '@/views/login'
 import AppList from '@/views/app/list/List'
-import RegistryList from '@/views/registry/list/List'
 
 const AppDetail = () => import('../views/app/detail/Detail')
 const AppInstance = () => import('../views/app/instance/Instance')
@@ -19,31 +18,46 @@ const HistoryDetail = () => import('../views/elastic/detail/Detail')
 
 const LogList = () => import('../views/log/list/List')
 
-const ClusterLayout = () => import('../views/resource/cluster')
-const ClusterList = () => import('../views/resource/cluster/list/List')
-const ClusterDetail = () => import('../views/resource/cluster/detail/Detail')
+const RegistryList = () => import('../views/registry/list/List')
 
+const ClusterLayout = () => import('../views/cluster')
+const ClusterList = () => import('../views/cluster/list/List')
+const ClusterDetail = () => import('../views/cluster/detail/Detail')
+
+const ComposeLayout = () => import('../views/compose')
 const ComposeList = () => import('../views/compose/list/List')
 const ComposeDetail = () => import('../views/compose/detail/Detail')
 
-const UserGroupLayout = () => import('../views/system/user-group')
-const UserGroupList = () => import('../views/system/user-group/list/List')
+const UserGroupLayout = () => import('../views/user-group')
+const UserGroupList = () => import('../views/user-group/list/List')
 
 Vue.use(Router)
 
 export const constantRouterMap = [
   { path: '/login', component: Login, hidden: true },
   {
-    path: '/app',
-    redirect: '/app/list',
+    path: '/application',
+    redirect: '/application/list',
     name: '应用',
     icon: 'fa fa-cubes',
     component: Layout,
-    meta: { role: ['get-apps'] },
+    hasDropdown: true,
     children: [
-      { path: 'list', component: AppList, name: '应用列表' },
-      { path: 'detail/:id', component: AppDetail, name: '应用详情' },
-      { path: 'instances/:host/:id/:slaveId', component: AppInstance, name: '实例详情' }
+      { path: 'list', component: AppList, name: '应用列表', meta: { role: ['get-apps'] } },
+      { path: 'detail/:id', component: AppDetail, name: '应用详情', hidden: true, meta: { role: ['get-apps'] } },
+      { path: 'instances/:host/:id/:slaveId', component: AppInstance, name: '实例详情', hidden: true, meta: { role: ['get-apps'] } },
+      {
+        path: 'compose',
+        redirect: '/application/compose/list',
+        component: ComposeLayout,
+        name: '编排',
+        hasDropdown: true,
+        meta: { role: ['get-compose'] },
+        children: [
+          { path: 'list', component: ComposeList, name: '编排列表', meta: { role: ['get-compose'] } },
+          { path: 'detail/:id', component: ComposeDetail, name: '编排详情', hidden: true, meta: { role: ['get-compose'] } }
+        ]
+      }
     ]
   }
 ]
@@ -68,18 +82,6 @@ export const asyncRouterMap = [
           { path: 'detail/:name', component: ClusterDetail, name: '集群详情', hidden: true }
         ]
       }
-    ]
-  },
-  {
-    path: '/compose',
-    redirect: '/compose/list',
-    name: '编排',
-    icon: 'fa fa-database',
-    component: Layout,
-    meta: { role: ['get-compose'] },
-    children: [
-      { path: 'list', component: ComposeList, name: '编排列表' },
-      { path: 'detail/:id', component: ComposeDetail, name: '编排详情' }
     ]
   },
   {
@@ -150,7 +152,7 @@ export const asyncRouterMap = [
       }
     ]
   },
-  { path: '*', redirect: '/app', hidden: true }
+  { path: '*', redirect: '/application', hidden: true }
 ]
 
 const router = new Router({

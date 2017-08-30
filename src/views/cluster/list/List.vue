@@ -84,9 +84,9 @@ import { mapState, mapActions } from 'vuex'
 import * as cluster from '@/api/cluster'
 import Confirm from '@/utils/confirm'
 import * as type from '@/store/cluster/mutations_types'
-import CreateDialog from '@/views/resource/cluster/modals/CreateDialog'
-import DeleteDialog from '@/views/resource/cluster/modals/DeleteDialog'
-import AddDialog from '@/views/resource/cluster/modals/AddDialog'
+import CreateDialog from '@/views/cluster/modals/CreateDialog'
+import DeleteDialog from '@/views/cluster/modals/DeleteDialog'
+import AddDialog from '@/views/cluster/modals/AddDialog'
 export default {
   components: {
     CreateDialog,

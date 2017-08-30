@@ -86,8 +86,8 @@ import * as user from '@/api/user'
 import { mapState, mapActions } from 'vuex'
 import * as userGroups from '@/api/user-group'
 import Confirm from '@/utils/confirm'
-import CreateDialog from '@/views/system/user-group/modals/CreateDialog'
-import AddUserDialog from '@/views/system/user-group/modals/AddUserDialog'
+import CreateDialog from '@/views/user-group/modals/CreateDialog'
+import AddUserDialog from '@/views/user-group/modals/AddUserDialog'
 import * as type from '@/store/user-group/mutations_types'
 
 export default {
