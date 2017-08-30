@@ -68,7 +68,8 @@
       <el-table-column property="status" label="运行状态" width="100">
         <template scope="app">
           <p>{{app.row.status}}</p>
-          <small v-if="app.row.progress !== -1">(灰度中)</small>
+          <small v-if="app.row.operationStatus === 'canary_updating' || app.row.operationStatus === 'canary_unfinished'">(灰度中)</small>
+          <small v-if="app.row.operationStatus === 'updating'">(更新中)</small>
         </template>
       </el-table-column>
       <el-table-column label="健康状态">
