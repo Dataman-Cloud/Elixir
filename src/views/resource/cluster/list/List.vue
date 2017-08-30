@@ -11,13 +11,13 @@
       </span>
 
       <el-button-group style="display: flex">
-        <el-input class="el-input-search" icon="search" placeholder="请输入集群名称"></el-input>
+        <el-input class="el-input-search" icon="search" placeholder="请输入集群名称" v-model="searchCluster"></el-input>
       </el-button-group>
     </div>
 
     <create-dialog ref="createDialog"></create-dialog>
     <el-row>
-      <el-col v-loading="listLoading" class="cluster-card" :span="8" v-for="(cluster, index) in clusters" :key="index">
+      <el-col v-loading="listLoading" class="cluster-card" :span="8" v-for="(cluster, index) in filterClusters" :key="index">
         <el-card :body-style="{ padding: '0px' }">
           <div style="padding: 14px;">
             <router-link class="ellipsis" :to="{name: '集群详情',params:{name : cluster.clusterLabel}}">
@@ -81,6 +81,8 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import * as cluster from '@/api/cluster'
+import Confirm from '@/utils/confirm'
 import * as type from '@/store/cluster/mutations_types'
 import CreateDialog from '@/views/resource/cluster/modals/CreateDialog'
 import DeleteDialog from '@/views/resource/cluster/modals/DeleteDialog'
@@ -93,7 +95,8 @@ export default {
   },
   data () {
     return {
-      listLoading: false
+      listLoading: false,
+      searchCluster: ''
     }
   },
   computed: {
@@ -101,7 +104,10 @@ export default {
       clusters (state) {
         return state.cluster.clusters.clusters
       }
-    })
+    }),
+    filterClusters: function () {
+      return this.searchCluster ? this.clusters.filter(cluster => cluster.clusterLabel.toLowerCase().includes(this.searchCluster)) : this.clusters
+    }
   },
   methods: {
     ...mapActions({
@@ -118,8 +124,9 @@ export default {
         .catch(() => (this.listLoading = false))
     },
     async openDelete (clusterLabel) {
-      // TODO: Determine whether there is any application
-      // TODO: Delete cluster
+      await Confirm.open(`确认移除该集群?`)
+      await cluster.delCluster(clusterLabel)
+      this.fetchClusters()
     },
     addHost () {
       this.$refs.addHost.open()
