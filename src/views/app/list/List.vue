@@ -67,11 +67,11 @@
       <el-table-column label="健康状态">
         <template scope="app">
           <span>总数: </span>
-          <i>{{app.row.health.total}} </i>
+          <i class="app-style">{{app.row.health.total}} </i>
           <span> 健康: </span>
-          <i>{{app.row.health.healthy}} </i>
+          <i class="app-style">{{app.row.health.healthy}} </i>
           <span> 不健康: </span>
-          <i>{{app.row.health.unhealthy}} </i>
+          <i class="app-style">{{app.row.health.unhealthy}} </i>
           <span> 未设置: </span>
           <i>{{app.row.health.unset}} </i>
         </template>
@@ -216,5 +216,8 @@ export default {
 <style scoped>
 .btn-group {
   justify-content: space-between;
+}
+.app-style{
+  margin-right: 10px;
 }
 </style>
