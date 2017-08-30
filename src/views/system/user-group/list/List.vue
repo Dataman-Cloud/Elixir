@@ -2,9 +2,6 @@
   <div>
     <div class="btn-group">
       <span>
-        <el-button type="primary" @click="reload">
-          <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-        </el-button>
         <el-button type="primary" @click="openCreate">
           <i class="el-icon-plus"></i> 新建用户组</el-button>
       </span>
@@ -145,12 +142,7 @@ export default {
     handleCurrentChange (val) {
       this.currentRows = val
     },
-    reload () {
-      this.listLoading = true
-      this.fetchUserGroups()
-        .then(() => (this.listLoading = false))
-        .catch(() => (this.listLoading = false))
-    },
+    reload () { },
     openCreate () {
       this.$refs.createDialog.open()
     }

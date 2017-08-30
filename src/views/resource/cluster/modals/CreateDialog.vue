@@ -1,16 +1,16 @@
 <template>
-  <el-dialog title="创建集群" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
+  <el-dialog title="创建集群" v-model="dialogVisible" size="small" ref="dialog" @close="close">
     <el-form :model="form" ref="form" :rules="rules" label-width="100px">
       <el-form-item label="集群名称" prop="clusterLabel">
         <el-input v-model.number="form.clusterLabel" auto-complete="off"></el-input>
       </el-form-item>
       <el-form-item label="所属用户组" prop="userGroup">
         <el-select v-model="form.userGroup" @visible-change="openUserGroup" v-loading="loading">
-          <el-option v-for="(userGroup, index) in userGroups" :key="index" :value="userGroup.name" :label="userGroup.name"></el-option>
+          <el-option v-for="(userGroup, index) in userGroups" :key="index" :value="userGroup.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="描述" prop="desc">
-        <el-input type="textarea" v-model.number="form.desc" auto-complete="off"></el-input>
+        <el-input v-model.number="form.desc" auto-complete="off"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -34,8 +34,7 @@ export default {
       userGroups: [],
       form: {
         clusterLabel: '',
-        desc: '',
-        userGroup: ''
+        desc: ''
       },
       rules: {
         clusterLabel: [
@@ -58,11 +57,9 @@ export default {
     open: function () {
       this.$refs.dialog.open()
     },
-    async openUserGroup (flag) {
-      if (flag) {
-        let data = await this.fetchUserGroups()
-        this.userGroups = data
-      }
+    async openUserGroup () {
+      let data = await this.fetchUserGroups()
+      this.userGroups = data.data
     },
     onSubmit () {
       this.$refs.form.validate(async (valid) => {
