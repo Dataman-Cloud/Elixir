@@ -75,8 +75,8 @@
   </div>
 </template>
 <script>
-import DeleteDialog from '@/views/resource/cluster/modals/DeleteDialog'
-import AddDialog from '@/views/resource/cluster/modals/AddDialog'
+import DeleteDialog from '@/views/cluster/modals/DeleteDialog'
+import AddDialog from '@/views/cluster/modals/AddDialog'
 import { mapActions } from 'vuex'
 import * as type from '@/store/cluster/mutations_types'
 export default {
