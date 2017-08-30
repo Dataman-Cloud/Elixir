@@ -39,6 +39,7 @@
       <el-table-column label="最新构建格式" show-overflow-tooltip>
         <template scope="cicd">
           <span v-if="cicd.row.status === '构建成功'">{{cicd.row.leatestBuilderDate}}</span>
+          <span v-else>--</span>
         </template>
       </el-table-column>
     </el-table>
