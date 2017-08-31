@@ -30,9 +30,7 @@
 
     <dl class="detail-config">
       <dt>容器个数</dt>
-      <dd>{{version.instances}}
-        <span v-if="oneContainer">(每台主机只能运行一个当前容器应用)</span>
-      </dd>
+      <dd>{{version.instances}}</dd>
     </dl>
 
     <dl class="detail-config">
@@ -151,7 +149,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -162,10 +160,7 @@ export default {
       version ({app}) {
         return app.app.version
       }
-    }),
-    ...mapGetters([
-      'oneContainer'
-    ])
+    })
   }
 }
 </script>
