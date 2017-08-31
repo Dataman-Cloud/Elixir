@@ -16,7 +16,7 @@ export const COMPOSE_BASE = {
       'uris': null,
       'ips': null,
       'resource': {
-        'cpu': 0.01,
+        'cpus': 0.01,
         'mem': 64
       },
       'container': {
@@ -76,7 +76,7 @@ export const COMPOSE_BASE = {
       'uris': null,
       'ips': null,
       'resource': {
-        'cpu': 0.01,
+        'cpus': 0.01,
         'mem': 64
       },
       'container': {
