@@ -90,3 +90,6 @@
 .el-select{
   width: 100%;
 }
+.CodeMirror-lint-tooltip{
+  z-index: 10001!important;
+}

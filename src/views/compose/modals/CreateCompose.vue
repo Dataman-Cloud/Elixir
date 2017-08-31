@@ -2,7 +2,7 @@
   <el-dialog title="创建编排" v-model="dialogVisible" size="small" ref="dialog" @close="close">
       <el-form ref="form" :model="form" style="height: 60vh; overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
         <el-form-item prop="composeStr">
-          <json-editor ref="jsonEditor" v-model="form.composeStr"></json-editor>
+          <json-editor v-model="form.composeStr"></json-editor>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer left-space">
@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import jsonEditor from '@/components/jsonEditor'
 import * as type from '@/store/compose/mutations_types'
 import * as compose from '@/api/compose'
 import { COMPOSE_BASE } from '@/views/compose/services/composeTemplate'
+import jsonEditor from '@/components/jsonEditor'
 
 export default {
   components: { jsonEditor },
@@ -26,7 +26,7 @@ export default {
       isUpdate: false,
       submitLoading: false,
       form: {
-        composeStr: this._.merge({}, COMPOSE_BASE)
+        composeStr: JSON.stringify(COMPOSE_BASE, null, 2)
       }
     }
   },
@@ -38,10 +38,9 @@ export default {
     }
   },
   methods: {
-    close: function () {
-      this.$refs.form.resetFields()
-    },
+    close: function () {},
     open: function () {
+      this.form.composeStr = JSON.stringify(COMPOSE_BASE, null, 2)
       this.$refs.dialog.open()
     },
     onSubmit () {
