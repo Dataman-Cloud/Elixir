@@ -135,9 +135,7 @@ export default {
   mounted () {
     this.listLoading = true
     this.fetchClusters()
-      .then(() => {
-        this.listLoading = false
-      })
+      .then(() => (this.listLoading = false))
   }
 }
 </script>
