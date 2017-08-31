@@ -42,7 +42,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import Confirm from '@/utils/confirm'
 import CreateCompose from '@/views/compose/modals/CreateCompose'
 import * as compose from '@/api/compose'
@@ -56,11 +56,15 @@ export default {
     return {
       listLoading: false,
       currentRows: [],
-      searchWord: '',
-      composes: []
+      searchWord: ''
     }
   },
   computed: {
+    ...mapState({
+      composes (state) {
+        return state.compose.composes.composes
+      }
+    }),
     currentRow: function () {
       return this.currentRows.length === 1 ? this.currentRows[0] : null
     },
@@ -83,7 +87,7 @@ export default {
     },
     async listCompose () {
       this.listLoading = true
-      this.composes = await this.fetchComposes().catch(() => {})
+      await this.fetchComposes().catch(() => {})
       // await catch is a hack func to call this expression
       this.listLoading = false
     },
