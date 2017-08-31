@@ -62,7 +62,7 @@ export const APP_BASE = {
     {
       attribute: 'vcluster',
       operator: '==',
-      value: localStorage.getItem('bayname')
+      value: ''
     }
   ],
   healthChecks: [],

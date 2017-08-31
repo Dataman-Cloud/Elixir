@@ -3,10 +3,12 @@
     <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-loading="loading" element-loading-text="数据加载中...">
       <div style="height: 50vh; overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
         <el-form-item label="应用名称" prop="name">
-          <el-input v-model="form.name"></el-input>
+          <el-input :disabled="isUpdate" v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="集群" prop="selectCluster">
-          <el-input v-model="form.selectCluster" disabled></el-input>
+          <el-select @visible-change="clusterList" v-model="form.selectCluster" :disabled="isUpdate" >
+            <el-option v-for="(cluster, index) in clusters" :key="index" :value="cluster.clusterLabel" :label="cluster.clusterLabel"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="镜像地址" prop="container.docker.image">
           <div>
@@ -41,7 +43,7 @@
           </el-row>
         </el-form-item>
         <el-form-item label="容器个数" prop="instances">
-          <el-input type="number" v-model.number="form.instances"></el-input>
+          <el-input type="number" v-model.number="form.instances" :disabled="isUpdate"></el-input>
           <!-- <el-checkbox v-model="form.oneContainer" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox> -->
         </el-form-item>
         <el-form-item label="挂载路径">
@@ -304,10 +306,11 @@
   </el-dialog>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import * as appUtil from '@/views/app/services/app'
 import * as fetchApp from '@/api/app'
 import * as type from '@/store/app/mutations_types'
+import * as cluster from '@/api/cluster'
 
 export default {
   data () {
@@ -318,15 +321,11 @@ export default {
       submitLoading: false,
       loading: false,
       id: null,
-      activeCollapse: ''
+      activeCollapse: '',
+      clusters: []
     }
   },
   computed: {
-    ...mapState({
-      bayname ({ user }) {
-        return user.bayname
-      }
-    }),
     hasPortMapping: function () {
       return !!this.form.container.docker.portMappings.length
     },
@@ -382,6 +381,12 @@ export default {
       this.resetForm()
       this.submitLoading = false
     },
+    async clusterList (flag) {
+      if (flag) {
+        let {data} = await cluster.clusterList()
+        this.clusters = data
+      }
+    },
     networkChange (netowrk) {
       if (netowrk === 'host') {
         this.form.container.docker.portMappings = []
@@ -408,14 +413,13 @@ export default {
     },
     open (id) {
       this.id = id
-      this.form = this._.merge({}, appUtil.APP_BASE)
+      this.form = this._.merge({}, appUtil.APP_BASE, { selectCluster: '' })
       if (this.isUpdate) {
         this.activeCollapse = 'advance'
         this.updateInitFetch(this.id)
           .then(res => this.updateInit(res))
       } else {
         this.activeCollapse = ''
-        this.form.selectCluster = this.bayname
       }
       this.$refs.dialog.open()
     },
