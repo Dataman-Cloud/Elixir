@@ -11,7 +11,7 @@
       <dd>
         <dl id="cpu">
           <dt>
-            <small>CPU</small>
+            <small>CPU:</small>
           </dt>
           <dd>
             <small>{{version.cpus}}</small>
@@ -19,7 +19,7 @@
         </dl>
         <dl id="mem">
           <dt>
-            <small>Mem</small>
+            <small>Mem:</small>
           </dt>
           <dd>
             <small>{{version.mem}} MB</small>
