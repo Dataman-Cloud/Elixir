@@ -1,4 +1,4 @@
-export function formatForm (form, submitForm) {
+export function formatYmlForm (form, submitForm) {
   formatServiceName(form, submitForm)
   formatInstanceMode(form, submitForm)
   formatContainerSizeMode(form, submitForm)
@@ -9,7 +9,7 @@ export function formatForm (form, submitForm) {
 }
 
 function formatServiceName (form, submitForm) {
-  submitForm.appName = `octopus-${form.serviceName}`
+  submitForm.name = `octopus-${form.serviceName}`
 }
 function formatInstanceMode (form, submitForm) {
   if (form.instanceMode === 'local') {

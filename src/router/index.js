@@ -66,18 +66,18 @@ export const constantRouterMap = [
     icon: 'fa fa-cubes',
     component: Layout,
     children: [
-      { path: 'list', component: EamsList, name: 'eams列表', hidden: true },
-      { path: 'octopus', component: OctopusCreate, name: 'octopus', hidden: true }
+      { path: 'oct-list', component: OctList, name: 'octopus列表', hidden: true },
+      { path: 'oct-create', component: OctCreate, name: 'octopus', hidden: true }
     ]
   },
   {
-    path: '/minihost',
-    name: 'eams',
+    path: '/mc',
+    name: 'mc',
     icon: 'fa fa-cubes',
     component: Layout,
     children: [
-      { path: 'list', component: EamsList, name: 'minihost列表', hidden: true },
-      { path: 'minihostcreate', component: MinihostCreate, name: 'minihost', hidden: true }
+      { path: 'list', component: OctList, name: 'mc列表', hidden: true },
+      { path: 'mc-create', component: McCreate, name: '胶囊主机', hidden: true }
     ]
   }
 ]

@@ -163,12 +163,11 @@
 
 <script>
 import * as form from '@/views/eams/services/form'
-import * as handle from '@/views/eams/services/handle'
+// import * as handle from '@/views/eams/services/handle'
 export default {
   data () {
     return {
       form: form.octopusForm,
-      submitForm: form.submitForm(),
       rules: form.octopusRules,
       wait5seconds: false,
       tagsFront: [],
@@ -200,8 +199,9 @@ export default {
     submit () {
       this.$refs.octopusForm.validate((valid) => {
         if (valid) {
-          handle.formatForm(this.form, this.submitForm)
-          this.msg(this.form, this.submitForm)
+          let submitForm = form.getYmlForm()
+          // handle.formatYmlForm(this.form, submitForm)
+          this.msg(this.form, submitForm)
         }
       })
     },
@@ -229,7 +229,7 @@ export default {
         }
       }).then(action => {
         if (action === 'confirm') {
-          this.$router.push({name: 'eams列表'})
+          this.$router.push({name: 'octopus列表'})
         }
       })
     }
