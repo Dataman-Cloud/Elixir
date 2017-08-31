@@ -29,9 +29,9 @@ const ComposeDetail = () => import('../views/compose/detail/Detail')
 const UserGroupLayout = () => import('../views/system/user-group')
 const UserGroupList = () => import('../views/system/user-group/list/List')
 // new modules
-const EamsList = () => import('../views/eams/list/List')
-const OctopusCreate = () => import('../views/eams/octopus/create')
-const MinihostCreate = () => import('../views/minihost/create')
+const OctList = () => import('../views/eams/octopus/List')
+const OctCreate = () => import('../views/eams/octopus/create')
+const McCreate = () => import('../views/minihost/create')
 
 Vue.use(Router)
 
@@ -56,18 +56,18 @@ export const constantRouterMap = [
     icon: 'fa fa-cubes',
     component: Layout,
     children: [
-      { path: 'list', component: EamsList, name: 'eams列表', hidden: true },
-      { path: 'octopus', component: OctopusCreate, name: 'octopus', hidden: true }
+      { path: 'oct-list', component: OctList, name: 'octopus列表', hidden: true },
+      { path: 'oct-create', component: OctCreate, name: 'octopus', hidden: true }
     ]
   },
   {
-    path: '/minihost',
-    name: 'eams',
+    path: '/mc',
+    name: 'mc',
     icon: 'fa fa-cubes',
     component: Layout,
     children: [
-      { path: 'list', component: EamsList, name: 'minihost列表', hidden: true },
-      { path: 'minihostcreate', component: MinihostCreate, name: 'minihost', hidden: true }
+      { path: 'list', component: OctList, name: 'mc列表', hidden: true },
+      { path: 'mc-create', component: McCreate, name: '胶囊主机', hidden: true }
     ]
   }
 ]

@@ -34,6 +34,39 @@ export const octopusRules = {
   ]
 }
 
+export function getYmlForm () {
+  return {
+    name: 'dddddd',
+    desc: '',
+    yaml_raw: `version: '3'\nservices:\n  octopusconsole:\n    network_mode: 'bridge'\n    image: sryregistry.service.consul:5002/dev/eams/octopus-console:1.2.0-RC2\n    stdin_open: true\n    restart: unless-stopped\n    ports:\n      - 8090:80/tcp\n    environment:\n      API_URL: http://octopusconsoleswan\n      API_PORT: 9088\n    depends_on:\n      - octopusconsoleswan\n    deploy:\n      mode: replicated\n      replicas: 1\n    dns:\n      - 192.168.31.31\n      - 192.168.31.33\n      \n\n  octopusconsoleswan:\n    network_mode: 'host'\n    deploy:\n      mode: replicated\n      replicas: 1\n    image: sryregistry.service.consul:5002/dev/eams/octopus-api:1.2.0-RC2\n    stdin_open: true\n    restart: unless-stopped\n    dns:\n      - 192.168.31.31\n      - 192.168.31.33\n    expose:\n      - 9099\n    volumes: \n      - /home/apps/nptree.json:/apps/saturn/config/nptree.json\n    environment:\n      REG_CENTER_JSON_PATH: /apps/saturn/config/nptree.json\n      SATURN_CONSOLE_DB_URL: jdbc:mysql://192.168.31.21:3306/saturn_console\n      SATURN_CONSOLE_DB_USERNAME: root\n      SATURN_CONSOLE_DB_PASSWORD: dataman\n      VIP_SATURN_CONTAINER_TYPE: SWAN\n      VIP_SATURN_DCOS_REGISTRY_URI: http://192.168.31.34:5000\n      OCTOPUS_DASHBOARD_REFRESH_INTERVAL_MINUTE: 1440\n      OCTOPUS_SWAN_REST_URI: http://192.168.31.31:5016\n      OCTOPUS_DCOS_USERNAME: dev\n      OCTOPUS_DCOS_PASSWORD: Admin123\n      DM_GROUP_ID: 3\n      DM_TENANT_ID: 1\n      DM_USER_ID: 2\n      DM_USER_NAME: dev\n      DM_VCLUSTER: eams\n      DM_VCLUSTER_ID: 2\n      DM_GROUP_NAME: eams`,
+    yaml_extra: {
+      octopusconsole: {
+        selectImageType: 'local',
+        wait_delay: 1,
+        pull_always: false,
+        constraints: 'AND (equal vcluster eams) (UNIQUE hostname)',
+        // uris: [registries.default[0].Uri],
+        resource: {
+          cpu: 1,
+          mem: 300
+        }
+      },
+      octopusconsoleswan: {
+        selectImageType: 'local',
+        wait_delay: 1,
+        pull_always: false,
+        constraints: 'AND (equal vcluster eams) (UNIQUE hostname)',
+        // uris: [registries.default[0].Uri],
+        resource: {
+          cpu: 1,
+          mem: 1024
+        }
+      }
+    },
+    yaml_env: {}
+  }
+}
+
 export function submitForm () {
   return {
     appName: 'test3',

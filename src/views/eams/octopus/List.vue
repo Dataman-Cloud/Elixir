@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import AppCard from '../components/AppCard'
+import AppCard from '@/views/eams/components/AppCard'
 export default {
   components: {
     AppCard
@@ -15,28 +15,28 @@ export default {
   data () {
     return {
       list: [
-        {name: 'octopus-demo'},
-        {name: 'squid-demo'},
-        {name: 'other-demo'},
-        {name: 'other-demo'},
+        // {name: 'octopus-demo'},
+        // {name: 'squid-demo'},
+        // {name: 'other-demo'},
+        // {name: 'other-demo'},
+        // {
+        //   created_at: '2017-08-22T07:56:47.552295306Z',
+        //   desc: 'demo blog instance: wordpress + mariadb',
+        //   display_name: 'hftest.bbk.dataman191',
+        //   errmsg: 'launch compose tasks 0.db.hftest.bbk.dataman191 error: launch task failed',
+        //   id: '06df6416e6f6c46b',
+        //   name: 'other-demo1',
+        //   op_status: 'noop',
+        //   updated_at: '2017-08-22T07:56:47.71964445Z',
+        //   yaml_env: {HOSTNAME: 'damn', WORKDIR: '/bbklab'}
+        // },
         {
           created_at: '2017-08-22T07:56:47.552295306Z',
           desc: 'demo blog instance: wordpress + mariadb',
           display_name: 'hftest.bbk.dataman191',
           errmsg: 'launch compose tasks 0.db.hftest.bbk.dataman191 error: launch task failed',
           id: '06df6416e6f6c46b',
-          name: 'other-demo1',
-          op_status: 'noop',
-          updated_at: '2017-08-22T07:56:47.71964445Z',
-          yaml_env: {HOSTNAME: 'damn', WORKDIR: '/bbklab'}
-        },
-        {
-          created_at: '2017-08-22T07:56:47.552295306Z',
-          desc: 'demo blog instance: wordpress + mariadb',
-          display_name: 'hftest.bbk.dataman191',
-          errmsg: 'launch compose tasks 0.db.hftest.bbk.dataman191 error: launch task failed',
-          id: '06df6416e6f6c46b',
-          name: 'other-demo2',
+          name: 'octopus-demo',
           op_status: 'noop',
           updated_at: '2017-08-22T07:56:47.71964445Z',
           yaml_env: {HOSTNAME: 'damn', WORKDIR: '/bbklab'}
