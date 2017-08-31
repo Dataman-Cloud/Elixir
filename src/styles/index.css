@@ -167,3 +167,6 @@ dl {
 .CodeMirror-code{
   line-height: 24px;
 }
+.CodeMirror-lint-tooltip{
+  z-index: 10001!important;
+}

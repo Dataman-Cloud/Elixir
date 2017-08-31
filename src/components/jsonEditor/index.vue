@@ -1,11 +1,11 @@
 <template>
-  <div class='json-editor'>
-    <textarea ref='textarea'></textarea>
+  <div>
+    <codemirror v-model="content" :options="editorOption"></codemirror>
   </div>
 </template>
 
 <script>
-import CodeMirror from 'codemirror'
+import { codemirror } from 'vue-codemirror'
 import 'codemirror/addon/lint/lint.css'
 import 'codemirror/addon/hint/show-hint.css'
 import 'codemirror/lib/codemirror.css'
@@ -17,48 +17,42 @@ import 'codemirror/addon/lint/json-lint'
 
 export default {
   name: 'jsonEditor',
-  data () {
-    return {
-      jsonEditor: false
-    }
-  },
-  props: ['value'],
-  watch: {
-    value (value) {
-      const editorValue = this.jsonEditor.getValue()
-      if (value !== editorValue) {
-        this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
+  components: { codemirror },
+  props: {
+    value: String,
+    editorOption: {
+      type: Object,
+      default: function () {
+        return {
+          tabSize: 4,
+          styleActiveLine: true,
+          line: true,
+          mode: 'application/json',
+          lineWrapping: true,
+          theme: 'rubyblue',
+          gutters: ['CodeMirror-lint-markers'],
+          lint: true
+        }
       }
     }
   },
-  mounted () {
-    this.jsonEditor = CodeMirror.fromTextArea(this.$refs.textarea, {
-      lineNumbers: true,
-      mode: 'application/json',
-      gutters: ['CodeMirror-lint-markers'],
-      theme: 'rubyblue',
-      lint: true
-    })
-    this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
-    this.jsonEditor.on('change', cm => {
-      this.$emit('changed', cm.getValue())
-      this.$emit('input', cm.getValue())
-    })
+  data () {
+    return {
+      content: this.value
+    }
   },
-  methods: {
-    getValue () {
-      return this.jsonEditor.getValue()
+  watch: {
+    content (value) {
+      this.$emit('input', value)
+    },
+    value (value) {
+      this.content = value
     }
   }
+
 }
 </script>
 
 <style>
-.CodeMirror {
-  height: 100%;
-}
 
-.json-editor .cm-s-rubyblue span.cm-string {
-  color: #F08047;
-}
 </style>
