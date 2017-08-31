@@ -15,7 +15,6 @@
           登录
         </el-button>
       </el-form-item>
-      <div class='tips'>账号,密码随便填</div>
     </el-form>
   </div>
 </template>
@@ -34,10 +33,10 @@ export default {
       },
       loginRules: {
         username: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: '账号不能为空' }
         ],
         password: [
-          { required: true, trigger: 'blur' }
+          { required: true, message: '密码不能为空' }
         ]
       },
       loading: false
