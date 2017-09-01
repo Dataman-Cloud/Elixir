@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h4 class="detail-config-label">配置</h4>
     <dl class="detail-config">
       <dt>镜像地址</dt>
       <dd>{{version.container.docker.image}}</dd>
