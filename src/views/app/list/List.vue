@@ -8,27 +8,22 @@
         <el-button type="primary" @click="openCreate">
           <i class="ion-ios-plus-outline"></i> 创建应用</el-button>
         <el-button type="primary" @click="openUpdate" :disabled="!currentRow">
-          <i class="fa fa-refresh"></i>
-          更新应用
+          <i class="fa fa-refresh"></i>更新应用
         </el-button>
         <el-button type="primary" @click="openExtend" :disabled="!currentRow">
           <i class="el-icon-edit"></i> 扩展应用
         </el-button>
-        <el-button type="primary" @click="start" :disabled="!currentRow">
+        <el-button type="primary" @click="start" :disabled="disableStart">
           <i class="fa fa-play-circle-o"></i> 启动
         </el-button>
-        <el-button type="primary" @click="stop" :disabled="!currentRow">
-          <i class="fa fa-power-off"></i>
-          停止
+        <el-button type="primary" @click="stop" :disabled="disableStop">
+          <i class="fa fa-power-off"></i>停止
         </el-button>
         <el-button type="primary" @click="openGrayReleased" :disabled="disableCanary">
-          <i class="fa fa-adjust"></i>
-          灰度发布
+          <i class="fa fa-adjust"></i>灰度发布
         </el-button>
         <el-button type="primary" @click="openWeight" :disabled="disableWeight">
           <i class="fa fa-balance-scale"></i> 权重</el-button>
-        <!-- <el-button type="primary" :disabled="!currentRow">
-            <i class="fa fa-balance-scale"></i> 全部权重</el-button> -->
         <el-button type="danger" @click="openDelete" :disabled="!currentRows.length">
           <i class="ion-ios-minus-outline"></i> 删除应用</el-button>
       </span>
@@ -127,6 +122,12 @@ export default {
     },
     disableWeight: function () {
       return this.currentRows.length === 1 ? this.currentRows[0].operationStatus !== 'canary_unfinished' : true
+    },
+    disableStart: function () {
+      return this.currentRows.length === 1 ? this.currentRow.progress !== -1 || this.currentRow.task_count !== 0 : true
+    },
+    disableStop: function () {
+      return this.currentRows.length === 1 ? this.currentRow.progress !== -1 || this.currentRow.task_count <= 0 : true
     }
   },
   methods: {
@@ -180,24 +181,16 @@ export default {
 
     },
     async start () {
-      if (this.currentRow.status === 'unavailable') {
-        await Confirm.open(`确认启动 ${this.currentRow.id} 应用?`)
-        await app.start(this.currentRow.id)
-        this.$notify({ message: `${this.currentRow.id} 启动成功` })
-        this.fetchApps()
-      } else {
-        this.$notify({ message: `${this.currentRow.id} 已运行` })
-      }
+      await Confirm.open(`确认启动 ${this.currentRow.id} 应用?`)
+      await app.start(this.currentRow.id)
+      this.$notify({ message: `${this.currentRow.id} 启动成功` })
+      this.fetchApps()
     },
     async stop () {
-      if (this.currentRow.status !== 'unavailable') {
-        await Confirm.open(`确认停止 ${this.currentRow.id} 应用?`)
-        await app.stop(this.currentRow.id)
-        this.$notify({ message: `${this.currentRow.id} 已停止` })
-        this.fetchApps()
-      } else {
-        this.$notify({ message: `${this.currentRow.id} 已停止` })
-      }
+      await Confirm.open(`确认停止 ${this.currentRow.id} 应用?`)
+      await app.stop(this.currentRow.id)
+      this.$notify({ message: `${this.currentRow.id} 已停止` })
+      this.fetchApps()
     },
     updateApp () {
       this.$router.push({ name: '更新应用', params: { id: this.currentRow.id } })
@@ -217,7 +210,8 @@ export default {
 .btn-group {
   justify-content: space-between;
 }
-.app-style{
+
+.app-style {
   margin-right: 10px;
 }
 </style>
