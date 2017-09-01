@@ -16,8 +16,8 @@
     </div>
 
     <create-dialog ref="createDialog"></create-dialog>
-    <el-row>
-      <el-col v-loading="listLoading" class="cluster-card" :span="8" v-for="(cluster, index) in filterClusters" :key="index">
+    <el-row v-loading="listLoading">
+      <el-col class="cluster-card" :span="8" v-for="(cluster, index) in filterClusters" :key="index">
         <el-card :body-style="{ padding: '0px' }">
           <div style="padding: 14px;">
             <router-link class="ellipsis" :to="{name: '集群详情',params:{name : cluster.clusterLabel}}">
@@ -114,28 +114,28 @@ export default {
       fetchClusters: type.FETCH_CLUSTERS,
       fetchDelCluster: type.FETCH_DEL_CLUSTER
     }),
+    async listCluster () {
+      this.listLoading = true
+      await this.fetchClusters().catch(() => { })
+      this.listLoading = false
+    },
     openCreate () {
       this.$refs.createDialog.open()
     },
     reload () {
-      this.listLoading = true
-      this.fetchClusters()
-        .then(() => (this.listLoading = false))
-        .catch(() => (this.listLoading = false))
+      this.listCluster()
     },
     async openDelete (clusterLabel) {
       await Confirm.open(`确认移除该集群?`)
       await cluster.delCluster(clusterLabel)
-      this.fetchClusters()
+      this.listCluster()
     },
     addHost () {
       this.$refs.addHost.open()
     }
   },
   mounted () {
-    this.listLoading = true
-    this.fetchClusters()
-      .then(() => (this.listLoading = false))
+    this.listCluster()
   }
 }
 </script>
