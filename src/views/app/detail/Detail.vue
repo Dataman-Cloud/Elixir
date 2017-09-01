@@ -19,10 +19,6 @@
         <span class="el-tab-label" slot="label">
           <a></a>调试</span>
       </el-tab-pane>
-      <el-tab-pane name="topology">
-        <span class="el-tab-label" slot="label">
-          <a></a>拓扑图</span>
-      </el-tab-pane>
 
       <transition name="fade" mode="out-in">
         <component v-bind:is="currentView"></component>

@@ -82,12 +82,3 @@ dl {
   font-weight: 500;
   word-wrap: break-word;
 }
-
-.detail-config-label {
-  background: #eef7f6;
-  color: #98d4cc;
-  height: 45px;
-  line-height: 45px;
-  padding-left: 15px;
-  border-radius: 4px;
-}
