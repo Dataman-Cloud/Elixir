@@ -13,7 +13,7 @@ import 'element-ui/lib/theme-default/index.css'
 import 'font-awesome/css/font-awesome.min.css'
 import './styles/fonts.css'
 import './styles/index.css' // 全局自定义的css样式
-// import './styles/element-ui.css' // 覆盖 Element-UI 的样式
+import './styles/element-ui.css' // 覆盖 Element-UI 的样式
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条 样式
 import { getToken } from '@/utils/auth'
