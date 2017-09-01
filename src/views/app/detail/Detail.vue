@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import { Instances, Config, Debug, Topology } from './tabs'
+import { Instances, Config, Debug } from './tabs'
 import { mapState } from 'vuex'
 import store from '@/store'
 import * as type from '@/store/app/mutations_types'
@@ -36,8 +36,7 @@ export default {
   components: {
     instances: Instances,
     config: Config,
-    debug: Debug,
-    topology: Topology
+    debug: Debug
   },
   data () {
     return {
