@@ -12,7 +12,11 @@ const state = {
   currentPerms: [],
   currentGroupId: null,
   accountGroups: [],
-  isCollapse: JSON.parse(localStorage.getItem('isCollapse'))
+  isCollapse: JSON.parse(localStorage.getItem('isCollapse')),
+  users: {
+    users: [],
+    total: 0
+  }
 }
 
 export default {

@@ -31,6 +31,9 @@ const ComposeDetail = () => import('../views/compose/detail/Detail')
 const UserGroupLayout = () => import('../views/user-group')
 const UserGroupList = () => import('../views/user-group/list/List')
 
+const UserLayout = () => import('../views/user')
+const UserList = () => import('../views/user/list/List')
+
 Vue.use(Router)
 
 export const constantRouterMap = [
@@ -140,6 +143,16 @@ export const asyncRouterMap = [
     component: Layout,
     hasDropdown: true,
     children: [
+      {
+        path: '/system/user',
+        redirect: '/system/user/list',
+        name: '用户管理',
+        component: UserLayout,
+        meta: { role: ['get-user'] },
+        children: [
+          { path: 'list', component: UserList, name: '用户列表' }
+        ]
+      },
       {
         path: '/system/usrgroup',
         redirect: '/system/usrgroup/list',

@@ -20,6 +20,11 @@ export default {
     context.commit(type.SET_USER_INFO, data.data)
     return data.data
   },
+  async [type.FETCH_USERS] (context) {
+    let { data } = await user.userAll()
+    context.commit(type.FETCH_USERS, data)
+    return data
+  },
   [type.SET_COLLAPSE] (context, isCollapse = false) {
     context.commit(type.SET_COLLAPSE, isCollapse)
     localStorage.setItem('isCollapse', isCollapse)

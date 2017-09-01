@@ -26,5 +26,9 @@ export default {
   },
   [type.SET_COLLAPSE] (state, isCollapse = false) {
     state.isCollapse = isCollapse
+  },
+  [type.FETCH_USERS] (state, users = []) {
+    state.users.users = users
+    state.users.total = users.length
   }
 }
