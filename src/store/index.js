@@ -10,6 +10,7 @@ import elastic from './elastic'
 import log from './log'
 import compose from './compose'
 import cluster from './cluster'
+import host from './host'
 
 Vue.use(Vuex)
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     elastic,
     log,
     compose,
-    cluster
+    cluster,
+    host
   }
 })

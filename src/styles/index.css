@@ -93,3 +93,13 @@
 .CodeMirror-lint-tooltip{
   z-index: 10001!important;
 }
+.el-transfer-panel{
+  width: 270px;
+}
+.el-transfer__buttons{
+  padding:0 17px;
+}
+.el-transfer__buttons .el-button{
+  padding:8px 18px;
+  margin:10px auto;
+}
