@@ -69,7 +69,7 @@
             </el-row>
             <el-button-group>
               <el-button type="danger" icon="delete" @click="openDelete(cluster.clusterLabel)"></el-button>
-              <el-button type="primary" @click="addHost" icon="plus"></el-button>
+              <el-button type="primary" @click="addHost(cluster.clusterLabel)" icon="plus"></el-button>
             </el-button-group>
           </div>
         </el-card>
@@ -130,8 +130,8 @@ export default {
       await cluster.delCluster(clusterLabel)
       this.listCluster()
     },
-    addHost () {
-      this.$refs.addHost.open()
+    addHost (name) {
+      this.$refs.addHost.open(name)
     }
   },
   mounted () {
