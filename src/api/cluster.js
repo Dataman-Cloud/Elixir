@@ -9,7 +9,7 @@ export function clusterList () {
 
 export function clusterDetail (vclusterLabel) {
   return fetch({
-    url: `v1/clusters/${vclusterLabel}`,
+    url: `v1/clusters/${vclusterLabel}/details`,
     method: 'get'
   })
 }

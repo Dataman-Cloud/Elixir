@@ -2,7 +2,7 @@ import fetch from '@/utils/fetch'
 
 export function selectCluster () {
   return fetch({
-    url: 'v1/vclusters',
+    url: 'v1/clusters',
     method: 'get'
   })
 }

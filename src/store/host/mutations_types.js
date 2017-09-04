@@ -1,1 +1,1 @@
-export const FETCH_HOST = 'FETCH_HOST'
+export const FETCH_HOSTS = 'FETCH_HOSTS'

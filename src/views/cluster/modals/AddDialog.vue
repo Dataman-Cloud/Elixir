@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="添加主机" v-model="dialogVisible" size="small" ref="dialog">
     <div>
-      <el-transfer v-model="checkedHost" :data="data" :titles="['选择主机','已选主机']"></el-transfer>
+      <el-transfer v-model="checkedHost" :data="hostList" :titles="['选择主机','已选主机']"></el-transfer>
     </div>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">取 消</el-button>
@@ -18,51 +18,43 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      data: [],
       checkedHost: [],
       name: ''
     }
   },
   computed: {
     ...mapState({
-      datas (state) {
+      hostList (state) {
         return state.host.hosts.hosts
       }
     })
   },
   methods: {
     ...mapActions({
-      getdata: hostType.FETCH_HOST
+      getHosts: hostType.FETCH_HOSTS
     }),
-    open: function (name) {
-      this.$refs.dialog.open()
-      this.getdata()
-      this.name = name
-      this.data = []
-      this.checkedHost = []
-    },
-    addHost () {
-      this.dialogVisible = false
-      const checkedIp = []
-      this.datas.forEach((item, i) => {
+    transformHosts (hosts = []) {
+      return hosts.map((item, i) => {
         if (this.checkedHost.indexOf(i) !== -1) {
-          checkedIp.push(item)
+          return item.label
         }
       })
-      host.addHost(this.name, checkedIp)
-    }
-  },
-  watch: {
-    datas (news, old) {
-      this.data = []
-      this.datas.forEach((item, index) => {
-        this.data.push({
-          key: index,
-          label: `主机${item}`
-        })
-      })
+    },
+    open: function (name) {
+      this.$refs.dialog.open()
+      this.getHosts()
+      this.name = name
+      this.checkedHost = []
+    },
+    async addHost () {
+      const checkedIps = this.transformHosts(this.hostList)
+      await host.addHost(this.name, checkedIps)
+      this.dialogVisible = false
+      this.$emit('close')
+      this.$notify({ message: '添加成功' })
     }
   }
 }
 </script>
 
+,

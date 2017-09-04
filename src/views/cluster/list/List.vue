@@ -9,18 +9,16 @@
           <i class="ion-ios-plus-outline"></i> 创建集群
         </el-button>
       </span>
-
       <el-button-group style="display: flex">
         <el-input class="el-input-search" icon="search" placeholder="请输入集群名称" v-model="searchCluster"></el-input>
       </el-button-group>
     </div>
-
     <create-dialog ref="createDialog"></create-dialog>
     <el-row v-loading="listLoading">
       <el-col class="cluster-card" :span="8" v-for="(cluster, index) in filterClusters" :key="index">
         <el-card :body-style="{ padding: '0px' }">
           <div style="padding: 14px;">
-            <router-link class="ellipsis" :to="{name: '集群详情',params:{name : cluster.clusterLabel}}">
+            <router-link class="ellipsis cluster-title" :to="{name: '集群详情',params:{name : cluster.clusterLabel}}">
               {{cluster.clusterLabel}}
             </router-link>
             <el-row :gutter="20">
@@ -37,20 +35,20 @@
                     </div>
                     <div class="bottom clearfix">
                       <span class="time">创建者</span>
-                      <span class="clusterDetail">{{cluster.groupId}}</span>
+                      <span class="clusterDetail">{{cluster.accountName}}</span>
                     </div>
-
                   </el-col>
-                  <el-col :span="5" class="cluster-right">
-                    <h2>主机</h2>
-                    <p>2</p>
+                  <el-col :span="5" class="cluster-app">
+                    <el-row :gutter="20">主机</el-row>
+                    <el-row :gutter="20" class="cluster-host">{{cluster.machineNum}}</el-row>
                   </el-col>
-                  <el-col :span="5" class="cluster-right">
-                    <h2>应用</h2>
-                    <p>2</p>
+                  <el-col :span="5" class="cluster-app">
+                    <el-row :gutter="20">应用</el-row>
+                    <el-row :gutter="20">
+                      <span class="cluster-host"> {{cluster.appNum}}</span>
+                    </el-row>
                   </el-col>
                 </el-row>
-
               </el-col>
               <el-col :span="12">
                 <el-row :gutter="20">
@@ -65,17 +63,16 @@
                   </el-col>
                 </el-row>
               </el-col>
-
             </el-row>
             <el-button-group>
-              <el-button type="danger" icon="delete" @click="openDelete(cluster.clusterLabel)"></el-button>
+              <el-button type="danger" icon="delete" @click="openDelete(cluster)"></el-button>
               <el-button type="primary" @click="addHost(cluster.clusterLabel)" icon="plus"></el-button>
             </el-button-group>
           </div>
         </el-card>
       </el-col>
     </el-row>
-    <delete-dialog ref="deleteDialog"></delete-dialog>
+    <delete-cluster-dialog ref="deleteDialog"></delete-cluster-dialog>
     <Add-Dialog ref="addHost"></Add-Dialog>
   </div>
 </template>
@@ -85,12 +82,12 @@ import * as cluster from '@/api/cluster'
 import Confirm from '@/utils/confirm'
 import * as type from '@/store/cluster/mutations_types'
 import CreateDialog from '@/views/cluster/modals/CreateDialog'
-import DeleteDialog from '@/views/cluster/modals/DeleteDialog'
+import DeleteClusterDialog from '@/views/cluster/modals/DeleteDialog'
 import AddDialog from '@/views/cluster/modals/AddDialog'
 export default {
   components: {
     CreateDialog,
-    DeleteDialog,
+    DeleteClusterDialog,
     AddDialog
   },
   data () {
@@ -114,24 +111,28 @@ export default {
       fetchClusters: type.FETCH_CLUSTERS,
       fetchDelCluster: type.FETCH_DEL_CLUSTER
     }),
+    addHost (name) {
+      this.$refs.addHost.open(name)
+    },
     async listCluster () {
       this.listLoading = true
       await this.fetchClusters().catch(() => { })
       this.listLoading = false
+    },
+    async openDelete (clusterLabel) {
+      if (clusterLabel.machineNum || clusterLabel.appNum) {
+        this.$refs.deleteDialog.open(clusterLabel)
+      } else {
+        await Confirm.open(`确认移除该集群?`)
+        await cluster.delCluster(clusterLabel.clusterLabel)
+        this.listCluster()
+      }
     },
     openCreate () {
       this.$refs.createDialog.open()
     },
     reload () {
       this.listCluster()
-    },
-    async openDelete (clusterLabel) {
-      await Confirm.open(`确认移除该集群?`)
-      await cluster.delCluster(clusterLabel)
-      this.listCluster()
-    },
-    addHost (name) {
-      this.$refs.addHost.open(name)
     }
   },
   mounted () {
@@ -164,11 +165,7 @@ export default {
   float: right;
 }
 
-.cluster-center {
-  text-align: center;
-}
-
-.cluster-right {
+.cluster-app {
   text-align: right;
 }
 
@@ -180,5 +177,18 @@ export default {
 
 .clearfix:after {
   clear: both
+}
+
+.cluster-host {
+  text-align: right;
+  font-size: 35px;
+  height: 76px;
+  line-height: 76px;
+  font-weight: 200;
+  color: #666;
+}
+
+.cluster-title {
+  font-size: 25px;
 }
 </style>

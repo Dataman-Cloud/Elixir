@@ -14,3 +14,10 @@ export function addHost (vclusterLabel, data) {
     data: data
   })
 }
+
+export function delHost (vclusterLabel, slaveNodeIp) {
+  return fetch({
+    url: `/v1/clusters/${vclusterLabel}/nodes/${slaveNodeIp}`,
+    method: 'delete'
+  })
+}
