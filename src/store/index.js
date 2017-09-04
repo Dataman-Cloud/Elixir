@@ -11,6 +11,7 @@ import log from './log'
 import compose from './compose'
 import cmpTemplate from './compose-template'
 import cluster from './cluster'
+import eams from './eams'
 
 Vue.use(Vuex)
 
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     log,
     compose,
     cmpTemplate,
-    cluster
+    cluster,
+    eams
   }
 })
