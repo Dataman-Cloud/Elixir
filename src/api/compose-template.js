@@ -20,3 +20,11 @@ export function deleteTemplate (id) {
     method: 'delete'
   })
 }
+
+export function createTemplate (data) {
+  return fetch({
+    url: `v1/composeTemplate`,
+    method: 'post',
+    data: data
+  })
+}

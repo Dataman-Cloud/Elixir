@@ -1,6 +1,6 @@
 <template>
   <div>
-    <codemirror v-model="content" :options="editorOption"></codemirror>
+    <codemirror v-model="content" :options="option"></codemirror>
   </div>
 </template>
 
@@ -14,31 +14,37 @@ require('script-loader!jsonlint')
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/addon/lint/lint'
 import 'codemirror/addon/lint/json-lint'
+import 'codemirror/addon/lint/yaml-lint'
 
 export default {
-  name: 'jsonEditor',
+  name: 'codeEditor',
   components: { codemirror },
   props: {
     value: String,
     editorOption: {
       type: Object,
       default: function () {
-        return {
-          tabSize: 4,
-          styleActiveLine: true,
-          line: true,
-          mode: 'application/json',
-          lineWrapping: true,
-          theme: 'rubyblue',
-          gutters: ['CodeMirror-lint-markers'],
-          lint: true
-        }
+        return {}
       }
     }
   },
   data () {
     return {
       content: this.value
+    }
+  },
+  computed: {
+    option () {
+      return Object.assign({}, {
+        tabSize: 4,
+        styleActiveLine: true,
+        line: true,
+        mode: 'application/json',
+        lineWrapping: true,
+        theme: 'rubyblue',
+        gutters: ['CodeMirror-lint-markers'],
+        lint: true
+      }, this.editorOption)
     }
   },
   watch: {

@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="创建编排" v-model="dialogVisible" size="small" ref="dialog" @close="close">
-      <el-form ref="form" :model="form" style="height: 60vh; overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
+      <el-form ref="form" :model="form" style="overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
         <el-form-item prop="composeStr">
           <json-editor v-model="form.composeStr"></json-editor>
         </el-form-item>
@@ -16,7 +16,7 @@
 import * as type from '@/store/compose/mutations_types'
 import * as compose from '@/api/compose'
 import { COMPOSE_BASE } from '@/views/compose/services/composeTemplate'
-import jsonEditor from '@/components/jsonEditor'
+import jsonEditor from '@/components/codeEditor'
 
 export default {
   components: { jsonEditor },
