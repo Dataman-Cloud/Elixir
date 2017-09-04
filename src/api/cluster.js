@@ -28,3 +28,10 @@ export function delCluster (vclusterLabel) {
     method: 'delete'
   })
 }
+
+export function hostrList (vclusterLabel) {
+  return fetch({
+    url: `/v1/clusters/${vclusterLabel}`,
+    method: 'delete'
+  })
+}
