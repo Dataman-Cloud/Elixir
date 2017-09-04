@@ -25,15 +25,15 @@
             <span>{{template.desc || '暂无描述'}}</span>
             <div class="bottom clearfix">
               <time class="time">{{template.created_at}}</time>
-              <el-dropdown class="buttonGroup" trigger="click">
+              <el-dropdown class="buttonGroup" trigger="click" @command="handleCommand">
                 <span class="el-dropdown-link">
                   下拉菜单
                   <i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>部署</el-dropdown-item>
-                  <el-dropdown-item>删除</el-dropdown-item>
-                  <el-dropdown-item>更新</el-dropdown-item>
+                  <el-dropdown-item :command="{type: 'deploy', data: template}">部署</el-dropdown-item>
+                  <el-dropdown-item :command="{type: 'delete', data: template}">删除</el-dropdown-item>
+                  <el-dropdown-item :command="{type: 'update', data: template}">更新</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
@@ -46,9 +46,9 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
-// import Confirm from '@/utils/confirm'
+import Confirm from '@/utils/confirm'
 import CreateComposeTem from '@/views/compose-template/modals/CreateCmpTemplate'
-// import * as cmpTemplate from '@/api/compose-template'
+import * as api from '@/api/compose-template'
 import * as type from '@/store/compose-template/mutations_types'
 
 export default {
@@ -75,6 +75,27 @@ export default {
     ...mapActions({
       fetchCmpTemplates: type.FETCH_COMPOSE_TEMPLATES
     }),
+    handleCommand ({type, data}) {
+      switch (type) {
+        case 'deploy':
+
+          break
+        case 'delete':
+          this.deleteTemplate(data.id)
+          break
+        case 'update':
+
+          break
+        default:
+          break
+      }
+    },
+    async deleteTemplate (id) {
+      await Confirm.open(`确认删除该编排模板?`)
+      await api.deleteTemplate(id)
+      this.$notify({ message: '删除成功' })
+      this.listCmpTemplate()
+    },
     async listCmpTemplate () {
       this.listLoading = true
       await this.fetchCmpTemplates().catch(() => { })

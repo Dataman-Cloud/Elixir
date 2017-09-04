@@ -13,3 +13,10 @@ export function getTemplate (id) {
     method: 'get'
   })
 }
+
+export function deleteTemplate (id) {
+  return fetch({
+    url: `v1/composeTemplates/${id}`,
+    method: 'delete'
+  })
+}
