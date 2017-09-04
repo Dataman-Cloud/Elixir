@@ -36,6 +36,10 @@ const UserGroupList = () => import('../views/user-group/list/List')
 const UserLayout = () => import('../views/user')
 const UserList = () => import('../views/user/list/List')
 
+const OctCreate = () => import('../views/eams/octopus/Create')
+const OctList = () => import('../views/eams/octopus/List')
+const MinihostCreate = () => import('../views/minihost/Create')
+
 Vue.use(Router)
 
 export const constantRouterMap = [
@@ -64,6 +68,32 @@ export const constantRouterMap = [
           { path: 'template-list', component: CmpList, name: '模板列表', meta: { role: ['get-compose'] } }
         ]
       }
+    ]
+  },
+  {
+    path: '/eams',
+    name: 'EAMS',
+    redirect: '/eams/oct-up',
+    icon: 'fa fa-cubes',
+    component: Layout,
+    hasDropdown: true,
+    children: [
+      { path: 'oct-up', component: OctCreate, name: 'octopus创建', meta: { role: ['get-apps'] }, hidden: true },
+      { path: 'squid-up', component: OctCreate, name: 'octopus创建', meta: { role: ['get-apps'] }, hidden: true },
+      { path: 'oct-list', component: OctList, name: 'octopus', meta: { role: ['get-apps'] } },
+      { path: 'squid-list', component: OctList, name: 'squid', meta: { role: ['get-apps'] } }
+    ]
+  },
+  {
+    path: '/mh',
+    name: '胶囊主机',
+    redirect: '/mh/mh-up',
+    icon: 'fa fa-cubes',
+    component: Layout,
+    hasDropdown: true,
+    children: [
+      { path: 'mh-up', component: MinihostCreate, name: '胶囊主机创建', meta: { role: ['get-apps'] } }
+      // { path: 'oct-list', component: OctList, name: 'octopus列表', meta: { role: ['get-apps'] } }
     ]
   }
 ]
@@ -179,4 +209,3 @@ const router = new Router({
 })
 
 export default router
-
