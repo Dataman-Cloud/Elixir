@@ -33,6 +33,9 @@ const CmpList = () => import('../views/compose-template/list/List')
 const UserGroupLayout = () => import('../views/user-group')
 const UserGroupList = () => import('../views/user-group/list/List')
 
+const TenantLayout = () => import('../views/tenant')
+const TenantList = () => import('../views/tenant/list/List')
+
 const UserLayout = () => import('../views/user')
 const UserList = () => import('../views/user/list/List')
 
@@ -196,6 +199,15 @@ export const asyncRouterMap = [
         meta: { role: ['get-usergroup'] },
         children: [
           { path: 'list', component: UserGroupList, name: '用户组列表' }
+        ]
+      },
+      {
+        path: '/system/tenant',
+        redirect: '/system/tenant/list',
+        name: '租户管理',
+        component: TenantLayout,
+        children: [
+          { path: 'list', component: TenantList, name: '租户列表' }
         ]
       }
     ]

@@ -98,3 +98,10 @@
   cursor: pointer;
   color: #20a0ff;
 }
+.btn-group {
+  justify-content: space-between;
+}
+.el-badge{
+  font-size: 18px;
+  margin: 10px 0;
+}

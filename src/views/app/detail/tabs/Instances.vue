@@ -88,10 +88,6 @@ export default {
 }
 </script>
 <style scoped>
-.btn-group {
-  justify-content: space-between;
-}
-
 .margin-10 {
   margin-left: 10px
 }

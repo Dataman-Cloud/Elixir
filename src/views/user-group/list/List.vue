@@ -166,10 +166,6 @@ export default {
 
 </script>
 <style scoped>
-.btn-group {
-  justify-content: space-between;
-}
-
 .demo-table-expand {
   font-size: 0;
 }
@@ -209,8 +205,5 @@ export default {
 .clearfix:after {
   clear: both
 }
-.el-badge{
-  font-size: 18px;
-  margin: 10px 0;
-}
+
 </style>
