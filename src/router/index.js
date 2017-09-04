@@ -28,6 +28,8 @@ const ComposeLayout = () => import('../views/compose')
 const ComposeList = () => import('../views/compose/list/List')
 const ComposeDetail = () => import('../views/compose/detail/Detail')
 
+const CmpList = () => import('../views/compose-template/list/List')
+
 const UserGroupLayout = () => import('../views/user-group')
 const UserGroupList = () => import('../views/user-group/list/List')
 
@@ -58,7 +60,8 @@ export const constantRouterMap = [
         meta: { role: ['get-compose'] },
         children: [
           { path: 'list', component: ComposeList, name: '编排列表', meta: { role: ['get-compose'] } },
-          { path: 'detail/:id', component: ComposeDetail, name: '编排详情', hidden: true, meta: { role: ['get-compose'] } }
+          { path: 'detail/:id', component: ComposeDetail, name: '编排详情', hidden: true, meta: { role: ['get-compose'] } },
+          { path: 'template-list', component: CmpList, name: '模板列表', meta: { role: ['get-compose'] } }
         ]
       }
     ]
