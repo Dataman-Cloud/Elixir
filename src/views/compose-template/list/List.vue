@@ -27,7 +27,7 @@
               <time class="time">{{template.created_at}}</time>
               <el-dropdown class="buttonGroup" trigger="click" @command="handleCommand">
                 <span class="el-dropdown-link">
-                  下拉菜单
+                  操作
                   <i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
