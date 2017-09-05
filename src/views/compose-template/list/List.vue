@@ -22,7 +22,8 @@
         <el-card :body-style="{ padding: '20px' }">
           <h1>{{template.name}}</h1>
           <div style="padding: 20px;">
-            <span>{{template.desc || '暂无描述'}}</span>
+            <span class="template-desc">{{template.description || '暂无描述'}}</span>
+
             <div class="bottom clearfix">
               <time class="time">{{template.created_at}}</time>
               <el-dropdown class="buttonGroup" trigger="click" @command="handleCommand">
@@ -33,7 +34,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item :command="{type: 'deploy', data: template}">部署</el-dropdown-item>
                   <el-dropdown-item :command="{type: 'delete', data: template}">删除</el-dropdown-item>
-                  <el-dropdown-item :command="{type: 'update', data: template}">更新</el-dropdown-item>
+                  <el-dropdown-item :command="{type: 'update', data: template}">编辑</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
@@ -75,7 +76,7 @@ export default {
     ...mapActions({
       fetchCmpTemplates: type.FETCH_COMPOSE_TEMPLATES
     }),
-    handleCommand ({type, data}) {
+    handleCommand ({ type, data }) {
       switch (type) {
         case 'deploy':
 
@@ -84,7 +85,7 @@ export default {
           this.deleteTemplate(data.id)
           break
         case 'update':
-
+          this.updateTemplate(data.id)
           break
         default:
           break
@@ -101,6 +102,9 @@ export default {
       await this.fetchCmpTemplates().catch(() => { })
       // await catch is a hack func to call this expression
       this.listLoading = false
+    },
+    updateTemplate (id) {
+      this.$refs.createCmpTemplate.open(id)
     },
     openCreate () {
       this.$refs.createCmpTemplate.open()
@@ -137,6 +141,14 @@ export default {
 
 .clearfix:after {
   clear: both
+}
+
+.template-desc {
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
 

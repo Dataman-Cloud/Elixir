@@ -28,3 +28,11 @@ export function createTemplate (data) {
     data: data
   })
 }
+
+export function updateTemplate (data) {
+  return fetch({
+    url: 'v1/composeTemplate',
+    method: 'put',
+    data: data
+  })
+}
