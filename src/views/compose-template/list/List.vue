@@ -16,6 +16,7 @@
     </div>
 
     <create-compose-tem ref="createCmpTemplate"></create-compose-tem>
+    <deploy-compose-tem ref="deployCmpTemplate"></deploy-compose-tem>
 
     <el-row v-loading="listLoading" v-if="filterCmpTemplates.length">
       <el-col :span="7" v-for="(template, index) in filterCmpTemplates" :key="index" style="margin: 15px 15px 15px 0px">
@@ -32,7 +33,7 @@
                   <i class="el-icon-caret-bottom el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item :command="{type: 'deploy', data: template}">部署</el-dropdown-item>
+                  <el-dropdown-item :command="{type: 'openDeploy', data: template}">部署</el-dropdown-item>
                   <el-dropdown-item :command="{type: 'delete', data: template}">删除</el-dropdown-item>
                   <el-dropdown-item :command="{type: 'update', data: template}">编辑</el-dropdown-item>
                 </el-dropdown-menu>
@@ -49,12 +50,14 @@
 import { mapActions, mapState } from 'vuex'
 import Confirm from '@/utils/confirm'
 import CreateComposeTem from '@/views/compose-template/modals/CreateCmpTemplate'
+import DeployComposeTem from '@/views/compose-template/modals/DeployCmpTemplate'
 import * as api from '@/api/compose-template'
 import * as type from '@/store/compose-template/mutations_types'
 
 export default {
   components: {
-    CreateComposeTem
+    CreateComposeTem,
+    DeployComposeTem
   },
   data () {
     return {
@@ -78,8 +81,8 @@ export default {
     }),
     handleCommand ({ type, data }) {
       switch (type) {
-        case 'deploy':
-
+        case 'openDeploy':
+          this.openDeploy(data.id)
           break
         case 'delete':
           this.deleteTemplate(data.id)
@@ -108,6 +111,9 @@ export default {
     },
     openCreate () {
       this.$refs.createCmpTemplate.open()
+    },
+    openDeploy (id) {
+      this.$refs.deployCmpTemplate.open(id)
     },
     reload () {
       this.listCmpTemplate()
