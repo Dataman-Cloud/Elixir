@@ -69,20 +69,20 @@ export function submitForm () {
   //   }
   // }
   return {
-    "name": "esdat22377g21",
+    "name": "minihost-test1",
     "cmd": null,
     "args": null,
     "cpus": 0.01,
     "gpus": 0,
     "mem": 32,
     "disk": 0,
-    "instances": 2,
+    "instances": 1,
     "runAs": "bbk",
     "constraints": [
         {
       "attribute": "vcluster",
       "operator": "==",
-      "value": "clusterest5555"
+      "value": "test"
     }
     ],
     "container": {

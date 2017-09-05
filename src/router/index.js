@@ -37,7 +37,9 @@ const UserLayout = () => import('../views/user')
 const UserList = () => import('../views/user/list/List')
 
 const OctCreate = () => import('../views/eams/octopus/Create')
+const SqdCreate = () => import('../views/eams/squid/Create')
 const OctList = () => import('../views/eams/octopus/List')
+const SqdList = () => import('../views/eams/squid/List')
 const MinihostCreate = () => import('../views/minihost/Create')
 
 Vue.use(Router)
@@ -79,9 +81,9 @@ export const constantRouterMap = [
     hasDropdown: true,
     children: [
       { path: 'oct-up', component: OctCreate, name: 'octopus创建', meta: { role: ['get-apps'] }, hidden: true },
-      { path: 'squid-up', component: OctCreate, name: 'octopus创建', meta: { role: ['get-apps'] }, hidden: true },
+      { path: 'squid-up', component: SqdCreate, name: 'squid创建', meta: { role: ['get-apps'] }, hidden: true },
       { path: 'oct-list', component: OctList, name: 'octopus', meta: { role: ['get-apps'] } },
-      { path: 'squid-list', component: OctList, name: 'squid', meta: { role: ['get-apps'] } }
+      { path: 'squid-list', component: SqdList, name: 'squid', meta: { role: ['get-apps'] } }
     ]
   },
   {
