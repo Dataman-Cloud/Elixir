@@ -1,0 +1,2 @@
+export const FETCH_MINIHOST = 'FETCH_MINIHOST'
+// export const FETCH_COMPOSE = 'FETCH_COMPOSE'

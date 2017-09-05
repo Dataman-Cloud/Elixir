@@ -94,27 +94,17 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'gpu'" label="磁盘规格配置(G)" :rules="[{ type: 'integer', min: 1, message: '宽限时间为正整数' }]">
-                    <el-input type="number" v-model.number="form.gpu">
+                  <el-form-item :prop="'disk'" label="磁盘规格配置(G)" :rules="[{ type: 'integer', min: 1, message: '宽限时间为正整数' }]">
+                    <el-input type="number" v-model.number="form.disk">
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                  <el-form-item label="端口号">
-                    <el-tooltip class="item" effect="dark" content="最多添加3个证书" placement="top-start">
-                      <el-button type="primary" size="small" @click="addPort()" :disabled="canAddSsh">添加 端口号</el-button>
-                    </el-tooltip>
-                  </el-form-item>
-                  <el-form-item v-for="(port, index) in form.ports" :key="index" class="parameters">
-                    <el-row :gutter="12">
-                      <el-col :span="20">
-                        <el-form-item :prop="'ports.' + index" :rules="[{ required: true, message: 'KEY 不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: 'KEY 不能包含中文' }]">
-                          <el-input type="number" v-model.number="form.ports[index]"></el-input>
-                        </el-form-item>
+                  <el-form-item prop="port" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]" label="端口">
+                    <el-row :gutter="8">
+                      <el-col :span="8">
+                        <el-input v-model.number="form.port" placeholder="端口"></el-input>
                       </el-col>
-                      <el-button @click.prevent="removePort(index)">
-                        <i class="el-icon-delete"></i>
-                      </el-button>
                     </el-row>
                   </el-form-item>
                 </el-col>
@@ -138,9 +128,10 @@
 
 <script>
 import { mapActions } from 'vuex'
-import * as type from '@/store/app/mutations_types'
+import * as type from '@/store/minihost/mutations_types'
 import * as form from '@/views/minihost/services/form'
-import * as fetchApp from '@/api/app'
+import * as handle from '@/views/minihost/services/handle'
+import * as minihost from '@/api/minihost'
 export default {
   data () {
     return {
@@ -153,7 +144,7 @@ export default {
   },
   computed: {
     ...mapActions({
-      fetchApps: type.FETCH_APPS
+      fetchMinihost: type.FETCH_MINIHOST
     }),
     sshDelete () {
       return this.form.ssh.length < 2
@@ -181,38 +172,8 @@ export default {
     submit () {
       this.$refs.mcForm.validate((valid) => {
         if (valid) {
-          let submitForm = form.submitForm()
-          fetchApp.create(submitForm)
-          // handle.formatYmlForm(this.form, submitForm)
-          this.msg(this.form, submitForm)
-        }
-      })
-    },
-    msg (form, submitForm) {
-      this.$msgbox({
-        message: '确定提交？',
-        // confirmButtonClass: 'none',
-        closeOnPressEscape: true,
-        showCancelButton: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true
-            instance.confirmButtonText = '发布中...'
-            instance.showCancelButton = false
-            instance.message = submitForm.appName
-            setTimeout(() => {
-              instance.confirmButtonLoading = false
-              done()
-            }, 10000)
-          } else {
-            done()
-          }
-        }
-      }).then(action => {
-        if (action === 'confirm') {
-          this.$router.push({name: 'octopus列表'})
+          let submitForm = handle.formatForm(this.form)
+          minihost.create(submitForm)
         }
       })
     }
