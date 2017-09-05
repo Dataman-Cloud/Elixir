@@ -97,8 +97,5 @@ export default {
 }
 </script>
 <style scope>
-.btn-group {
-  justify-content: space-between;
-}
 </style>
 

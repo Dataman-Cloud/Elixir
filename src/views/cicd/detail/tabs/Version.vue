@@ -105,7 +105,5 @@
   }
 </script>
 <style scoped>
-  .btn-group {
-    justify-content: space-between;
-  }
+
 </style>

@@ -1,0 +1,2 @@
+export const FETCH_TENANTS = 'FETCH_TENANTS'
+export const FETCH_TENANT = 'FETCH_TENANT'

@@ -12,6 +12,7 @@ import compose from './compose'
 import cmpTemplate from './compose-template'
 import cluster from './cluster'
 import eams from './eams'
+import tenant from './tenant'
 
 Vue.use(Vuex)
 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
     compose,
     cmpTemplate,
     cluster,
-    eams
+    eams,
+    tenant
   }
 })
