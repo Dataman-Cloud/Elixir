@@ -23,11 +23,50 @@ export const octopusForm = {
     uri: '',
     tag: ''
   },
+  port: 9088,
+  LDAP: {
+    username: "duffqiu",
+    password: 123456
+  }
+}
+
+export const squidForm = {
+  serviceName: 'demo',
+  instanceMode: 'local',
+  containerSizeMode: 'low',
+  zookeeperList: [{
+    ip: '192.168.31.23',
+    port: 2181
+  }],
+  mysql: {
+    ip: '192.168.31.21',
+    port: 3306,
+    username: 'root',
+    password: 'dataman'
+  },
+  image: {
+    Image: '',
+    uri: '',
+    tag: ''
+  },
+  imageB: {
+    Image: '',
+    uri: '',
+    tag: ''
+  },
   port: 9088
 }
 
 export const ipRule = /^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/
 export const octopusRules = {
+  serviceName: [
+    { required: true, message: '服务名不能为空' },
+    { pattern: /^[a-zA-Z0-9-]+$/, message: '服务名称只能包含数字、字母、中划线' },
+    { max: 48, message: '最大长度48个字符 (汉字占3个字符)' }
+  ]
+}
+
+export const squidRules = {
   serviceName: [
     { required: true, message: '服务名不能为空' },
     { pattern: /^[a-zA-Z0-9-]+$/, message: '服务名称只能包含数字、字母、中划线' },

@@ -1,4 +1,5 @@
-export function formatYmlForm (form, submitForm) {
+/* eslint-disable */
+export function formatYmlOctForm (form, submitForm) {
   formatServiceName(form, submitForm)
   formatInstanceMode(form, submitForm)
   formatContainerSizeMode(form, submitForm)
@@ -11,15 +12,17 @@ export function formatYmlForm (form, submitForm) {
 function formatServiceName (form, submitForm) {
   submitForm.name = `octopus-${form.serviceName}`
 }
+
 function formatInstanceMode (form, submitForm) {
   let instance = 1
   if (form.instanceMode === 'local') {
   } else {
-    instances = 2
+    instance = 2
   }
   let rlpStr = `replicas: ${instance}\n`
   submitForm.yaml_raw.replace(/replicas: 1\n/g, rlpStr)
 }
+
 function formatContainerSizeMode (form, submitForm) {
   let ratio = 1
   let mode = form.containerSizeMode
@@ -30,10 +33,11 @@ function formatContainerSizeMode (form, submitForm) {
     ratio = 4
   }
   submitForm.yaml_extra.octopusconsoleswan.resource = {
-    'cpu': 1 * ratio,
-    'mem': 1024 * ratio
+    "cpus": 1 * ratio,
+    "mem": 1024 * ratio
   }
 }
+
 function formatZookeeperList (form, submitForm) {
   let zkArr = []
   form.zookeeperList.forEach((zk) => {
@@ -41,14 +45,17 @@ function formatZookeeperList (form, submitForm) {
   })
   submitForm.env.VIP_SATURN_ZK_CONNECTION = zkArr.join(',')
 }
+
 function formatMysql (form, submitForm) {
   submitForm.env.SATURN_CONSOLE_DB_URL = 'jdbc:mysql://' + form.mysql.ip + ':' + form.mysql.port + '/saturn_console'
   submitForm.env.SATURN_CONSOLE_DB_USERNAME = form.mysql.username
   submitForm.env.SATURN_CONSOLE_DB_PASSWORD = form.mysql.password
 }
+
 function formatImage (form, submitForm) {
   submitForm.appName = form.serviceName
 }
+
 function formatPort (form, submitForm) {
   submitForm.container.docker.portMappings[0].containerPort = form.port
 }
