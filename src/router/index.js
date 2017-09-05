@@ -85,15 +85,15 @@ export const constantRouterMap = [
     children: [
       { path: 'oct-up', component: OctCreate, name: 'octopus创建', meta: { role: ['get-apps'] }, hidden: true },
       { path: 'squid-up', component: SqdCreate, name: 'squid创建', meta: { role: ['get-apps'] }, hidden: true },
-      { path: 'oct-list', component: OctList, name: 'octopus', meta: { role: ['get-apps'] } },
-      { path: 'squid-list', component: SqdList, name: 'squid', meta: { role: ['get-apps'] } }
+      { path: 'oct-list', component: OctList, name: 'octopus', icon: 'iconfont icon-octopus-menu', meta: { role: ['get-apps'] } },
+      { path: 'squid-list', component: SqdList, name: 'squid', icon: 'iconfont icon-squid-menu', meta: { role: ['get-apps'] } }
     ]
   },
   {
     path: '/mh',
-    name: '胶囊主机',
+    name: '迷你主机',
     redirect: '/mh/mh-up',
-    icon: 'fa fa-cubes',
+    icon: 'iconfont icon-minihost-menu',
     component: Layout,
     hasDropdown: true,
     children: [

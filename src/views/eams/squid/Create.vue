@@ -10,8 +10,8 @@ export default {
     }
   },
   methods: {
-    formatYmlForm (submitForm) {
-      return handle.formatYmlSqdForm(submitForm)
+    formatYmlForm (form, submitForm) {
+      return handle.formatYmlSqdForm(form, submitForm)
     }
   }
 }

@@ -264,15 +264,34 @@ export default {
       this.$refs.form.validate((valid) => {
         if (!valid) {
           let submitForm = form.getYmlForm()
-          this.formatYmlForm(submitForm)
-          eams.createCompose(submitForm).then((data) => {
+          this.formatYmlForm(this.form, submitForm)
+          // eams.createCompose(submitForm).then((data) => {
+          //   this.$router.push({name: 'octopus'})
+          // })
+          let params = {
+            runas: 'bbk',
+            name: 'octopus-demo',
+            cluster: 'eams',
+            labels: '2',
+            envs: '3'
+            // labels: [
+            //   'JBORG_GROUP_ID=1',
+            //   'JBORG_USER_ID=1',
+            //   'JBORG_VCLUSTER=eams'
+            // ].toString(),
+            // envs: [
+            //   'abc=1'
+            // ].toString()
+          }
+          let data = form.getData()
+          eams.createComposeNg(data, params).then((data) => {
             this.$router.push({name: 'octopus'})
           })
         }
       })
     },
-    formatYmlForm (submitForm) {
-      return handle.formatYmlOctForm(submitForm)
+    formatYmlForm (form, submitForm) {
+      return handle.formatYmlOctForm(form, submitForm)
     }
   }
 }

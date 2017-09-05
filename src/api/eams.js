@@ -45,3 +45,12 @@ export function deleteCompose (id) {
     method: 'delete'
   })
 }
+
+export function createComposeNg (data, params) {
+  return fetch({
+    url: '/v1/composes-ng',
+    method: 'post',
+    data,
+    params
+  })
+}

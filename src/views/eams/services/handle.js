@@ -1,16 +1,30 @@
 /* eslint-disable */
 export function formatYmlOctForm (form, submitForm) {
-  formatServiceName(form, submitForm)
+  // formatServiceName(form, submitForm)
+  // formatInstanceMode(form, submitForm)
+  // formatContainerSizeMode(form, submitForm)
+  // formatZookeeperList(form, submitForm)
+  // formatMysql(form, submitForm)
+  // formatImage(form, submitForm)
+  // formatPort(form, submitForm)
+}
+
+export function formatYmlSqdForm (form, submitForm) {
+  formatSqdServiceName(form, submitForm)
   formatInstanceMode(form, submitForm)
   formatContainerSizeMode(form, submitForm)
-  formatZookeeperList(form, submitForm)
-  formatMysql(form, submitForm)
-  formatImage(form, submitForm)
-  formatPort(form, submitForm)
+  // formatZookeeperList(form, submitForm)
+  // formatMysql(form, submitForm)
+  // formatImage(form, submitForm)
+  // formatPort(form, submitForm)
 }
 
 function formatServiceName (form, submitForm) {
   submitForm.name = `octopus-${form.serviceName}`
+}
+
+function formatSqdServiceName (form, submitForm) {
+  submitForm.name = `squid-${form.serviceName}`
 }
 
 function formatInstanceMode (form, submitForm) {
