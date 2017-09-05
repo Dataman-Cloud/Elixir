@@ -5,14 +5,14 @@ export const mcForm = {
   instanceNumber: 1,
   containerSizeMode: 'low',
   gpu: 1,
-  disk: 50,
+  disk: 5,
   ssh: [' '],
   image: {
     Image: '',
     uri: '',
     tag: ''
   },
-  ports: [9088]
+  port: 22
 }
 
 export const mcRules = {
@@ -23,7 +23,7 @@ export const mcRules = {
   ]
 }
 
-export function submitForm () {
+export function getSubmitForm () {
   // return {
   //   name: 'ggg',
   //   cmd: null,
@@ -103,9 +103,8 @@ export function submitForm () {
       }
     },
     "env": {
-      // "PORT": "Port 45",
-      // "RSA_KEY": "1231231",
-      "ddd": "ddd"
+      "PORT": "Port 45",
+      "RSA_KEY": "1231231"
     }
   }
 }

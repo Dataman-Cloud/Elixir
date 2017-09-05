@@ -13,6 +13,7 @@ import cmpTemplate from './compose-template'
 import cluster from './cluster'
 import eams from './eams'
 import tenant from './tenant'
+import minihost from './minihost'
 
 Vue.use(Vuex)
 
@@ -30,6 +31,7 @@ export default new Vuex.Store({
     cmpTemplate,
     cluster,
     eams,
-    tenant
+    tenant,
+    minihost
   }
 })

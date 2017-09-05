@@ -27,7 +27,7 @@ export function tagDetail (name) {
 
 export function listCompose () {
   return fetch({
-    url: 'v1/composes',
+    url: 'v1/composes-ng',
     method: 'get'
   })
 }
@@ -46,11 +46,17 @@ export function deleteCompose (id) {
   })
 }
 
-export function createComposeNg (data, params) {
+export function createComposeNg (data) {
   return fetch({
-    url: '/v1/composes-ng',
+    url: 'v1/composes-ng',
     method: 'post',
-    data,
-    params
+    data
+  })
+}
+
+export function deleteComposeNg (name) {
+  return fetch({
+    url: `v1/composes-ng/${name}`,
+    method: 'delete'
   })
 }

@@ -44,6 +44,7 @@ const SqdCreate = () => import('../views/eams/squid/Create')
 const OctList = () => import('../views/eams/octopus/List')
 const SqdList = () => import('../views/eams/squid/List')
 const MinihostCreate = () => import('../views/minihost/Create')
+const MinihostList = () => import('../views/minihost/list/List')
 
 Vue.use(Router)
 
@@ -97,8 +98,8 @@ export const constantRouterMap = [
     component: Layout,
     hasDropdown: true,
     children: [
-      { path: 'mh-up', component: MinihostCreate, name: '胶囊主机创建', meta: { role: ['get-apps'] } }
-      // { path: 'oct-list', component: OctList, name: 'octopus列表', meta: { role: ['get-apps'] } }
+      { path: 'mh-up', component: MinihostCreate, name: '胶囊主机创建', meta: { role: ['get-apps'] }, hidden: true },
+      { path: 'mh-list', component: MinihostList, name: '迷你主机列表', meta: { role: ['get-apps'] } }
     ]
   }
 ]

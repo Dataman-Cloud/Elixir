@@ -2,7 +2,7 @@
   <el-card :body-style="{width:'300px'}">
       <div class="header-box">
         <img :src="imgSrc" alt="" class="card-img">
-        <el-dropdown @command="handleCommand(item)" class="hover">
+        <el-dropdown @command="handleCommand" class="hover">
           <span class="el-dropdown-link">
             选项<i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
@@ -35,7 +35,6 @@
 
 <script>
 import StatusIndicator from './StatusIndicator.vue'
-import * as eams from '@/api/eams'
 
 export default {
   name: 'app-card',
@@ -54,9 +53,7 @@ export default {
     }
   },
   methods: {
-    handleCommand (item, command) {
-      console.log(arguments)
-      eams.deleteComposeNg(item.name)
+    handleCommand (command) {
       this.$message('click on item ' + command)
     }
   }

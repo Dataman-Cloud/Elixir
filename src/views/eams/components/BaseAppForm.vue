@@ -268,23 +268,8 @@ export default {
           // eams.createCompose(submitForm).then((data) => {
           //   this.$router.push({name: 'octopus'})
           // })
-          let params = {
-            runas: 'bbk',
-            name: 'octopus-demo',
-            cluster: 'eams',
-            labels: '2',
-            envs: '3'
-            // labels: [
-            //   'JBORG_GROUP_ID=1',
-            //   'JBORG_USER_ID=1',
-            //   'JBORG_VCLUSTER=eams'
-            // ].toString(),
-            // envs: [
-            //   'abc=1'
-            // ].toString()
-          }
-          let data = form.getData()
-          eams.createComposeNg(data, params).then((data) => {
+          let data = form.newComposeForm()
+          eams.createComposeNg(data).then((data) => {
             this.$router.push({name: 'octopus'})
           })
         }

@@ -284,3 +284,20 @@ export function submitForm () {
     }
   }
 }
+
+export function newComposeForm () {
+  return {
+    "runas": "bbk",
+    "cluster": "eams",
+    "name": "octopus-demo2",
+    "description": '',
+    "envs": {
+      "OCTOPUS_CLOUD_CONTAINER-TYPE": "SWAN"
+    },
+    "labels": {
+
+    },
+    "yamlText": "version: \"3\"\n\nservices:\n  octopusconsole:\n    image: \"sryregistry.service.consul:5002/library/octopus-console:1.2.0-RC8\"\n    network_mode: \"bridge\"\n    deploy:\n      replicas: 1\n      constraints:\n        - attribute: \"vcluster\"\n          operator: \"==\"\n          value: \"eams\"\n    environment:\n      - API_URL=http://octopusconsoleswan\n      - API_PORT=9088\n    ports:\n      - \"80/tcp\"\n    depends_on:\n      - octopusconsoleswan\n    proxy:\n      enabled: false\n      alias: \"kak.cn\"\n      listen: 8888\n      sticky: false\n\n  octopusconsoleswan:\n    image: \"sryregistry.service.consul:5002/library/octopus-api:1.2.0-RC8\"\n    network_mode: \"bridge\"\n    restart: unless-stopped\n    deploy:\n      replicas: 1\n      wait_delay: 20\n      constraints:\n        - attribute: \"vcluster\"\n          operator: \"==\"\n          value: \"eams\"\n    environment:\n      - SPRING_DATASOURCE_URL=jdbc:mysql://192.168.1.184:3306/saturn_console\n      - SPRING_DATASOURCE_USERNAME=root\n      - SRPING_DATASOURCE_PASSWORD=dataman\n    ports:\n      - 9088\n    proxy:\n      enabled: true\n      alias: \"yy.cn\"\n      listen: 9088\n      sticky: false\n    resource:\n      cpus: 1\n      mem: 170\n"
+    // "yamlText": "version: \"3\"\n\nservices:\n  octopusconsole:\n    image: \"sryregistry.service.consul:5002/library/octopus-console:1.2.0-RC8\"\n    network_mode: \"bridge\"\n    deploy:\n      replicas: 1\n      constraints:\n        - attribute: \"vcluster\"\n          operator: \"==\"\n          value: \"eams\"\n    environment:\n      - WORDPRESS_DB_HOST=mariadb:3306\n      - WORDPRESS_DB_PASSWORD=Password\n    ports:\n      - \"80/tcp\"\n    depends_on:\n      - octopusconsoleswan\n    proxy:\n      enabled: true\n      alias: \"kak.cn\"\n      listen: 8888\n      sticky: false\n\n  octopusconsoleswan:\n    image: \"sryregistry.service.consul:5002/library/octopus-api:1.2.0-RC8\"\n    network_mode: \"host\"\n    restart: unless-stopped\n    deploy:\n      replicas: 1\n      wait_delay: 20\n      constraints:\n        - attribute: \"vcluster\"\n          operator: \"==\"\n          value: \"eams\"\n    environment:\n      - MYSQL_ROOT_PASSWORD=Password\n    ports:\n      - 9088\n    proxy:\n      enabled: true\n      alias: \"yay.cn\"\n      listen: 9088\n      sticky: false"
+  }
+}
