@@ -105,60 +105,128 @@ export function getYmlForm () {
   //   },
   //   'yaml_env': {}
   // }
+
+  // return {
+  //   "name": "octopus-demo",
+  //   "desc": "octopus-demo",
+  //   "yaml_raw": "version: '3'\nservices:\n  octopusconsole:\n    network_mode: 'bridge'\n    image: sryregistry.service.consul:5002/library/octopus-console:1.2.0-RC8\n    stdin_open: true\n    restart: unless-stopped\n    ports:\n      - 8090:80/tcp\n    environment:\n      API_URL: http://octopusconsoleswan\n      API_PORT: 9088\n    depends_on:\n      - octopusconsoleswan\n    deploy:\n      mode: replicated\n      replicas: 1\n    dns:\n      - 192.168.1.184\n      - 192.168.1.181\n      \n\n  octopusconsoleswan:\n    network_mode: 'host'\n    deploy:\n      mode: replicated\n      replicas: 1\n    image: sryregistry.service.consul:5002/library/octopus-api:1.2.0-RC8\n    stdin_open: true\n    restart: unless-stopped\n    dns:\n      - 192.168.1.184\n      - 192.168.1.181\n    expose:\n      - 9099\n    environment:\n      REG_CENTER_JSON_PATH: /apps/saturn/config/nptree.json\n      SPRING_DATASOURCE_URL: jdbc:mysql://192.168.31.21:3306/saturn_console?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true\n      SATURN_CONSOLE_DB_USERNAME: root\n      SATURN_CONSOLE_DB_PASSWORD: dataman\n      OCTOPUS_CLOUD_CONTAINER-TYPE: SWAN\n      OCTOPUS_CLOUD_REGISTRY-URI: https://offlineregistry.dataman-inc.com:5000\n      OCTOPUS_DASHBOARD_REFRESH_INTERVAL_MINUTE: 1440\n      OCTOPUS_CLOUD_SWAN_REST-URI: http://192.168.31.31:5016\n      SPRING_DATASOURCE_USERNAME: root\n      SPRING_DATASOURCE_PASSWORD: dataman123\n      OCTOPUS_CLOUD_SWAN_GROUP-ID: 3\n      OCTOPUS_CLOUD_SWAN_TENANT-ID: 1\n      OCTOPUS_CLOUD_SWAN_USER-ID: 2\n      OCTOPUS_CLOUD_SWAN_USER-NAME: dev\n      OCTOPUS_CLOUD_SWAN_VCLUSTER: clusterest5555\n      OCTOPUS_CLOUD_SWAN_VCLUSTER-ID: 2\n      OCTOPUS_CLOUD_SWAN_GROUP-NAME: eams",
+  //   "yarn_env": {
+  //     "WORRRRRR": "fffffff"
+  //   },
+  //   "yaml_extra": {
+  //     "octopusconsole": {
+  //       "runas": "bbk",
+  //       "cluster": "eams",
+  //       "wait_delay": 180,
+  //       "pull_always": false,
+  //       "constraints": [
+  //         {
+  //           "attribute": "vcluster",
+  //           "operator": "==",
+  //           "value": "eams"
+  //         }
+  //       ],
+  //       "uris": null,
+  //       "ips": null,
+  //       "resource": {
+  //         "cpus": 0.01,
+  //         "mem": 64
+  //       },
+  //       "proxy": {
+  //        "enabled": true,
+  //        "alias": "ocotpus.cn",
+  //        "listen": 999,
+  //        "sticky": false
+  //      }
+  //     },
+  //     "octopusconsoleswan": {
+  //       "runas": "bbk",
+  //       "cluster": "eams",
+  //       "wait_delay": 10,
+  //       "pull_always": false,
+  //       "constraints": [
+  //         {
+  //           "attribute": "vcluster",
+  //           "operator": "==",
+  //           "value": "eams"
+  //         }
+  //       ],
+  //       "uris": null,
+  //       "ips": null,
+  //       "resource": {
+  //         "cpus": 0.01,
+  //         "mem": 64
+  //       }
+  //     }
+  //   }
+  // }
+
   return {
-    "name": "octopus-demo",
-    "desc": "wordpressbp",
-    "yaml_raw": "version: '3'\nservices:\n  octopusconsole:\n    network_mode: 'bridge'\n    image: sryregistry.service.consul:5002/library/octopus-console:1.2.0-RC8\n    stdin_open: true\n    restart: unless-stopped\n    ports:\n      - 8090:80/tcp\n    environment:\n      API_URL: http://octopusconsoleswan\n      API_PORT: 9088\n    depends_on:\n      - octopusconsoleswan\n    deploy:\n      mode: replicated\n      replicas: 1\n    dns:\n      - 192.168.1.184\n      - 192.168.1.181\n      \n\n  octopusconsoleswan:\n    network_mode: 'host'\n    deploy:\n      mode: replicated\n      replicas: 1\n    image: sryregistry.service.consul:5002/library/octopus-api:1.2.0-RC8\n    stdin_open: true\n    restart: unless-stopped\n    dns:\n      - 192.168.1.184\n      - 192.168.1.181\n    expose:\n      - 9099\n    environment:\n      REG_CENTER_JSON_PATH: /apps/saturn/config/nptree.json\n      SPRING_DATASOURCE_URL: jdbc:mysql://192.168.31.21:3306/saturn_console?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true\n      SATURN_CONSOLE_DB_USERNAME: root\n      SATURN_CONSOLE_DB_PASSWORD: dataman\n      OCTOPUS_CLOUD_CONTAINER-TYPE: SWAN\n      OCTOPUS_CLOUD_REGISTRY-URI: https://offlineregistry.dataman-inc.com:5000\n      OCTOPUS_DASHBOARD_REFRESH_INTERVAL_MINUTE: 1440\n      OCTOPUS_CLOUD_SWAN_REST-URI: http://192.168.31.31:5016\n      SPRING_DATASOURCE_USERNAME: root\n      SPRING_DATASOURCE_PASSWORD: dataman123\n      OCTOPUS_CLOUD_SWAN_GROUP-ID: 3\n      OCTOPUS_CLOUD_SWAN_TENANT-ID: 1\n      OCTOPUS_CLOUD_SWAN_USER-ID: 2\n      OCTOPUS_CLOUD_SWAN_USER-NAME: dev\n      OCTOPUS_CLOUD_SWAN_VCLUSTER: clusterest5555\n      OCTOPUS_CLOUD_SWAN_VCLUSTER-ID: 2\n      OCTOPUS_CLOUD_SWAN_GROUP-NAME: eams",
-    "yarn_env": {
-      "WORRRRRR": "fffffff"
-    },
+    "name": "wordpressbp3",
+    "desc": "wordpressbp-3",
+    "yaml_raw": "version: \"3\"\n\nservices:\n  wordpress:\n    image: \"sryregistry.service.consul:5002/library/octopus-console:1.2.0-RC8\"\n    network_mode: \"bridge\"\n    environment:\n      - OCTOPUS_CLOUD_CONTAINER-TYPE=${OCTOPUS_CLOUD_CONTAINER-TYPE}\n      - WORDPRESS_DB_PASSWORD=Password\n    ports:\n      - 8080:80\n    depends_on:\n      - wordpressdb\n\n  wordpressdb:\n    image: \"sryregistry.service.consul:5002/library/octopus-api:1.2.0-RC8\"\n    network_mode: \"host\"\n    environment:\n      - MYSQL_ROOT_PASSWORD=Password\n",
     "yaml_extra": {
-      "octopusconsole": {
+      "wordpress": {
         "runas": "bbk",
-        "cluster": "test",
-        "wait_delay": 180,
+        "cluster": "eams",
+        "wait_delay": 5,
         "pull_always": false,
         "constraints": [
           {
             "attribute": "vcluster",
             "operator": "==",
-            "value": "test"
+            "value": "eams"
           }
         ],
         "uris": null,
         "ips": null,
         "resource": {
-          "cpus": 0.01,
+          "cpu": 0.01,
           "mem": 64
         },
-        "proxy": {
-         "enabled": true,
-         "alias": "ocotpus.cn",
-         "listen": 999,
-         "sticky": false
-       }
+        "labels": {
+          "JBORG_ESPROJECTID": "projectid8888",
+          "JBORG_ESUSERID": "userid8888",
+          "JBORG_GROUP_ID": "1",
+          "JBORG_USER_ID": "1",
+          "JBORG_VCLUSTER": "eams"
+        }
       },
-      "octopusconsoleswan": {
+      "wordpressdb": {
         "runas": "bbk",
-        "cluster": "test",
+        "cluster": "eams",
         "wait_delay": 10,
         "pull_always": false,
         "constraints": [
           {
             "attribute": "vcluster",
             "operator": "==",
-            "value": "test"
+            "value": "eams"
           }
         ],
         "uris": null,
         "ips": null,
         "resource": {
-          "cpus": 0.01,
+          "cpu": 0.01,
           "mem": 64
+        },
+        "labels": {
+          "JBORG_ESPROJECTID": "projectid8888",
+          "JBORG_ESUSERID": "userid8888",
+          "JBORG_GROUP_ID": "1",
+          "JBORG_USER_ID": "1",
+          "JBORG_VCLUSTER": "eams"
         }
       }
+    },
+    "yaml_env": {
+      "OCTOPUS_CLOUD_CONTAINER": "swan"
     }
   }
+}
+
+export function getData () {
+  return [{"key":"yamlText","value":"version: \"3\"\n\nservices:\n  wordpress:\n    image: \"wordpress\"\n    network_mode: \"bridge\"\n    deploy:\n      replicas: 1\n      constraints:\n        - attribute: \"vcluster\"\n          operator: \"==\"\n          value: \"eams\"\n    environment:\n      - WORDPRESS_DB_HOST=mariadb:3306\n      - WORDPRESS_DB_PASSWORD=Password\n    ports:\n      - \"80/tcp\"\n    depends_on:\n      - mariadb\n    dns:\n      - 192.168.1.181  # swan dns server\n    proxy:\n      enabled: true\n      alias: \"kk.cn\"\n      listen: 8888\n      sticky: false\n\n  mariadb:\n    image: \"mariadb\"\n    network_mode: \"bridge\"\n    deploy:\n      replicas: 1\n      wait_delay: 20\n      constraints:\n        - attribute: \"vcluster\"\n          operator: \"==\"\n          value: \"eams\"\n    environment:\n      - MYSQL_ROOT_PASSWORD=Password\n    ports:\n      - 3306\n    dns:\n      - 192.168.1.181  # swan dns server\n    proxy:\n      enabled: true\n      alias: \"yy.cn\"\n      listen: 3306\n      sticky: false","description":""}]
 }
 
 export function submitForm () {

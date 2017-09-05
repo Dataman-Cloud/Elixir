@@ -5,10 +5,15 @@
         <el-button type="primary">创建{{appPrefix}}</el-button>
       </router-link>
     </div>
-    <div class="result-grid">
+    <div class="result-grid" v-if="List.length">
         <div :span="8" v-for="li in List" :key="li.name" class="app-item">
           <app-card :item="li" :imgSrc="imgSrc"/>
         </div>
+    </div>
+    <div class="empty-page" v-else>
+      <span>
+        暂无应用
+      </span>
     </div>
   </div>
 </template>
@@ -71,5 +76,11 @@ export default {
       margin-bottom: 1rem;
       border-color: black;
     }
+}
+.empty-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
 }
 </style>

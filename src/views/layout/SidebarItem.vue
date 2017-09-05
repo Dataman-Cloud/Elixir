@@ -15,6 +15,7 @@
           <sidebar-item v-if='child.children&&child.children.length>0' :routes='[child]' :key="childIndex"> </sidebar-item>
 
           <el-menu-item v-else :index="item.path+'/'+child.path" :key="childIndex">
+            <i v-if='child.icon' :class="[child.icon, 'clearance']" aria-hidden="true"></i>
             <span>{{child.name}}</span>
           </el-menu-item>
         </template>
@@ -45,4 +46,3 @@ export default {
   min-width: 160px;
 }
 </style>
-

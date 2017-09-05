@@ -69,7 +69,7 @@ export function submitForm () {
   //   }
   // }
   return {
-    "name": "minihost-test1",
+    "name": "minihost-test3",
     "cmd": null,
     "args": null,
     "cpus": 0.01,
@@ -82,7 +82,7 @@ export function submitForm () {
         {
       "attribute": "vcluster",
       "operator": "==",
-      "value": "test"
+      "value": "eams"
     }
     ],
     "container": {
@@ -103,8 +103,9 @@ export function submitForm () {
       }
     },
     "env": {
-      "PORT": "Port 45",
-      "RSA_KEY": "1231231"
+      // "PORT": "Port 45",
+      // "RSA_KEY": "1231231",
+      "ddd": "ddd"
     }
   }
 }
