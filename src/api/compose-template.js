@@ -16,7 +16,7 @@ export function getTemplate (id) {
 
 export function deleteTemplate (id) {
   return fetch({
-    url: `v1/composeTemplates/${id}`,
+    url: `v1/composeTemplate/${id}`,
     method: 'delete'
   })
 }
@@ -33,6 +33,14 @@ export function updateTemplate (data) {
   return fetch({
     url: 'v1/composeTemplate',
     method: 'put',
+    data: data
+  })
+}
+
+export function deployTemplate (data) {
+  return fetch({
+    url: 'v1/deploy/composes-ng',
+    method: 'post',
     data: data
   })
 }

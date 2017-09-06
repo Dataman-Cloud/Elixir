@@ -82,6 +82,7 @@ export default {
     onSubmit () {
       this.$refs.form.validate(async (valid) => {
         if (valid) {
+          this.submitLoading = true
           try {
             this.isUpdate ? await api.updateTemplate(this.form) : await api.createTemplate(this.form)
             this.dialogVisible = false
