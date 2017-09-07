@@ -6,7 +6,8 @@ export default {
   extends: BaseAppForm,
   data () {
     return {
-      appPrefix: 'squid-'
+      appPrefix: 'squid-',
+      routerAfterSubmit: 'squid'
     }
   },
   methods: {

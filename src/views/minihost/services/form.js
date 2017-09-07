@@ -20,7 +20,11 @@ export const mcRules = {
     { required: true, message: '服务名不能为空' },
     { pattern: /^[a-zA-Z0-9-]+$/, message: '服务名称只能包含数字、字母、中划线' },
     { max: 48, message: '最大长度48个字符 (汉字占3个字符)' }
-  ]
+  ],
+  gpu: [{ type: 'integer', min: 1, message: 'gpu为正整数' }],
+  port: [{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }],
+  disk: [{ type: 'integer', min: 1, message: '磁盘大小为正整数' }]
+
 }
 
 export function getSubmitForm () {
@@ -72,18 +76,18 @@ export function getSubmitForm () {
     "name": "minihost-test3",
     "cmd": null,
     "args": null,
-    "cpus": 0.01,
+    "cpus": 1,
     "gpus": 0,
-    "mem": 32,
+    "mem": 1024,
     "disk": 0,
     "instances": 1,
     "runAs": "bbk",
     "constraints": [
-        {
-      "attribute": "vcluster",
-      "operator": "==",
-      "value": "eams"
-    }
+      {
+        "attribute": "vcluster",
+        "operator": "==",
+        "value": "eams"
+      }
     ],
     "container": {
       "type": "DOCKER",
