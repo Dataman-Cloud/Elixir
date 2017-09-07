@@ -54,7 +54,7 @@
             <el-row :gutter="12">
               <el-col :span="20">
                 <el-form-item :prop="'ssh.' + index" :rules="[{ required: true, message: 'KEY 不能为空' },{ pattern: /^[^\u4e00-\u9fa5]*$/, message: 'KEY 不能包含中文' }]">
-                  <el-input v-model="ssh[index]" type="textarea">
+                  <el-input v-model="form.ssh[index]" type="textarea">
                     <template slot="prepend">ssh</template>
                   </el-input>
                 </el-form-item>
@@ -66,18 +66,22 @@
           </el-form-item>
 
           <!-- 镜像 -->
-          <el-form-item label="镜像" prop="image">
+          <el-form-item label="镜像 web">
             <el-row :gutter="8">
               <el-col :span="12">
-                <el-select ref="registryCatalogSel" v-model="form.image.Image" @change="changeImageFront">
-                  <el-option v-for="(image, index) in imagesFront" :key="index" :label="repository"
-                             :value="image"></el-option>
-                </el-select>
+                <el-form-item prop="image.Image" :rules="[{ required: true, message: 'image is required' }]">
+                  <el-select ref="registryCatalogSel" v-model="form.image.Image" @change="changeImageFront" @visible-change="listImg">
+                    <el-option v-for="(image, index) in imagesFront" :key="index" :label="image.name"
+                               :value="image.name"></el-option>
+                  </el-select>
+                </el-form-item>
               </el-col>
               <el-col :span="9">
-                <el-select ref="registryCatalogTagSel" v-model="form.image.tag">
-                  <el-option v-for="(tag, index) in tagsFront" :key="index" :label="tag" :value="tag"></el-option>
-                </el-select>
+                <el-form-item prop="image.tag" :rules="[{ required: true, message: 'tag is required' }]">
+                  <el-select ref="registryCatalogTagSel" v-model="form.image.tag">
+                    <el-option v-for="(tag, index) in tagsFront" :key="index" :label="tag.tag" :value="tag.tag"></el-option>
+                  </el-select>
+                </el-form-item>
               </el-col>
             </el-row>
           </el-form-item>
@@ -88,22 +92,22 @@
               <!-- 服务名称 -->
               <el-row :gutter="8">
                 <el-col :span="10">
-                  <el-form-item label="GPU" :prop="'gpu'" :rules="[{ type: 'integer', min: 1, message: '宽限时间为正整数' }]">
+                  <el-form-item label="GPU" prop="gpu">
                     <el-input type="number" v-model.number="form.gpu">
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'disk'" label="磁盘规格配置(G)" :rules="[{ type: 'integer', min: 1, message: '宽限时间为正整数' }]">
+                  <el-form-item prop="disk" label="磁盘规格配置(G)">
                     <el-input type="number" v-model.number="form.disk">
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                  <el-form-item prop="port" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]" label="端口">
+                  <el-form-item prop="port" label="端口">
                     <el-row :gutter="8">
                       <el-col :span="8">
-                        <el-input v-model.number="form.port" placeholder="端口"></el-input>
+                        <el-input v-model.number="form.port" placeholder="默认 22" type="number"></el-input>
                       </el-col>
                     </el-row>
                   </el-form-item>
@@ -157,8 +161,16 @@ export default {
     addRSA () {
       this.form.ssh.push(' ')
     },
+    listImg () {
+      minihost.listRegistry().then(({data}) => {
+        this.imagesFront = data
+      })
+    },
     changeImageFront () {
-
+      this.form.image.tag = ''
+      minihost.tagDetail(this.form.image.Image).then(({data}) => {
+        this.tagsFront = data
+      })
     },
     removeConfig (index) {
       this.form.ssh.splice(index, 1)
@@ -173,7 +185,9 @@ export default {
       this.$refs.mcForm.validate((valid) => {
         if (valid) {
           let submitForm = handle.formatForm(this.form)
-          minihost.create(submitForm)
+          minihost.create(submitForm).then(() => {
+            this.$router.push({name: '迷你主机列表'})
+          })
         }
       })
     }

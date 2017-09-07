@@ -82,3 +82,20 @@ export function changeWeight (id, data) {
     data: data
   })
 }
+
+export function listRegistry () {
+  return fetch({
+    url: 'v1/api/repositories',
+    method: 'get'
+  })
+}
+
+export function tagDetail (name) {
+  return fetch({
+    url: 'v1/api/tags',
+    method: 'get',
+    params: {
+      repositoryName: name
+    }
+  })
+}

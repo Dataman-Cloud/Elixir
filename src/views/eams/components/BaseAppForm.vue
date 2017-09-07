@@ -194,8 +194,8 @@ export default {
   data () {
     return {
       appPrefix: 'app',
-      form: form.octopusForm,
-      rules: form.octopusRules,
+      form: form.baseForm,
+      rules: form.formRules,
       wait5seconds: false,
       tagsFront: [],
       imagesFront: [],
@@ -205,7 +205,8 @@ export default {
       imgTagFrontloading: false,
       imgBackloading: false,
       imgTagBackloading: false,
-      ipRule: form.ipRule
+      ipRule: form.ipRule,
+      routerAfterSubmit: 'app'
     }
   },
   computed: {
@@ -251,11 +252,13 @@ export default {
       }
     },
     changeImageFront () {
+      this.form.image.tag = ''
       eams.tagDetail(this.form.image.Image).then(({data}) => {
         this.tagsFront = data
       })
     },
     changeImageBack () {
+      this.form.imageB.tag = ''
       eams.tagDetail(this.form.imageB.Image).then(({data}) => {
         this.tagsBack = data
       })
@@ -263,20 +266,16 @@ export default {
     submit () {
       this.$refs.form.validate((valid) => {
         if (!valid) {
-          let submitForm = form.getYmlForm()
-          this.formatYmlForm(this.form, submitForm)
-          // eams.createCompose(submitForm).then((data) => {
-          //   this.$router.push({name: 'octopus'})
-          // })
-          let data = form.newComposeForm()
+          let data = this.formatYmlForm(this.form)
           eams.createComposeNg(data).then((data) => {
-            this.$router.push({name: 'octopus'})
+            this.$router.push({name: this.routerAfterSubmit})
           })
         }
       })
     },
-    formatYmlForm (form, submitForm) {
-      return handle.formatYmlOctForm(form, submitForm)
+    formatYmlForm (pageForm) {
+      let submitForm = form.newComposeForm()
+      return handle.formatYmlOctForm(pageForm, submitForm)
     }
   }
 }

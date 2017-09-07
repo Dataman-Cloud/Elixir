@@ -35,7 +35,7 @@
 
 <script>
 import StatusIndicator from './StatusIndicator.vue'
-
+import * as mhApi from '@/api/minihost'
 export default {
   name: 'app-card',
   components: {
@@ -55,6 +55,7 @@ export default {
   methods: {
     handleCommand (command) {
       this.$message('click on item ' + command)
+      mhApi.deleteApps([this.item.id])
     }
   }
 

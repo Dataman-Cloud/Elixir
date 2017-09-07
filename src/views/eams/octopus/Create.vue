@@ -4,7 +4,8 @@ export default {
   extends: BaseAppForm,
   data () {
     return {
-      appPrefix: 'octopus-'
+      appPrefix: 'octopus-',
+      routerAfterSubmit: 'octopus'
     }
   }
 }

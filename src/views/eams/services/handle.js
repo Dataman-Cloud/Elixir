@@ -7,6 +7,7 @@ export function formatYmlOctForm (form, submitForm) {
   // formatMysql(form, submitForm)
   // formatImage(form, submitForm)
   // formatPort(form, submitForm)
+  return submitForm
 }
 
 export function formatYmlSqdForm (form, submitForm) {
