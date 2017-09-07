@@ -1,13 +1,11 @@
 <template>
   <el-dialog title="创建集群" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
-    <el-form :model="form" ref="form" :rules="rules" label-width="100px">
+    <el-form :model="form" ref="form" :rules="rules" label-width="120px">
       <el-form-item label="集群名称" prop="clusterLabel">
         <el-input v-model.number="form.clusterLabel" auto-complete="off"></el-input>
       </el-form-item>
-      <el-form-item label="所属用户组" prop="userGroup">
-        <el-select v-model="form.userGroup" @visible-change="openUserGroup" v-loading="loading">
-          <el-option v-for="(userGroup, index) in userGroups" :key="index" :value="userGroup.name" :label="userGroup.name"></el-option>
-        </el-select>
+      <el-form-item label="所属用户组">
+        <el-input type="input"  v-model="currentGroupName" disabled></el-input>
       </el-form-item>
       <el-form-item label="描述" prop="desc">
         <el-input type="textarea" v-model.number="form.desc" auto-complete="off"></el-input>
@@ -22,9 +20,8 @@
 
 <script>
 import * as cluster from '@/api/cluster'
-import * as groupType from '@/store/user-group/mutations_types'
 import * as clusterType from '@/store/cluster/mutations_types'
-import { mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -47,16 +44,14 @@ export default {
       }
     }
   },
-  methods: {
-    ...mapActions({
-      fetchUserGroups: groupType.FETCH_USER_GROUPS
-    }),
-    async openUserGroup (flag) {
-      if (flag) {
-        let data = await this.fetchUserGroups()
-        this.userGroups = data
+  computed: {
+    ...mapState({
+      currentGroupName (state) {
+        return state.user.currentGroupName
       }
-    },
+    })
+  },
+  methods: {
     close () {
       this.resetForm()
       this.submitLoading = false

@@ -1,6 +1,14 @@
-// import * as type from './mutations_types'
-// import * as tenant from '../../api/tenant'
+import * as type from './mutations_types'
+import * as api from '../../api/tenant'
 
 export default {
-
+  async [type.FETCH_TENANTS] ({ commit }) {
+    const { data } = await api.tenantsList()
+    commit(type.FETCH_TENANTS, data)
+  },
+  async [type.FETCH_HOSTS] ({ commit }) {
+    let { data } = await api.hostList()
+    commit(type.FETCH_HOSTS, data)
+    return data
+  }
 }

@@ -2,7 +2,7 @@ import fetch from '@/utils/fetch'
 
 export function hostList () {
   return fetch({
-    url: `v1/clusters/unbinding/nodes/ip`,
+    url: `v1/clusters/unbinding/nodes/ip/tenant`,
     method: 'get'
   })
 }

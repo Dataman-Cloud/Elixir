@@ -13,7 +13,7 @@ export default {
   [type.SET_ROLES] (state, currentPerms) {
     state.currentPerms = currentPerms
   },
-  [type.SET_USER_INFO] (state, { id, name, email, phone, title, userName, currentPerms, currentGroupId, accountGroups } = {}) {
+  [type.SET_USER_INFO] (state, { id, name, email, phone, title, userName, currentPerms, currentGroupId, currentGroupName, accountGroups } = {}) {
     state.id = id
     state.name = name
     state.email = email
@@ -22,6 +22,7 @@ export default {
     state.userName = userName
     state.currentPerms = currentPerms
     state.currentGroupId = currentGroupId
+    state.currentGroupName = currentGroupName
     state.accountGroups = accountGroups
   },
   [type.SET_COLLAPSE] (state, isCollapse = false) {
