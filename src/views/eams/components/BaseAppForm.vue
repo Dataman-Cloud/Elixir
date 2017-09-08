@@ -38,7 +38,7 @@
           </el-form-item>
 
           <!-- zookeeper地址 -->
-          <el-form-item label="zookeeper地址">
+          <!-- <el-form-item label="zookeeper地址">
             <el-button type="primary" size="small" @click="addZK('parameters')">添加 zookeeper 地址</el-button>
           </el-form-item>
           <el-form-item v-for="(zk, index) in form.zookeeperList" :key="index" class="parameters">
@@ -61,7 +61,7 @@
                 <i class="el-icon-delete"></i>
               </el-button>
             </el-row>
-          </el-form-item>
+          </el-form-item> -->
 
           <!-- mysql -->
           <el-form-item class="wrapContainerRow" label="Mysql">
@@ -162,7 +162,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item :prop="'LDAP.password'" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' },{ required: true, message: 'gracePeriodSeconds is required' }]">
+                <el-form-item :prop="'LDAP.password'" :rules="[{ required: true, message: '密码不为空' }]">
                   <el-input type="number" v-model.number="form.LDAP.password">
                     <template slot="prepend">密码</template>
                   </el-input>
@@ -218,15 +218,15 @@ export default {
 
   },
   methods: {
-    addZK () {
-      this.form.zookeeperList.push({
-        ip: '',
-        port: ''
-      })
-    },
-    removeConfig (index) {
-      this.form.zookeeperList.splice(index, 1)
-    },
+    // addZK () {
+    //   this.form.zookeeperList.push({
+    //     ip: '',
+    //     port: ''
+    //   })
+    // },
+    // removeConfig (index) {
+    //   this.form.zookeeperList.splice(index, 1)
+    // },
     listFrontImg () {
       this.imgFrontloading = true
       try {
@@ -265,7 +265,8 @@ export default {
     },
     submit () {
       this.$refs.form.validate((valid) => {
-        if (!valid) {
+        console.log(valid)
+        if (valid) {
           let data = this.formatYmlForm(this.form)
           eams.createComposeNg(data).then((data) => {
             this.$router.push({name: this.routerAfterSubmit})

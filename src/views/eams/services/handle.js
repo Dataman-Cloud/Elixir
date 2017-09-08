@@ -1,12 +1,12 @@
 /* eslint-disable */
 export function formatYmlOctForm (form, submitForm) {
-  // formatServiceName(form, submitForm)
-  // formatInstanceMode(form, submitForm)
-  // formatContainerSizeMode(form, submitForm)
+  formatServiceName(form, submitForm)
+  formatInstanceMode(form, submitForm)
+  formatContainerSizeMode(form, submitForm)
   // formatZookeeperList(form, submitForm)
-  // formatMysql(form, submitForm)
-  // formatImage(form, submitForm)
-  // formatPort(form, submitForm)
+  formatMysql(form, submitForm)
+  formatImage(form, submitForm)
+  formatPort(form, submitForm)
   return submitForm
 }
 
@@ -35,7 +35,7 @@ function formatInstanceMode (form, submitForm) {
     instance = 2
   }
   let rlpStr = `replicas: ${instance}\n`
-  submitForm.yaml_raw.replace(/replicas: 1\n/g, rlpStr)
+  submitForm.yamlText.replace(/replicas: 1\n/g, rlpStr)
 }
 
 function formatContainerSizeMode (form, submitForm) {
@@ -47,10 +47,10 @@ function formatContainerSizeMode (form, submitForm) {
   } else {
     ratio = 4
   }
-  submitForm.yaml_extra.octopusconsoleswan.resource = {
-    "cpus": 1 * ratio,
-    "mem": 1024 * ratio
-  }
+  let cpusStr = `cpus: ${1*ratio}\n`
+  let memStr = `mem: ${1024*ratio}\n`
+  submitForm.yamlText.replace(/cpus: 1\n/g, cpusStr)
+  submitForm.yamlText.replace(/mem: 512/g, cpusStr)
 }
 
 function formatZookeeperList (form, submitForm) {
@@ -62,15 +62,19 @@ function formatZookeeperList (form, submitForm) {
 }
 
 function formatMysql (form, submitForm) {
-  submitForm.env.SATURN_CONSOLE_DB_URL = 'jdbc:mysql://' + form.mysql.ip + ':' + form.mysql.port + '/saturn_console'
-  submitForm.env.SATURN_CONSOLE_DB_USERNAME = form.mysql.username
-  submitForm.env.SATURN_CONSOLE_DB_PASSWORD = form.mysql.password
+  submitForm.envs.MYSQL_URL = `jdbc:mysql://${form.mysql.ip}:${form.mysql.port}/saturn_console`
+  submitForm.envs.SPRING_DATASOURCE_USERNAME = form.mysql.username
+  submitForm.envs.SRPING_DATASOURCE_PASSWORD = form.mysql.password
 }
 
 function formatImage (form, submitForm) {
-  submitForm.appName = form.serviceName
+  let WEB_IMG = `${form.image.Image}:${form.image.tag}`
+  let CONSOLE_IMG = `${form.imageB.Image}:${form.imageB.tag}`
+  submitForm.yamlText.replace(/octopus-console:1.2.0-RC8/, WEB_IMG)
+  submitForm.yamlText.replace(/octopus-api:1.2.0-RC8/, CONSOLE_IMG)
 }
 
 function formatPort (form, submitForm) {
-  submitForm.container.docker.portMappings[0].containerPort = form.port
+  let portStr = `${form.port}\n`
+  submitForm.yamlText.replace(/39088\n/g, portStr)
 }
