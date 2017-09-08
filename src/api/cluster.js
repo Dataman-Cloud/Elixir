@@ -9,7 +9,7 @@ export function clusterList () {
 
 export function clusterDetail (vclusterLabel) {
   return fetch({
-    url: `v1/clusters/${vclusterLabel}`,
+    url: `v1/clusters/${vclusterLabel}/details`,
     method: 'get'
   })
 }
@@ -23,6 +23,13 @@ export function create (data) {
 }
 
 export function delCluster (vclusterLabel) {
+  return fetch({
+    url: `/v1/clusters/${vclusterLabel}`,
+    method: 'delete'
+  })
+}
+
+export function hostrList (vclusterLabel) {
   return fetch({
     url: `/v1/clusters/${vclusterLabel}`,
     method: 'delete'

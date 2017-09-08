@@ -14,6 +14,7 @@ import cluster from './cluster'
 import eams from './eams'
 import tenant from './tenant'
 import minihost from './minihost'
+import host from './host'
 
 Vue.use(Vuex)
 
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     cluster,
     eams,
     tenant,
-    minihost
+    minihost,
+    host
   }
 })

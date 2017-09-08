@@ -1,182 +1,143 @@
 <template>
   <div>
-
-    <el-card v-loading="listLoading" :body-style="{ padding: '0px 10px 0 0' }">
+    <el-card :body-style="{ padding: '0px 10px 0 0' }">
       <div style="padding: 14px;">
-        <span>{{cluster.clusterLabel}}</span>
+        <span class="cluster-title">{{cluster.clusterLabel}}</span>
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-row :gutter="20">
-              <el-col :span="10">
-                <div class="bottom clearfix">
-                  <time class="time">用户组</time>
-                  <span class="clusterDetail">{{cluster.groupNam}}</span>
-                </div>
-                <div class="bottom clearfix">
-                  <time class="time">创建时间</time>
-                  <span class="clusterDetail">{{cluster.createAt}}</span>
-                </div>
-                <div class="bottom clearfix">
-                  <time class="time">创建者</time>
-                  <span class="clusterDetail">{{cluster.accountName}}</span>
-                </div>
-
-              </el-col>
-              <el-col :span="5" class="cluster-right">
-
-              </el-col>
-              <el-col :span="5" class="cluster-right">
-
-              </el-col>
-            </el-row>
-
+            <div>
+              <dl class="detail-config">
+                <dt>用户组</dt>
+                <dd>
+                  <small>{{cluster.groupName}}</small>
+                </dd>
+              </dl>
+              <dl class="detail-config">
+                <dt>创建时间</dt>
+                <dd>
+                  <small>{{cluster.createAt}}</small>
+                </dd>
+              </dl>
+              <dl class="detail-config">
+                <dt>创建者</dt>
+                <dd>
+                  <small>{{cluster.accountName}}</small>
+                </dd>
+              </dl>
+            </div>
           </el-col>
           <el-col :span="12">
             <el-row :gutter="20" type="flex" class="row-bg" justify="end">
               <div class="btn-group">
                 <span>
-                  <el-button type="danger" @click="openDelete">
+                  <el-button type="danger" @click="openDelete(cluster)">
                     <i class="ion-ios-plus-outline"></i> 删除集群
                   </el-button>
-                  <el-button type="primary" @click="addHost">
+                  <el-button type="primary" @click="addHost(cluster.clusterLabel)">
                     <i class="ion-ios-plus-outline"></i> 添加主机
                   </el-button>
                 </span>
               </div>
-
             </el-row>
           </el-col>
-
         </el-row>
       </div>
     </el-card>
-    <delete-dialog ref="deleteDialog"></delete-dialog>
-    <add-dialog ref="addHost"></add-dialog>
 
-    <el-card v-loading="listLoading" :body-style="{ padding: '0px 10px', marginTop: '20px' }" class="cluster-detail">
+    <delete-cluster-dialog ref="deleteDialog"></delete-cluster-dialog>
+    <add-host-dialog ref="addHost" @close="addHostClose"></add-host-dialog>
+
+    <el-card v-loading="listLoading" :body-style="{ padding: '0px 10px 20px', marginTop: '20px' }" class="cluster-detail">
       <div class="btn-group">
-        <el-button type="danger" @click="openDelete" :disabled="!currentRow">
-          <i class="ion-ios-plus-outline"></i> 删除
+        <el-button type="primary" @click="reload">
+          <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
         </el-button>
       </div>
-
-      <el-table stripe ref="multipleTable" :data="tableData3" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55">
+      <el-table stripe :data="cluster.slaves" border tooltip-effect="dark" style="width: 100%">
+        <el-table-column prop="hostname" label="主机" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column label="日期" width="120">
-          <template scope="scope">{{ scope.row.date }}</template>
-        </el-table-column>
-        <el-table-column prop="name" label="姓名" width="120">
-        </el-table-column>
-        <el-table-column prop="address" label="地址" show-overflow-tooltip>
+        <el-table-column label="操作" width="250">
+          <template scope="scope">
+            <el-button size="small" @click="delHost(scope.row.hostname)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </el-card>
   </div>
 </template>
 <script>
-import DeleteDialog from '@/views/cluster/modals/DeleteDialog'
-import AddDialog from '@/views/cluster/modals/AddDialog'
+import DeleteClusterDialog from '@/views/cluster/modals/DeleteDialog'
+import AddHostDialog from '@/views/cluster/modals/AddDialog'
 import { mapActions } from 'vuex'
 import * as type from '@/store/cluster/mutations_types'
+import * as cluster from '@/api/cluster'
+import Confirm from '@/utils/confirm'
+import * as host from '@/api/host'
 export default {
   components: {
-    DeleteDialog,
-    AddDialog
+    DeleteClusterDialog,
+    AddHostDialog
   },
   data () {
     return {
-      tableData3: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-08',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-06',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-07',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
-      multipleSelection: '',
-      currentRows: [],
-      listLoading: false,
-      cluster: {}
-    }
-  },
-  computed: {
-    currentRow: function () {
-      return this.currentRows.length === 1 ? this.currentRows[0] : null
+      cluster: {},
+      listLoading: false
     }
   },
   methods: {
     ...mapActions({
       fetchCluster: type.FETCH_CLUSTER
     }),
-    openDelete () {
-      this.$refs.deleteDialog.open()
+    addHost (name) {
+      this.$refs.addHost.open(name)
     },
-    addHost () {
-      this.$refs.addHost.open()
+    addHostClose () {
+      this.getCluster()
     },
-    handleSelectionChange (val) {
-      this.currentRows = val
+    async delHost (ip) {
+      await Confirm.open(`确认删除该主机?`)
+      await host.delHost(this.cluster.clusterLabel, ip)
+      this.$notify({ message: '删除成功' })
+      await this.getCluster()
+    },
+    async getCluster () {
+      this.listLoading = true
+      try {
+        let data = await this.fetchCluster(this.$route.params.name)
+        this.cluster = data
+      } finally {
+        this.listLoading = false
+      }
+    },
+    async openDelete (clusterLabel) {
+      if (clusterLabel.machineNum || clusterLabel.appNum) {
+        this.$refs.deleteDialog.open(clusterLabel)
+      } else {
+        await Confirm.open(`确认移除该集群?`)
+        await cluster.delCluster(clusterLabel.clusterLabel)
+        this.$router.push({ name: '集群' })
+      }
+    },
+    reload () {
+      this.getCluster()
     }
   },
   created () {
-    this.listLoading = true
-    this.fetchCluster(this.$route.params.name)
-      .then((res) => {
-        this.cluster = res
-        this.listLoading = false
-      })
+    this.getCluster()
   },
   watch: {
-    $route (to) {
-      this.$store.dispatch(type.FETCH_CLUSTER, this.$route.params.name)
+    $route (to, from) {
+      this.getCluster()
     }
   }
 }
 </script>
 <style scoped>
-.bottom {
-  margin: 13px 0;
-  line-height: 12px;
+.cluster-title {
+  font-size: 20px;
 }
 
-.clusterDetail {
-  padding: 0;
-  float: right;
-}
-
-.cluster-detail {
-  margin-top: 20px;
-}
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-
-.clearfix:after {
-  clear: both
+.detail-config>dd {
+  padding-left: 50px;
 }
 </style>

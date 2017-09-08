@@ -51,18 +51,18 @@ export default {
     ...mapActions({
       fetchUserGroups: groupType.FETCH_USER_GROUPS
     }),
+    async openUserGroup (flag) {
+      if (flag) {
+        let data = await this.fetchUserGroups()
+        this.userGroups = data
+      }
+    },
     close () {
       this.resetForm()
       this.submitLoading = false
     },
     open: function () {
       this.$refs.dialog.open()
-    },
-    async openUserGroup (flag) {
-      if (flag) {
-        let data = await this.fetchUserGroups()
-        this.userGroups = data
-      }
     },
     onSubmit () {
       this.$refs.form.validate(async (valid) => {
