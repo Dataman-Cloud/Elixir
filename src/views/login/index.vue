@@ -50,7 +50,7 @@ export default {
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
           await this.login(this.loginForm)
-          this.$router.push({ name: '应用' })
+          this.$router.push({ path: '/' })
         } else {
           console.log('error submit!!')
           return false
