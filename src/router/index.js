@@ -51,6 +51,30 @@ Vue.use(Router)
 export const constantRouterMap = [
   { path: '/login', component: Login, hidden: true },
   {
+    path: '/',
+    redirect: '/resource/cluster',
+    name: '资源',
+    icon: 'fa fa-server',
+    component: Layout,
+    hasDropdown: true,
+    children: [
+      {
+        path: '/resource/cluster',
+        redirect: '/resource/cluster/list',
+        name: '集群',
+        component: ClusterLayout,
+        meta: { role: ['get-cluster'] },
+        children: [
+          { path: 'list', component: ClusterList, name: '集群列表' },
+          { path: 'detail/:name', component: ClusterDetail, name: '集群详情', hidden: true, meta: { role: ['get-clusters-details'] } }
+        ]
+      }
+    ]
+  }
+]
+
+export const asyncRouterMap = [
+  {
     path: '/application',
     redirect: '/application/list',
     name: '应用',
@@ -100,30 +124,6 @@ export const constantRouterMap = [
     children: [
       { path: 'mh-up', component: MinihostCreate, name: '胶囊主机创建', meta: { role: ['get-apps'] }, hidden: true },
       { path: 'mh-list', component: MinihostList, name: '迷你主机列表', meta: { role: ['get-apps'] } }
-    ]
-  }
-]
-
-export const asyncRouterMap = [
-  {
-    path: '/resource',
-    redirect: '/resource/cluster',
-    name: '资源',
-    icon: 'fa fa-server',
-    component: Layout,
-    hasDropdown: true,
-    children: [
-      {
-        path: '/resource/cluster',
-        redirect: '/resource/cluster/list',
-        name: '集群',
-        component: ClusterLayout,
-        meta: { role: ['get-cluster'] },
-        children: [
-          { path: 'list', component: ClusterList, name: '集群列表' },
-          { path: 'detail/:name', component: ClusterDetail, name: '集群详情', hidden: true }
-        ]
-      }
     ]
   },
   {
@@ -206,6 +206,7 @@ export const asyncRouterMap = [
         path: '/system/tenant',
         redirect: '/system/tenant/list',
         name: '租户管理',
+        meta: { role: ['get-tenants'] },
         component: TenantLayout,
         children: [
           { path: 'list', component: TenantList, name: '租户列表' }
@@ -213,7 +214,7 @@ export const asyncRouterMap = [
       }
     ]
   },
-  { path: '*', redirect: '/application', hidden: true }
+  { path: '*', redirect: '/', hidden: true }
 ]
 
 const router = new Router({
