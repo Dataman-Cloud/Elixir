@@ -11,6 +11,7 @@ const state = {
   userName: '',
   currentPerms: [],
   currentGroupId: null,
+  currentGroupName: null,
   accountGroups: [],
   isCollapse: JSON.parse(localStorage.getItem('isCollapse')),
   users: {

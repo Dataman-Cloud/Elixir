@@ -6,6 +6,7 @@ function transformHost (hosts = []) {
     label: item
   }))
 }
+
 export default {
   [type.FETCH_HOSTS] (state, hosts = []) {
     state.hosts.hosts = transformHost(hosts)

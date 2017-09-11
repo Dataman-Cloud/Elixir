@@ -11,47 +11,54 @@
 </template>
 
 <script>
-import * as host from '@/api/host'
-import * as hostType from '@/store/host/mutations_types'
+import * as tenant from '@/api/tenant'
+import * as tenantType from '@/store/tenant/mutations_types'
 import { mapActions, mapState } from 'vuex'
 export default {
   data () {
     return {
-      dialogVisible: false,
       checkedHost: [],
-      name: ''
+      dialogVisible: false,
+      name: '',
+      tenantId: -1
     }
   },
   computed: {
     ...mapState({
       hostList (state) {
-        return state.host.hosts.hosts
+        return state.tenant.hosts.hosts
       }
     })
   },
   methods: {
     ...mapActions({
-      getHosts: hostType.FETCH_HOSTS
+      getHosts: tenantType.FETCH_HOSTS
     }),
-    transformHosts (hosts = []) {
-      return hosts.map((item, i) => {
-        if (this.checkedHost.indexOf(i) !== -1) {
-          return item.label
-        }
-      })
+    async addHost () {
+      const checkedIps = this.transformHosts(this.hostList)
+      await tenant.addHost(checkedIps)
+      this.dialogVisible = false
+      this.$emit('close')
+      this.$notify({ message: '添加成功' })
     },
-    open: function (name) {
+    open: function (name, tenantId) {
       this.$refs.dialog.open()
       this.getHosts()
       this.name = name
       this.checkedHost = []
+      if (tenantId) {
+        this.tenantId = tenantId
+      }
     },
-    async addHost () {
-      const checkedIps = this.transformHosts(this.hostList)
-      await host.addHost(this.name, checkedIps)
-      this.dialogVisible = false
-      this.$emit('close')
-      this.$notify({ message: '添加成功' })
+    transformHosts (hosts = []) {
+      return hosts.map((item, i) => {
+        if (this.checkedHost.indexOf(i) !== -1) {
+          return {
+            'ip': item.label,
+            'tenantId': this.tenantId
+          }
+        }
+      })
     }
   }
 }

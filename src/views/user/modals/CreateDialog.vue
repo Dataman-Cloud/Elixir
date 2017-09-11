@@ -20,14 +20,9 @@
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="form.phone"></el-input>
         </el-form-item>
-        <el-form-item label="添加用户组" v-if="!isUpdate">
-          <el-row :gutter="5">
-            <el-col :span="9">
-              <el-button type="primary" size="small" @click="addGroup">添加组</el-button>
-            </el-col>
-          </el-row>
+        <el-form-item label="所属用户组">
+          <el-input type="input" v-model="currentGroupName" disabled></el-input>
         </el-form-item>
-
         <el-form-item v-for="(accountGroup, index) in form.accountGroups" :key="index">
           <el-row :gutter="12" v-if="!isUpdate">
             <el-col :span="9">
@@ -53,7 +48,6 @@
             </el-col>
           </el-row>
         </el-form-item>
-
       </div>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -64,7 +58,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import * as type from '@/store/user/mutations_types'
 import * as user from '@/api/user'
 import * as group from '@/api/user-group'
@@ -112,7 +106,12 @@ export default {
   computed: {
     isUpdate: function () {
       return !!this.id
-    }
+    },
+    ...mapState({
+      currentGroupName (state) {
+        return state.user.currentGroupName
+      }
+    })
   },
   directives: {
     scroll: function (el, bind) {
@@ -142,13 +141,6 @@ export default {
           .then(res => this.updateInit(res))
       }
       this.$refs.dialog.open()
-    },
-    addGroup () {
-      let groupInfo = {
-        groupId: '',
-        role: ''
-      }
-      this.form.accountGroups.push(groupInfo)
     },
     submitForm () {
       this.$refs.form.validate(async (valid) => {

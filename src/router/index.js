@@ -208,6 +208,7 @@ export const asyncRouterMap = [
         name: '租户管理',
         meta: { role: ['get-tenants'] },
         component: TenantLayout,
+        meta: { role: ['tenant-manager'] },
         children: [
           { path: 'list', component: TenantList, name: '租户列表' }
         ]

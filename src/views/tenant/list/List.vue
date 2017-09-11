@@ -13,7 +13,8 @@
       </el-button-group>
     </div>
 
-    <create-dialog ref="createDialog"></create-dialog>
+    <create-dialog ref="createDialog" @close="reload"></create-dialog>
+    <Add-Host-Dialog ref="addHost" @close="reload"></Add-Host-Dialog>
 
     <el-table :data="filterTenants" style="width: 100%">
       <el-table-column type="expand">
@@ -21,10 +22,10 @@
           <div class="btn-group">
             <span></span>
             <span>
-              <!-- <el-button type="primary" @click="editorGroup(group.row)">
-                <i class="el-icon-edit"></i> 修改租户
-              </el-button> -->
-              <el-button type="danger" @click="delTenant(tenant.row)">
+              <el-button type="primary" @click="updateTenant(tenant.row.id)">
+                <i class="el-icon-edit"></i> 更新租户
+              </el-button>
+              <el-button type="danger" @click="delTenant(tenant.row.id)">
                 <i class="el-icon-delete"></i> 删除租户
               </el-button>
             </span>
@@ -32,50 +33,46 @@
           <el-badge>主机列表</el-badge>
           <div class="btn-group">
             <span>
-              <el-button type="primary" @click="addHost(tenant.row)">
+              <el-button type="primary" @click="addHost(tenant.row.name,tenant.row.id)">
                 <i class="el-icon-plus"></i> 添加主机
-              </el-button>
-              <el-button type="danger" :disabled="!currentRow" @click="delUHost(tenant.row)">
-                <i class="el-icon-minus"></i> 移除主机
               </el-button>
             </span>
           </div>
-          <el-table ref="multipleTable" :data="tenant.row.hosts" @selection-change="handleCurrentChange" border tooltip-effect="dark" style="width: 100%">
-            <el-table-column type="selection" width="55">
-            </el-table-column>
+          <el-table :data="tenant.row.hostList" border tooltip-effect="dark" style="width: 100%">
             <el-table-column prop="ip" label="主机" show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="操作" width="120">
-              <template scope="scope">
-                <el-button size="small">删除</el-button>
-                </el-dropdown>
-              </template>
+            <el-table-column prop="created" label="创建时间" show-overflow-tooltip>
             </el-table-column>
           </el-table>
         </template>
       </el-table-column>
       <el-table-column label="租户名称" prop="name">
       </el-table-column>
-      <el-table-column label="管理员名称" prop="manager">
+      <el-table-column label="管理员名称" prop="adminName">
       </el-table-column>
-      <el-table-column label="创建时间" prop="createAt">
+      <!-- <el-table-column label="状态" prop="status">
+      </el-table-column> -->
+      <el-table-column label="创建时间" prop="created">
       </el-table-column>
     </el-table>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Confirm from '@/utils/confirm'
 import CreateDialog from '@/views/tenant/modals/CreateDialog'
+import AddHostDialog from '@/views/tenant/modals/AddDialog'
+import * as type from '@/store/tenant/mutations_types'
+import * as tenant from '@/api/tenant'
 export default {
   components: {
-    CreateDialog
+    CreateDialog,
+    AddHostDialog
   },
   data () {
     return {
       listLoading: false,
-      searchWord: '',
-      currentRows: []
+      searchWord: ''
     }
   },
   computed: {
@@ -86,46 +83,45 @@ export default {
     }),
     filterTenants: function () {
       return this.searchWord ? this.tenants.filter(tenant => tenant.name.toLowerCase().includes(this.searchWord)) : this.tenants
-    },
-    currentRow: function () {
-      return this.currentRows.length === 1 ? this.currentRows[0] : null
     }
   },
   methods: {
-    addHost () {
-
-    },
-    async delHost (group) {
-      await Confirm.open(`确认移除该主机?`)
-      this.$notify({message: '删除成功'})
-    },
-    async delTenant (tenant) {
+    ...mapActions({
+      fetchTenants: type.FETCH_TENANTS
+    }),
+    async delTenant (id) {
       await Confirm.open(`确认删除该租户?`)
-      this.$notify({message: '删除成功'})
+      await tenant.delTenant(id)
+      this.$notify({ message: '删除成功' })
+      this.getTenants()
     },
-    reload () {
+    async getTenants () {
       this.listLoading = true
-      setTimeout(() => {
+      try {
+        await this.fetchTenants()
+      } finally {
         this.listLoading = false
-      }, 1000)
+      }
+    },
+    addHost (name, id) {
+      this.$refs.addHost.open(name, id)
     },
     openCreate () {
       this.$refs.createDialog.open()
     },
-    handleCurrentChange (val) {
-      this.currentRows = val
+    reload () {
+      this.getTenants()
+    },
+    updateTenant (id) {
+      this.$refs.createDialog.open(id)
     }
   },
   created () {
-    this.listLoading = true
-    setTimeout(() => {
-      this.listLoading = false
-    }, 1000)
+    this.getTenants()
   }
 }
 
 </script>
 <style scoped>
-
 
 </style>
