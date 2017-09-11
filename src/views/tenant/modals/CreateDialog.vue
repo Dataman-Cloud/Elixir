@@ -4,30 +4,12 @@
       <el-form-item label="租户名称">
         <el-input v-model="form.name" auto-complete="off"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="管理员名称" prop="description">
-        <el-input v-model="form.name" auto-complete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="管理员账户" prop="name">
-        <el-input v-model="form.name" auto-complete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="管理员邮箱" prop="email">
-        <el-input v-model="form.name" auto-complete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="管理员密码" prop="name">
-        <el-input type="password" v-model="form.name" auto-complete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="确认管理员密码" prop="description">
-        <el-input type="password" v-model="form.name" auto-complete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="镜像仓库名称" prop="name">
-        <el-input v-model="form.name" auto-complete="off"></el-input>
-      </el-form-item> -->
       <el-form-item label="备注">
         <el-input type="textarea" v-model="form.desc"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="onSubmit('form')" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}</el-button>
+      <el-button type="primary" @click="onSubmit" :loading="submitLoading">立即{{isUpdate ? '更新' : '创建'}}</el-button>
       <el-button @click="dialogVisible = false">取 消</el-button>
     </div>
   </el-dialog>
@@ -39,8 +21,8 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      id: '',
       submitLoading: false,
+      tenant: {},
       form: {
         name: '',
         desc: ''
@@ -55,7 +37,7 @@ export default {
   },
   computed: {
     isUpdate: function () {
-      return !!this.id
+      return !!this.tenant
     }
   },
   methods: {
@@ -63,12 +45,15 @@ export default {
       this.resetForm()
       this.submitLoading = false
     },
-    open (id) {
-      this.form = {
+    open (tenant) {
+      this.form = tenant ? {
+        name: tenant.name,
+        desc: tenant.desc
+      } : {
         name: '',
         desc: ''
       }
-      this.id = id
+      this.tenant = tenant
       this.$refs.dialog.open()
     },
     onSubmit () {
@@ -76,7 +61,7 @@ export default {
         if (valid) {
           this.submitLoading = true
           try {
-            this.isUpdate ? await tenant.updateTenant(this.id, this.form) : await tenant.createTenant(this.form)
+            this.isUpdate ? await tenant.updateTenant(this.tenant.id, this.form) : await tenant.createTenant(this.form)
             this.dialogVisible = false
             this.$notify({ message: this.isUpdate ? '更新成功' : '创建成功' })
             this.$emit('close')
