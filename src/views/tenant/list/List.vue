@@ -22,7 +22,7 @@
           <div class="btn-group">
             <span></span>
             <span>
-              <el-button type="primary" @click="updateTenant(tenant.row.id)">
+              <el-button type="primary" @click="updateTenant(tenant.row)">
                 <i class="el-icon-edit"></i> 更新租户
               </el-button>
               <el-button type="danger" @click="delTenant(tenant.row.id)">
@@ -112,8 +112,8 @@ export default {
     reload () {
       this.getTenants()
     },
-    updateTenant (id) {
-      this.$refs.createDialog.open(id)
+    updateTenant (name) {
+      this.$refs.createDialog.open(name)
     }
   },
   created () {

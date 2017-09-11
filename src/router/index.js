@@ -206,7 +206,6 @@ export const asyncRouterMap = [
         path: '/system/tenant',
         redirect: '/system/tenant/list',
         name: '租户管理',
-        meta: { role: ['get-tenants'] },
         component: TenantLayout,
         meta: { role: ['tenant-manager'] },
         children: [
