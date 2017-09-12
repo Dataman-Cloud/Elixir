@@ -67,7 +67,7 @@
 </template>
 <script>
 import DeleteClusterDialog from '@/views/cluster/modals/DeleteDialog'
-import AddHostDialog from '@/views/cluster/modals/AddDialog'
+import AddHostDialog from '@/views/cluster/modals/AddHostDialog'
 import { mapActions } from 'vuex'
 import * as type from '@/store/cluster/mutations_types'
 import * as cluster from '@/api/cluster'
@@ -104,6 +104,8 @@ export default {
       this.listLoading = true
       try {
         let data = await this.fetchCluster(this.$route.params.name)
+        console.log('data')
+        console.log(data)
         this.cluster = data
       } finally {
         this.listLoading = false
@@ -123,6 +125,8 @@ export default {
     }
   },
   created () {
+    console.log('cluster')
+    console.log(this.cluster)
     this.getCluster()
   },
   watch: {

@@ -66,14 +66,14 @@
             </el-row>
             <el-button-group>
               <el-button type="danger" icon="delete" @click="openDelete(cluster)"></el-button>
-              <el-button type="primary" @click="addHost(cluster.clusterLabel)" icon="plus"></el-button>
+              <el-button type="primary" @click="addHost(cluster.clusterLabel)" icon="plus" @close="closeHost"></el-button>
             </el-button-group>
           </div>
         </el-card>
       </el-col>
     </el-row>
     <delete-cluster-dialog ref="deleteDialog"></delete-cluster-dialog>
-    <Add-Dialog ref="addHost"></Add-Dialog>
+    <Add-Host-Dialog ref="addHost" :hostList="hostList"></Add-Host-Dialog>
   </div>
 </template>
 <script>
@@ -81,25 +81,32 @@ import { mapState, mapActions } from 'vuex'
 import * as cluster from '@/api/cluster'
 import Confirm from '@/utils/confirm'
 import * as type from '@/store/cluster/mutations_types'
+// import * as host from '@/api/host'
+import * as hostType from '@/store/host/mutations_types'
 import CreateDialog from '@/views/cluster/modals/CreateDialog'
 import DeleteClusterDialog from '@/views/cluster/modals/DeleteDialog'
-import AddDialog from '@/views/cluster/modals/AddDialog'
+import AddHostDialog from '@/views/cluster/modals/AddHostDialog'
 export default {
   components: {
     CreateDialog,
     DeleteClusterDialog,
-    AddDialog
+    AddHostDialog
   },
   data () {
     return {
       listLoading: false,
-      searchCluster: ''
+      searchCluster: '',
+      checkedHost: [],
+      name: ''
     }
   },
   computed: {
     ...mapState({
       clusters (state) {
         return state.cluster.clusters.clusters
+      },
+      hostList (state) {
+        return state.host.hosts.hosts
       }
     }),
     filterClusters: function () {
@@ -109,10 +116,13 @@ export default {
   methods: {
     ...mapActions({
       fetchClusters: type.FETCH_CLUSTERS,
-      fetchDelCluster: type.FETCH_DEL_CLUSTER
+      fetchDelCluster: type.FETCH_DEL_CLUSTER,
+      getHosts: hostType.FETCH_HOSTS
     }),
-    addHost (name) {
-      this.$refs.addHost.open(name)
+    async addHost (name) {
+      this.name = name
+      await this.getHosts()
+      await this.$refs.addHost.open()
     },
     async listCluster () {
       this.listLoading = true
@@ -128,11 +138,28 @@ export default {
         this.listCluster()
       }
     },
+    async closeHost (checkedHost) {
+      this.checkedHost = checkedHost
+      const checkedIps = this.transformHosts(this.hostList)
+      console.log('name')
+      console.log(this.name)
+      console.log('checkedIps')
+      console.log(checkedIps)
+      // await host.addHost(this.name, checkedIps)
+      this.$notify({ message: '添加成功' })
+    },
     openCreate () {
       this.$refs.createDialog.open()
     },
     reload () {
       this.listCluster()
+    },
+    transformHosts (hosts = []) {
+      return hosts.map((item, i) => {
+        if (this.checkedHost.indexOf(i) !== -1) {
+          return item.label
+        }
+      })
     }
   },
   mounted () {

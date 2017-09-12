@@ -6,9 +6,9 @@ export default {
     const { data } = await api.tenantsList()
     commit(type.FETCH_TENANTS, data)
   },
-  async [type.FETCH_HOSTS] ({ commit }) {
+  async [type.FETCH_TENANT_HOSTS] ({ commit }) {
     let { data } = await api.hostList()
-    commit(type.FETCH_HOSTS, data)
+    commit(type.FETCH_TENANT_HOSTS, data)
     return data
   }
 }

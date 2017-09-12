@@ -14,7 +14,7 @@
     </div>
 
     <create-dialog ref="createDialog" @close="reload"></create-dialog>
-    <Add-Host-Dialog ref="addHost" @close="reload"></Add-Host-Dialog>
+    <Add-Host-Dialog ref="addHost" @close="closeHost" :hostList="hostList"></Add-Host-Dialog>
 
     <el-table :data="filterTenants" style="width: 100%">
       <el-table-column type="expand">
@@ -51,7 +51,7 @@
       <el-table-column label="管理员名称" prop="adminName">
       </el-table-column>
       <!-- <el-table-column label="状态" prop="status">
-      </el-table-column> -->
+        </el-table-column> -->
       <el-table-column label="创建时间" prop="created">
       </el-table-column>
     </el-table>
@@ -61,7 +61,7 @@
 import { mapState, mapActions } from 'vuex'
 import Confirm from '@/utils/confirm'
 import CreateDialog from '@/views/tenant/modals/CreateDialog'
-import AddHostDialog from '@/views/tenant/modals/AddDialog'
+import AddHostDialog from '@/views/cluster/modals/AddHostDialog'
 import * as type from '@/store/tenant/mutations_types'
 import * as tenant from '@/api/tenant'
 export default {
@@ -72,13 +72,18 @@ export default {
   data () {
     return {
       listLoading: false,
-      searchWord: ''
+      searchWord: '',
+      checkedIp: [],
+      tenantId: -1
     }
   },
   computed: {
     ...mapState({
       tenants (state) {
         return state.tenant.tenants.tenants
+      },
+      hostList (state) {
+        return state.tenant.hosts.hosts
       }
     }),
     filterTenants: function () {
@@ -87,7 +92,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchTenants: type.FETCH_TENANTS
+      fetchTenants: type.FETCH_TENANTS,
+      getHosts: type.FETCH_TENANT_HOSTS
     }),
     async delTenant (id) {
       await Confirm.open(`确认删除该租户?`)
@@ -103,14 +109,38 @@ export default {
         this.listLoading = false
       }
     },
-    addHost (name, id) {
-      this.$refs.addHost.open(name, id)
+    async addHost (name, id) {
+      await this.getHosts()
+      this.tenantId = id
+      this.$refs.addHost.open(name)
+    },
+    async closeHost (checkedIp) {
+      this.checkedIp = checkedIp
+      console.log('checkedIp')
+      console.log(checkedIp)
+      console.log(this.hostList)
+      const checkedIps = this.transformHosts(this.hostList)
+      console.log('checkedIps')
+      console.log(checkedIps)
+      await tenant.addHost(checkedIps)
+      this.$notify({ message: '添加成功' })
+      await this.getTenants()
     },
     openCreate () {
       this.$refs.createDialog.open()
     },
     reload () {
       this.getTenants()
+    },
+    transformHosts (hosts = []) {
+      return hosts.map((item, i) => {
+        if (this.checkedIp.indexOf(i) !== -1) {
+          return {
+            'ip': item.label,
+            'tenantId': this.tenantId
+          }
+        }
+      })
     },
     updateTenant (name) {
       this.$refs.createDialog.open(name)
