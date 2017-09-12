@@ -34,8 +34,8 @@ export default {
       this.checkedHost = []
     },
     async addHost () {
+      await this.$emit('close', this.checkedHost)
       this.dialogVisible = false
-      this.$emit('close', this.checkedHost)
     }
   }
 }

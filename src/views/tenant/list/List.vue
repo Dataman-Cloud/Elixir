@@ -41,7 +41,7 @@
           <el-table :data="tenant.row.hostList" border tooltip-effect="dark" style="width: 100%">
             <el-table-column prop="ip" label="主机" show-overflow-tooltip>
             </el-table-column>
-            <el-table-column prop="created" label="创建时间" show-overflow-tooltip>
+            <el-table-column prop="created" label="添加时间" show-overflow-tooltip>
             </el-table-column>
           </el-table>
         </template>
@@ -58,11 +58,12 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import Confirm from '@/utils/confirm'
 import CreateDialog from '@/views/tenant/modals/CreateDialog'
 import AddHostDialog from '@/views/cluster/modals/AddHostDialog'
 import * as type from '@/store/tenant/mutations_types'
+import * as hostType from '@/store/host/mutations_types'
 import * as tenant from '@/api/tenant'
 export default {
   components: {
@@ -84,7 +85,10 @@ export default {
       },
       hostList (state) {
         return state.tenant.hosts.hosts
-      }
+      },
+      ...mapGetters([
+        'isPlatform'
+      ])
     }),
     filterTenants: function () {
       return this.searchWord ? this.tenants.filter(tenant => tenant.name.toLowerCase().includes(this.searchWord)) : this.tenants
@@ -93,7 +97,8 @@ export default {
   methods: {
     ...mapActions({
       fetchTenants: type.FETCH_TENANTS,
-      getHosts: type.FETCH_TENANT_HOSTS
+      tenantHosts: type.FETCH_TENANT_HOSTS,
+      getHosts: hostType.FETCH_HOSTS
     }),
     async delTenant (id) {
       await Confirm.open(`确认删除该租户?`)
@@ -110,18 +115,13 @@ export default {
       }
     },
     async addHost (name, id) {
-      await this.getHosts()
+      this.isPlatform ? await this.tenantHosts() : await this.getHosts()
       this.tenantId = id
       this.$refs.addHost.open(name)
     },
     async closeHost (checkedIp) {
       this.checkedIp = checkedIp
-      console.log('checkedIp')
-      console.log(checkedIp)
-      console.log(this.hostList)
       const checkedIps = this.transformHosts(this.hostList)
-      console.log('checkedIps')
-      console.log(checkedIps)
       await tenant.addHost(checkedIps)
       this.$notify({ message: '添加成功' })
       await this.getTenants()

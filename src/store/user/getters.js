@@ -9,7 +9,7 @@ export default {
   // 平台管理员
   isPlatform: state => {
     let curGroup = findCurGroup(state.accountGroups, state.currentGroupId)
-    return curGroup ? curGroup.role === 'plateform' : false
+    return curGroup ? curGroup.role === 'platform' : false
   },
   // 组管理员
   isOwner: state => {

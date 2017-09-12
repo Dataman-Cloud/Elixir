@@ -24,6 +24,9 @@ const ClusterLayout = () => import('../views/cluster')
 const ClusterList = () => import('../views/cluster/list/List')
 const ClusterDetail = () => import('../views/cluster/detail/Detail')
 
+const HostLayout = () => import('../views/host')
+const HostList = () => import('../views/host/list/List')
+
 const ComposeLayout = () => import('../views/compose')
 const ComposeList = () => import('../views/compose/list/List')
 const ComposeDetail = () => import('../views/compose/detail/Detail')
@@ -67,6 +70,15 @@ export const constantRouterMap = [
         children: [
           { path: 'list', component: ClusterList, name: '集群列表' },
           { path: 'detail/:name', component: ClusterDetail, name: '集群详情', hidden: true, meta: { role: ['get-clusters-details'] } }
+        ]
+      },
+      {
+        path: '/resource/host',
+        redirect: '/resource/host/list',
+        name: '主机',
+        component: HostLayout,
+        children: [
+          { path: 'list', component: HostList, name: '主机列表' }
         ]
       }
     ]

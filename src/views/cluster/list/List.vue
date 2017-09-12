@@ -66,14 +66,14 @@
             </el-row>
             <el-button-group>
               <el-button type="danger" icon="delete" @click="openDelete(cluster)"></el-button>
-              <el-button type="primary" @click="addHost(cluster.clusterLabel)" icon="plus" @close="closeHost"></el-button>
+              <el-button type="primary" @click="addHost(cluster.clusterLabel)" icon="plus"></el-button>
             </el-button-group>
           </div>
         </el-card>
       </el-col>
     </el-row>
     <delete-cluster-dialog ref="deleteDialog"></delete-cluster-dialog>
-    <Add-Host-Dialog ref="addHost" :hostList="hostList"></Add-Host-Dialog>
+    <Add-Host-Dialog ref="addHost" :hostList="hostList" @close="closeHost"></Add-Host-Dialog>
   </div>
 </template>
 <script>
@@ -81,7 +81,7 @@ import { mapState, mapActions } from 'vuex'
 import * as cluster from '@/api/cluster'
 import Confirm from '@/utils/confirm'
 import * as type from '@/store/cluster/mutations_types'
-// import * as host from '@/api/host'
+import * as host from '@/api/host'
 import * as hostType from '@/store/host/mutations_types'
 import CreateDialog from '@/views/cluster/modals/CreateDialog'
 import DeleteClusterDialog from '@/views/cluster/modals/DeleteDialog'
@@ -141,11 +141,7 @@ export default {
     async closeHost (checkedHost) {
       this.checkedHost = checkedHost
       const checkedIps = this.transformHosts(this.hostList)
-      console.log('name')
-      console.log(this.name)
-      console.log('checkedIps')
-      console.log(checkedIps)
-      // await host.addHost(this.name, checkedIps)
+      await host.addHost(this.name, checkedIps)
       this.$notify({ message: '添加成功' })
     },
     openCreate () {
