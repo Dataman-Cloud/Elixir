@@ -67,7 +67,7 @@
 </template>
 <script>
 import DeleteClusterDialog from '@/views/cluster/modals/DeleteDialog'
-import AddHostDialog from '@/views/cluster/modals/AddHostDialog'
+import AddHostDialog from '@/components/addHostDialog'
 import { mapActions, mapState } from 'vuex'
 import * as type from '@/store/cluster/mutations_types'
 import * as hostType from '@/store/host/mutations_types'
@@ -96,10 +96,10 @@ export default {
   methods: {
     ...mapActions({
       fetchCluster: type.FETCH_CLUSTER,
-      getHosts: hostType.FETCH_HOSTS
+      listHosts: hostType.FETCH_HOSTS
     }),
     async addHost () {
-      await this.getHosts()
+      await this.listHosts()
       this.$refs.addHost.open()
     },
     async addHostClose (checkedHost) {

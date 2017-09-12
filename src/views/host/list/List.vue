@@ -3,11 +3,6 @@
     <el-table stripe :data="hostList" border tooltip-effect="dark" style="width: 100%">
         <el-table-column prop="label" label="主机" show-overflow-tooltip>
         </el-table-column>
-        <!-- <el-table-column label="操作" width="250">
-          <template scope="scope">
-            <el-button size="small" @click="delHost(scope.row.hostname)">删除</el-button>
-          </template>
-        </el-table-column> -->
       </el-table>
   </div>
 </template>
@@ -15,8 +10,6 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import * as type from '@/store/host/mutations_types'
 import * as tenant from '@/store/tenant/mutations_types'
-// import * as host from '@/api/host'
-// import * as tenant from '@/api/tenant'
 export default {
   data () {
     return {
@@ -40,8 +33,11 @@ export default {
     }),
     async listCluster () {
       this.listLoading = true
-      this.isPlatform ? await this.tenantHosts() : await this.getHosts()
-      this.listLoading = false
+      try {
+        this.isPlatform ? await this.tenantHosts() : await this.getHosts()
+      } finally {
+        this.listLoading = false
+      }
     },
     reload () {
       this.listCluster()
@@ -49,8 +45,6 @@ export default {
   },
   mounted () {
     this.listCluster()
-    console.log('platform')
-    console.log(this.hostList)
   }
 }
 </script>

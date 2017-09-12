@@ -85,7 +85,7 @@ import * as host from '@/api/host'
 import * as hostType from '@/store/host/mutations_types'
 import CreateDialog from '@/views/cluster/modals/CreateDialog'
 import DeleteClusterDialog from '@/views/cluster/modals/DeleteDialog'
-import AddHostDialog from '@/views/cluster/modals/AddHostDialog'
+import AddHostDialog from '@/components/addHostDialog'
 export default {
   components: {
     CreateDialog,
@@ -117,12 +117,12 @@ export default {
     ...mapActions({
       fetchClusters: type.FETCH_CLUSTERS,
       fetchDelCluster: type.FETCH_DEL_CLUSTER,
-      getHosts: hostType.FETCH_HOSTS
+      listHosts: hostType.FETCH_HOSTS
     }),
     async addHost (name) {
       this.name = name
-      await this.getHosts()
-      await this.$refs.addHost.open()
+      await this.listHosts()
+      this.$refs.addHost.open()
     },
     async listCluster () {
       this.listLoading = true

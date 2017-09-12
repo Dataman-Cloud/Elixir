@@ -33,7 +33,7 @@
           <el-badge>主机列表</el-badge>
           <div class="btn-group">
             <span>
-              <el-button type="primary" @click="addHost(tenant.row.name,tenant.row.id)">
+              <el-button type="primary" @click="addHost(tenant.row.id)">
                 <i class="el-icon-plus"></i> 添加主机
               </el-button>
             </span>
@@ -43,6 +43,11 @@
             </el-table-column>
             <el-table-column prop="created" label="添加时间" show-overflow-tooltip>
             </el-table-column>
+            <el-table-column label="操作" width="250">
+              <template scope="scope">
+                <el-button size="small" @click="delHost(scope.row.ip)">回收主机</el-button>
+              </template>
+          </el-table-column>
           </el-table>
         </template>
       </el-table-column>
@@ -50,8 +55,6 @@
       </el-table-column>
       <el-table-column label="管理员名称" prop="adminName">
       </el-table-column>
-      <!-- <el-table-column label="状态" prop="status">
-        </el-table-column> -->
       <el-table-column label="创建时间" prop="created">
       </el-table-column>
     </el-table>
@@ -61,7 +64,7 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 import Confirm from '@/utils/confirm'
 import CreateDialog from '@/views/tenant/modals/CreateDialog'
-import AddHostDialog from '@/views/cluster/modals/AddHostDialog'
+import AddHostDialog from '@/components/addHostDialog'
 import * as type from '@/store/tenant/mutations_types'
 import * as hostType from '@/store/host/mutations_types'
 import * as tenant from '@/api/tenant'
@@ -74,8 +77,8 @@ export default {
     return {
       listLoading: false,
       searchWord: '',
-      checkedIp: [],
-      tenantId: -1
+      checkedIps: [],
+      tenantId: null
     }
   },
   computed: {
@@ -98,7 +101,7 @@ export default {
     ...mapActions({
       fetchTenants: type.FETCH_TENANTS,
       tenantHosts: type.FETCH_TENANT_HOSTS,
-      getHosts: hostType.FETCH_HOSTS
+      listHosts: hostType.FETCH_HOSTS
     }),
     async delTenant (id) {
       await Confirm.open(`确认删除该租户?`)
@@ -114,17 +117,23 @@ export default {
         this.listLoading = false
       }
     },
-    async addHost (name, id) {
-      this.isPlatform ? await this.tenantHosts() : await this.getHosts()
+    async addHost (id) {
+      this.isPlatform ? await this.tenantHosts() : await this.listHosts()
       this.tenantId = id
-      this.$refs.addHost.open(name)
+      this.$refs.addHost.open()
     },
-    async closeHost (checkedIp) {
-      this.checkedIp = checkedIp
-      const checkedIps = this.transformHosts(this.hostList)
-      await tenant.addHost(checkedIps)
+    async closeHost (checkedIps) {
+      this.checkedIps = checkedIps
+      const checkedIp = this.transformHosts(this.hostList)
+      await tenant.addHost(checkedIp)
       this.$notify({ message: '添加成功' })
       await this.getTenants()
+    },
+    async delHost (ip) {
+      await Confirm.open(`确认删除该主机吗?`)
+      await tenant.delHost({'ip': ip})
+      this.$notify({ message: '删除成功' })
+      this.getTenants()
     },
     openCreate () {
       this.$refs.createDialog.open()
@@ -134,7 +143,7 @@ export default {
     },
     transformHosts (hosts = []) {
       return hosts.map((item, i) => {
-        if (this.checkedIp.indexOf(i) !== -1) {
+        if (this.checkedIps.indexOf(i) !== -1) {
           return {
             'ip': item.label,
             'tenantId': this.tenantId

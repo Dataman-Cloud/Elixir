@@ -15,11 +15,17 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      checkedHost: [],
-      name: ''
+      checkedHost: []
     }
   },
-  props: ['hostList'],
+  props: {
+    hostList: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    }
+  },
   methods: {
     transformHosts (hosts = []) {
       return hosts.map((item, i) => {
@@ -28,9 +34,8 @@ export default {
         }
       })
     },
-    open: function (name) {
+    open: function () {
       this.$refs.dialog.open()
-      this.name = name
       this.checkedHost = []
     },
     async addHost () {
