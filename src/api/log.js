@@ -16,7 +16,7 @@ export function selectApps (cluster) {
 
 export function selectTasks (app) {
   return fetch({
-    url: `v2/apps/${app}/tasks`,
+    url: `v1/apps/${app}/tasks`,
     method: 'get'
   })
 }
