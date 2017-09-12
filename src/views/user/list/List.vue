@@ -44,7 +44,7 @@
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="{type: 'updateUser', data: scope.row}">编辑</el-dropdown-item>
-              <el-dropdown-item :command="{type: 'updateGroup', data: scope.row}">编辑组</el-dropdown-item>
+              <el-dropdown-item v-if="isTenant" :command="{type: 'updateGroup', data: scope.row}">编辑组</el-dropdown-item>
               <el-dropdown-item :command="{type: 'updatePsd'}">修改密码</el-dropdown-item>
               <el-dropdown-item :command="{type: 'delUser', data: scope.row}">删除</el-dropdown-item>
             </el-dropdown-menu>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import * as type from '@/store/user/mutations_types'
 import CreateDialog from '@/views/user/modals/CreateDialog'
 import ChangePasswordDialog from '@/views/user/modals/ChangePasswordDialog'
@@ -77,6 +77,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'isTenant'
+    ]),
     ...mapState({
       users (state) {
         return state.user.users.users
