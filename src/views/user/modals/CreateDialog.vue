@@ -20,33 +20,12 @@
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="form.phone"></el-input>
         </el-form-item>
-        <el-form-item label="所属用户组">
-          <el-input type="input" v-model="currentGroupName" disabled></el-input>
-        </el-form-item>
-        <el-form-item v-for="(accountGroup, index) in form.accountGroups" :key="index">
-          <el-row :gutter="12" v-if="!isUpdate">
-            <el-col :span="9">
-              <el-form-item v-if="!isUpdate" :prop="'accountGroups.' + index + '.groupId'" :key="index" :rules="[{ required: true, message: '请选择用户组' }]">
-                <el-select @visible-change="openUserGroup" v-model="accountGroup.groupId">
-                  <el-option v-for="(userGroup, index) in userGroups" :key="index" :value="userGroup.id" :label="userGroup.name"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="9">
-              <el-form-item :prop="'accountGroups.' + index + '.role'" :key="index" :rules="[{ required: true, message: '请选择组中角色' }]">
-                <el-select v-model="accountGroup.role">
-                  <el-option value="superuser" label="超级管理员">超级管理员</el-option>
-                  <el-option value="owner" label="组管理员">组管理员</el-option>
-                  <el-option value="member" label="组成员">组成员</el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="2">
-              <el-button @click.prevent="removeGroup(index)">
-                <i class="el-icon-delete"></i>
-              </el-button>
-            </el-col>
-          </el-row>
+        <el-form-item label="所属用户组" v-if="!isUpdate">
+          <el-input v-if="isOwner" type="input" v-model="currentGroupName" disabled></el-input>
+          <el-select v-if="isTenant" value-key="id" v-model="selectedGroups" multiple placeholder="请选择">
+            <el-option v-for="group in userGroups" :key="group.id" :label="group.name" :value="group">
+            </el-option>
+          </el-select>
         </el-form-item>
       </div>
     </el-form>
@@ -58,16 +37,18 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import * as type from '@/store/user/mutations_types'
 import * as user from '@/api/user'
 import * as group from '@/api/user-group'
+
 export default {
   data () {
     return {
       dialogVisible: false,
       submitLoading: false,
       userGroups: [],
+      selectedGroups: [],
       id: null,
       form: {
         title: '',
@@ -107,11 +88,12 @@ export default {
     isUpdate: function () {
       return !!this.id
     },
-    ...mapState({
-      currentGroupName (state) {
-        return state.user.currentGroupName
-      }
-    })
+    ...mapGetters([
+      'isTenant',
+      'isOwner',
+      'currentGroupName',
+      'currentGroupId'
+    ])
   },
   directives: {
     scroll: function (el, bind) {
@@ -124,21 +106,24 @@ export default {
     ...mapActions({
       fetchUsers: type.FETCH_USERS
     }),
-    async openUserGroup (flag) {
-      if (flag) {
-        let { data } = await group.userGroupList()
-        this.userGroups = data
-      }
-    },
     close () {
       this.resetForm()
+      this.id = null
+      this.selectedGroups = []
       this.submitLoading = false
     },
-    open (id) {
+    async listGroup () {
+      let { data } = await group.userGroupList()
+      this.userGroups = data
+    },
+    async open (id) {
       this.id = id
+      if (this.isTenant) {
+        this.listGroup()
+      }
       if (this.isUpdate) {
-        user.getUser(this.id)
-          .then(res => this.updateInit(res))
+        let { data } = await user.getUser(this.id)
+        this.updateInit(data)
       }
       this.$refs.dialog.open()
     },
@@ -147,6 +132,7 @@ export default {
         if (valid) {
           this.submitLoading = true
           try {
+            this.transformGroupsToAccountGroups()
             this.isUpdate ? await user.updateUser(this.form) : await user.createUser(this.form)
             this.dialogVisible = false
             this.fetchUsers()
@@ -159,19 +145,29 @@ export default {
         }
       })
     },
-    removeGroup (index) {
-      this.form.accountGroups.splice(index, 1)
-    },
     resetForm () {
       this.$refs.form.resetFields()
     },
-    updateInit (initFetchData) {
+    transformGroupsToAccountGroups () {
+      if (this.isTenant) {
+        this.form.accountGroups = this.selectedGroups.map(group => ({
+          groupId: group.id,
+          role: 'owner'
+        }))
+      } else if (this.isOwner) {
+        this.form.accountGroups = [{
+          groupId: this.currentGroupId,
+          role: 'owner'
+        }]
+      }
+    },
+    updateInit (user) {
       this.form = {
-        name: initFetchData.data.name,
-        id: initFetchData.data.id,
-        email: initFetchData.data.email,
-        phone: initFetchData.data.phone,
-        title: initFetchData.data.title
+        name: user.name,
+        id: user.id,
+        email: user.email,
+        phone: user.phone,
+        title: user.title
       }
     }
   }
