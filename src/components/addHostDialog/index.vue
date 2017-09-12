@@ -11,28 +11,22 @@
 </template>
 
 <script>
-import * as host from '@/api/host'
-import * as hostType from '@/store/host/mutations_types'
-import { mapActions, mapState } from 'vuex'
 export default {
   data () {
     return {
       dialogVisible: false,
-      checkedHost: [],
-      name: ''
+      checkedHost: []
     }
   },
-  computed: {
-    ...mapState({
-      hostList (state) {
-        return state.host.hosts.hosts
+  props: {
+    hostList: {
+      type: Array,
+      default: function () {
+        return []
       }
-    })
+    }
   },
   methods: {
-    ...mapActions({
-      getHosts: hostType.FETCH_HOSTS
-    }),
     transformHosts (hosts = []) {
       return hosts.map((item, i) => {
         if (this.checkedHost.indexOf(i) !== -1) {
@@ -40,18 +34,13 @@ export default {
         }
       })
     },
-    open: function (name) {
+    open: function () {
       this.$refs.dialog.open()
-      this.getHosts()
-      this.name = name
       this.checkedHost = []
     },
     async addHost () {
-      const checkedIps = this.transformHosts(this.hostList)
-      await host.addHost(this.name, checkedIps)
+      await this.$emit('close', this.checkedHost)
       this.dialogVisible = false
-      this.$emit('close')
-      this.$notify({ message: '添加成功' })
     }
   }
 }

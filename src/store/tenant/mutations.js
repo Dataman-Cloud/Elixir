@@ -12,7 +12,7 @@ export default {
     state.tenants.tenants = tenants
     state.tenants.total = tenants.length
   },
-  [type.FETCH_HOSTS] (state, hosts = []) {
+  [type.FETCH_TENANT_HOSTS] (state, hosts = []) {
     state.hosts.hosts = transformHost(hosts)
     state.hosts.total = state.hosts.hosts.length
   }

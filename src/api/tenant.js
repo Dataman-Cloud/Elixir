@@ -51,3 +51,11 @@ export function addHost (data) {
     data: data
   })
 }
+
+export function delHost (data) {
+  return fetch({
+    url: 'v1/tenants/deleteHost',
+    method: 'post',
+    data: data
+  })
+}

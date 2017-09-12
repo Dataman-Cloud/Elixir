@@ -45,7 +45,7 @@
     </el-card>
 
     <delete-cluster-dialog ref="deleteDialog"></delete-cluster-dialog>
-    <add-host-dialog ref="addHost" @close="addHostClose"></add-host-dialog>
+    <add-host-dialog ref="addHost" @close="addHostClose" :hostList="hostList"></add-host-dialog>
 
     <el-card v-loading="listLoading" :body-style="{ padding: '0px 10px 20px', marginTop: '20px' }" class="cluster-detail">
       <div class="btn-group">
@@ -67,9 +67,10 @@
 </template>
 <script>
 import DeleteClusterDialog from '@/views/cluster/modals/DeleteDialog'
-import AddHostDialog from '@/views/cluster/modals/AddDialog'
-import { mapActions } from 'vuex'
+import AddHostDialog from '@/components/addHostDialog'
+import { mapActions, mapState } from 'vuex'
 import * as type from '@/store/cluster/mutations_types'
+import * as hostType from '@/store/host/mutations_types'
 import * as cluster from '@/api/cluster'
 import Confirm from '@/utils/confirm'
 import * as host from '@/api/host'
@@ -81,18 +82,32 @@ export default {
   data () {
     return {
       cluster: {},
-      listLoading: false
+      listLoading: false,
+      checkedHost: []
     }
+  },
+  computed: {
+    ...mapState({
+      hostList (state) {
+        return state.host.hosts.hosts
+      }
+    })
   },
   methods: {
     ...mapActions({
-      fetchCluster: type.FETCH_CLUSTER
+      fetchCluster: type.FETCH_CLUSTER,
+      listHosts: hostType.FETCH_HOSTS
     }),
-    addHost (name) {
-      this.$refs.addHost.open(name)
+    async addHost () {
+      await this.listHosts()
+      this.$refs.addHost.open()
     },
-    addHostClose () {
-      this.getCluster()
+    async addHostClose (checkedHost) {
+      this.checkedHost = checkedHost
+      const checkedIps = this.transformHosts(this.hostList)
+      await host.addHost(this.cluster.clusterLabel, checkedIps)
+      this.$notify({ message: '添加成功' })
+      await this.getCluster()
     },
     async delHost (ip) {
       await Confirm.open(`确认删除该主机?`)
@@ -120,6 +135,13 @@ export default {
     },
     reload () {
       this.getCluster()
+    },
+    transformHosts (hosts = []) {
+      return hosts.map((item, i) => {
+        if (this.checkedHost.indexOf(i) !== -1) {
+          return item.label
+        }
+      })
     }
   },
   created () {
