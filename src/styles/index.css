@@ -105,13 +105,13 @@
   font-size: 18px;
   margin: 10px 0;
 }
+.el-transfer{
+  justify-content:space-between;
+}
 .el-transfer-panel{
-  width: 270px;
+  width: 45%;
 }
 .el-transfer__buttons{
-  padding:0 17px;
-}
-.el-transfer__buttons .el-button{
-  padding:8px 18px;
-  margin:10px auto;
+  width: 10%;
+  padding: 0;
 }
