@@ -31,7 +31,7 @@
               </el-button>
             </span>
           </div>
-          <el-badge>集群列表</el-badge>
+          <!-- <el-badge>集群列表</el-badge>
           <el-row>
             <el-col :span="6" v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 2 : 0">
               <el-card :body-style="{ padding: '0px' }">
@@ -47,7 +47,7 @@
                 </div>
               </el-card>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-badge>用户列表</el-badge>
           <div class="btn-group">
             <span>

@@ -19,7 +19,7 @@
     <Editor-Group-Dialog ref="EditorGroupDialog"></Editor-Group-Dialog>
 
     <el-table ref="userTable" :data="filterUsers" border tooltip-effect="dark" style="width: 100%" v-loading="listLoading">
-      <el-table-column prop="name" label="姓名" width="120">
+      <el-table-column prop="userName" label="用户名" width="120">
       </el-table-column>
       <el-table-column prop="email" label="邮箱">
       </el-table-column>
