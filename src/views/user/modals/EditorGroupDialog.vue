@@ -15,7 +15,6 @@
             <el-col :span="9">
               <el-form-item :rules="[{ required: true, message: '请选择组角色' }]">
                 <el-select v-model="form.role">
-                  <el-option value="superuser" label="超级管理员">超级管理员</el-option>
                   <el-option value="owner" label="组管理员">组管理员</el-option>
                   <el-option value="member" label="组成员">组成员</el-option>
                 </el-select>
@@ -44,11 +43,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="submitForm">确 定</el-button>
-    </div>
   </el-dialog>
 </template>
 
@@ -103,6 +97,7 @@ export default {
     close () {
       this.resetForm()
       this.submitLoading = false
+      this.fetchUsers()
     },
     open (id) {
       this.id = id
@@ -111,10 +106,6 @@ export default {
     },
     resetForm () {
       this.$refs.form.resetFields()
-    },
-    submitForm () {
-      this.dialogVisible = false
-      this.fetchUsers()
     },
     updateInit (initFetchData) {
       this.group = initFetchData.data.accountGroups
