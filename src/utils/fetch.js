@@ -32,7 +32,7 @@ service.interceptors.response.use(
     console.log('err' + error)// for debug
     Notification({
       title: '错误信息',
-      message: error.message,
+      message: error.response && error.response.data && error.response.data.message || error.message,
       type: 'error'
     })
     if (error.response.status === 401) {
