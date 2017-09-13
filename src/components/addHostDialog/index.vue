@@ -27,13 +27,6 @@ export default {
     }
   },
   methods: {
-    transformHosts (hosts = []) {
-      return hosts.map((item, i) => {
-        if (this.checkedHost.indexOf(i) !== -1) {
-          return item.label
-        }
-      })
-    },
     open: function () {
       this.$refs.dialog.open()
       this.checkedHost = []
