@@ -72,6 +72,7 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-row v-loading="listLoading" class="cluster-empty" v-show="filterClusters.length === 0">暂无数据</el-row>
     <delete-cluster-dialog ref="deleteDialog"></delete-cluster-dialog>
     <Add-Host-Dialog ref="addHost" :hostList="hostList" @close="closeHost"></Add-Host-Dialog>
   </div>
@@ -213,5 +214,12 @@ export default {
 
 .cluster-title {
   font-size: 25px;
+}
+
+.cluster-empty {
+  height: 200px;
+  line-height: 200px;
+  font-size: 16px;
+  text-align: center;
 }
 </style>
