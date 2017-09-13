@@ -2,8 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/views/layout/Layout'
 import Login from '@/views/login'
-import AppList from '@/views/app/list/List'
+import Dashboard from '@/views/home/dashboard'
 
+const AppList = () => import('../views/app/list/List')
 const AppDetail = () => import('../views/app/detail/Detail')
 const AppInstance = () => import('../views/app/instance/Instance')
 
@@ -55,6 +56,20 @@ export const constantRouterMap = [
   { path: '/login', component: Login, hidden: true },
   {
     path: '/',
+    redirect: '/dashboard',
+    name: '首页',
+    icon: 'fa fa-home',
+    component: Layout,
+    hidden: true,
+    children: [
+      { path: 'dashboard', component: Dashboard }
+    ]
+  }
+]
+
+export const asyncRouterMap = [
+  {
+    path: '/resource',
     redirect: '/resource/cluster',
     name: '资源',
     icon: 'fa fa-server',
@@ -82,10 +97,7 @@ export const constantRouterMap = [
         ]
       }
     ]
-  }
-]
-
-export const asyncRouterMap = [
+  },
   {
     path: '/application',
     redirect: '/application/list',
