@@ -8,7 +8,6 @@
       </el-form-item>
       <el-form-item label="类型" prop="role">
         <el-select v-model="form.role">
-          <el-option value="superuser" label="超级管理员">超级管理员</el-option>
           <el-option value="owner" label="组管理员">组管理员</el-option>
           <el-option value="member" label="组成员">组成员</el-option>
         </el-select>
