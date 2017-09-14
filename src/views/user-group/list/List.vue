@@ -16,7 +16,7 @@
     <create-dialog ref="createDialog"></create-dialog>
     <add-user-dialog ref="addUserDialog"></add-user-dialog>
 
-    <el-table :data="groups" style="width: 100%" @expand="expand">
+    <el-table :data="groups" style="width: 100%" @expand="expand" v-loading="listLoading">
       <el-table-column type="expand">
         <template scope="group">
           <div class="btn-group">
@@ -32,22 +32,22 @@
             </span>
           </div>
           <!-- <el-badge>集群列表</el-badge>
-          <el-row>
-            <el-col :span="6" v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 2 : 0">
-              <el-card :body-style="{ padding: '0px' }">
-                <div style="padding: 14px;">
-                  <span>好吃的汉堡</span>
-                  <div class="bottom clearfix">
-                    <span class="time">正常主机 <i>1</i></span>
+            <el-row>
+              <el-col :span="6" v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 2 : 0">
+                <el-card :body-style="{ padding: '0px' }">
+                  <div style="padding: 14px;">
+                    <span>好吃的汉堡</span>
+                    <div class="bottom clearfix">
+                      <span class="time">正常主机 <i>1</i></span>
+                    </div>
+                    <div class="bottom clearfix">
+                      <span class="time">异常主机 <i>2</i></span>
+                      <el-button type="danger" class="button" icon="delete"></el-button>
+                    </div>
                   </div>
-                  <div class="bottom clearfix">
-                    <span class="time">异常主机 <i>2</i></span>
-                    <el-button type="danger" class="button" icon="delete"></el-button>
-                  </div>
-                </div>
-              </el-card>
-            </el-col>
-          </el-row> -->
+                </el-card>
+              </el-col>
+            </el-row> -->
           <el-badge>用户列表</el-badge>
           <div class="btn-group">
             <span>
@@ -123,7 +123,7 @@ export default {
     async delUser (group) {
       await Confirm.open(`确认移除改用户?`)
       await user.removeUser(this.currentRows.map(user => user.id), group.id)
-      this.$notify({message: '删除成功'})
+      this.$notify({ message: '删除成功' })
       let { data } = await userGroups.groupUsersList(group.id)
       group.users = data
     },
@@ -136,7 +136,7 @@ export default {
     async delGroup (group) {
       await Confirm.open(`确认删除改组?`)
       await userGroups.delGroup(group.id)
-      this.$notify({message: '删除成功'})
+      this.$notify({ message: '删除成功' })
       this.$store.dispatch(type.FETCH_USER_GROUPS)
     },
     editorGroup (group) {
@@ -145,22 +145,20 @@ export default {
     handleCurrentChange (val) {
       this.currentRows = val
     },
-    reload () {
+    async listGroup () {
       this.listLoading = true
-      this.fetchUserGroups()
-        .then(() => (this.listLoading = false))
-        .catch(() => (this.listLoading = false))
+      await this.fetchUserGroups().catch(() => { })
+      this.listLoading = false
+    },
+    reload () {
+      this.listGroup()
     },
     openCreate () {
       this.$refs.createDialog.open()
     }
   },
   created () {
-    this.listLoading = true
-    this.fetchUserGroups()
-      .then(() => {
-        this.listLoading = false
-      })
+    this.listGroup()
   }
 }
 
@@ -205,5 +203,4 @@ export default {
 .clearfix:after {
   clear: both
 }
-
 </style>

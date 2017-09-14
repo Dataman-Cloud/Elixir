@@ -91,6 +91,7 @@ export const asyncRouterMap = [
         path: '/resource/host',
         redirect: '/resource/host/list',
         name: '主机',
+        meta: { role: ['get-node'] },
         component: HostLayout,
         children: [
           { path: 'list', component: HostList, name: '主机列表' }
