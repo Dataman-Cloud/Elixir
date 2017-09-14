@@ -72,11 +72,11 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="组 ID" prop="id">
-      </el-table-column>
       <el-table-column label="组名称" prop="name">
       </el-table-column>
       <el-table-column label="描述" prop="description">
+      </el-table-column>
+      <el-table-column label="创建时间" prop="createAt">
       </el-table-column>
     </el-table>
   </div>
