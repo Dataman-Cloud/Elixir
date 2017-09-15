@@ -157,7 +157,7 @@ export default {
       } else if (this.isOwner) {
         this.form.accountGroups = [{
           groupId: this.currentGroupId,
-          role: 'owner'
+          role: 'member'
         }]
       }
     },
