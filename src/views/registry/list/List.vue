@@ -81,12 +81,12 @@
       async openDelete () {
         if (this.currentRow) {
           await Confirm.open(`确认删除 ${this.currentRow.name} 镜像?`)
-          let res = await registryApi.deleteHarbor(this.projectid, this.currentRow.name)
+          let res = await registryApi.deleteHarbor(this.currentRow.name)
           if (res.code === '01') {
             this.$notify({ message: res.message })
           } else {
             this.$notify({ message: '删除成功' })
-            this.fetchTags(this.$route.params.name)
+            this.fetchRegistries()
           }
         } else {
           this.$notify({message: '尚未选中镜像'})

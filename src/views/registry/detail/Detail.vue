@@ -71,7 +71,7 @@ export default {
     async openDelete () {
       if (this.currentRow) {
         await Confirm.open(`确认删除 ${this.currentRow.imageName} 镜像仓库?`)
-        let res = await registryApi.deleteTags(this.projectid, this.$route.params.name, this.currentRow.tag)
+        let res = await registryApi.deleteTags(this.$route.params.name, this.currentRow.tag)
         if (res.code === '01') {
           this.$notify({ message: res.message })
         } else {
