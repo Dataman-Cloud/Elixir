@@ -63,7 +63,7 @@
           <el-table ref="multipleTable" :data="group.row.users" @selection-change="handleCurrentChange" border tooltip-effect="dark" style="width: 100%">
             <el-table-column type="selection" width="55">
             </el-table-column>
-            <el-table-column prop="name" label="成员名称" width="120">
+            <el-table-column prop="name" label="用户名称" width="120">
             </el-table-column>
             <el-table-column prop="currentPerms" label="权限" width="120">
             </el-table-column>
@@ -72,11 +72,11 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="组 ID" prop="id">
-      </el-table-column>
       <el-table-column label="组名称" prop="name">
       </el-table-column>
       <el-table-column label="描述" prop="description">
+      </el-table-column>
+      <el-table-column label="创建时间" prop="createAt">
       </el-table-column>
     </el-table>
   </div>
