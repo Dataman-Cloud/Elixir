@@ -12,7 +12,7 @@
           <el-input v-model="form.title"></el-input>
         </el-form-item>
         <el-form-item v-if="!isUpdate" label="密码" prop="password">
-          <el-input v-model="form.password"></el-input>
+          <el-input type="password" v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item label="邮箱地址" prop="email">
           <el-input v-model="form.email"></el-input>
