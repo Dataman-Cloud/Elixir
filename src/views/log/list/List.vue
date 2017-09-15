@@ -1,11 +1,9 @@
 <template>
   <div>
     <el-form ref="form" :rules="rules" :model="form" label-width="100px" class="demo-form-inline" :inline="true" label-position="left">
-      <el-form-item label="集群名" prop="clusterName" required>
-        <el-select v-model="form.clusterName" @change="clusterValChange" @visible-change="selectCluster" placeholder="请选择集群">
-          <el-option :key="cluster.id" v-for="cluster in clusters" :value="cluster.clusterLabel">{{cluster.clusterLabel}}</el-option>
-        </el-select>
-      </el-form-item>
+      <el-form-item label="集群" prop="clusterName">
+          <el-input v-model="form.clusterName" disabled></el-input>
+        </el-form-item>
       <el-form-item label="应用名" prop="appName" required>
         <el-select v-model="form.appName" :disabled="!form.clusterName" @change="appValChange" @visible-change="selectApps" placeholder="请选择应用">
           <el-option :key="app.name" v-for="app in apps" :label="app.name" :value="app.name"></el-option>
@@ -44,7 +42,7 @@
 </template>
 <script>
 import InfiniteList from '@/components/infinite-loading-list/InfiniteList'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import * as type from '@/store/log/mutations_types'
 import * as fetchLogs from '@/api/log'
 import BASE_URL from 'baseUrl'
@@ -58,14 +56,14 @@ export default {
   },
   data () {
     return {
-      clusters: [],
+      // clusters: [],
       apps: [],
       tasks: [],
       logs: [],
       isContext: false,
       ajaxLicense: false,
       form: {
-        clusterName: '',
+        clusterName: this.bayname,
         appName: '',
         taskId: '',
         key: '',
@@ -85,6 +83,11 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      bayname ({ user }) {
+        return user.bayname
+      }
+    }),
     base64Form: function () {
       // 下载限制为 MAX_DOWNLOAD_ITEMS 条数据
       let downQuery = this._.merge({}, this.form, { page: 0, size: MAX_DOWNLOAD_ITEMS })
@@ -96,15 +99,10 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchClusters: type.FETCH_SELECTCLUSTER,
       fetchApps: type.FETCH_SELECTAPPS,
       fetchTasks: type.FETCH_SELECTTASKS
     }),
     appValChange () {
-      this.form.taskId = ''
-    },
-    clusterValChange (val) {
-      this.form.appName = ''
       this.form.taskId = ''
     },
     download () {
@@ -122,12 +120,6 @@ export default {
           return false
         }
       })
-    },
-    async selectCluster (flag) {
-      if (flag) {
-        let data = await this.fetchClusters()
-        this.clusters = data.data
-      }
     },
     async selectApps (flag) {
       if (flag) {
@@ -166,6 +158,9 @@ export default {
         }
       }
     }
+  },
+  mounted () {
+    this.form.clusterName = this.bayname
   }
 }
 </script>
