@@ -28,6 +28,9 @@ const ClusterDetail = () => import('../views/cluster/detail/Detail')
 const HostLayout = () => import('../views/host')
 const HostList = () => import('../views/host/list/List')
 
+const PoolLayout = () => import('../views/resource-pool')
+const PoolList = () => import('../views/resource-pool/list/List')
+
 const ComposeLayout = () => import('../views/compose')
 const ComposeList = () => import('../views/compose/list/List')
 const ComposeDetail = () => import('../views/compose/detail/Detail')
@@ -95,6 +98,16 @@ export const asyncRouterMap = [
         component: HostLayout,
         children: [
           { path: 'list', component: HostList, name: '主机列表' }
+        ]
+      },
+      {
+        path: '/resource/pool',
+        redirect: '/resource/pool/list',
+        name: '资源池',
+        meta: { role: ['get-hostpool'] },
+        component: PoolLayout,
+        children: [
+          { path: 'list', component: PoolList, name: '资源池列表' }
         ]
       }
     ]

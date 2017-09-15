@@ -38,9 +38,6 @@ export default {
       } finally {
         this.listLoading = false
       }
-    },
-    reload () {
-      this.listCluster()
     }
   },
   mounted () {
@@ -48,55 +45,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.btn-group {
-  justify-content: space-between;
-}
-
-.cluster-card {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.time {
-  font-size: 13px;
-  color: #999;
-}
-
-.bottom {
-  margin: 13px 0;
-  line-height: 12px;
-}
-
-.clusterDetail {
-  padding: 0;
-  float: right;
-}
-
-.cluster-app {
-  text-align: right;
-}
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-
-.clearfix:after {
-  clear: both
-}
-
-.cluster-host {
-  text-align: right;
-  font-size: 35px;
-  height: 76px;
-  line-height: 76px;
-  font-weight: 200;
-  color: #666;
-}
-
-.cluster-title {
-  font-size: 25px;
-}
-</style>
