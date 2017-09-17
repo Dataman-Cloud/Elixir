@@ -4,10 +4,13 @@ export function formatForm (form) {
   let submitForm = miniform.getSubmitForm()
   formatServiceName(form, submitForm)
   formatInstanceMode(form, submitForm)
+  formatNetworkMode(form, submitForm)
   formatContainerSizeMode(form, submitForm)
   formatSsh(form, submitForm)
   formatImg(form, submitForm)
   formatPort(form, submitForm)
+  formatVolume(form, submitForm)
+  formatCMD(form, submitForm)
   return submitForm
 }
 
@@ -24,6 +27,10 @@ function formatInstanceMode (form, submitForm) {
     instance = form.instanceNumber
   }
   submitForm.instances = instance
+}
+
+function formatNetworkMode (form, submitForm) {
+  submitForm.container.docker.network = form.network
 }
 
 function formatContainerSizeMode (form, submitForm) {
@@ -48,6 +55,21 @@ function formatSsh (form, submitForm) {
 function formatImg (form, submitForm) {
   submitForm.container.docker.image = `sryregistry.service.consul:5002/${form.image.Image}:${form.image.tag}`
 }
+
 function formatPort (form, submitForm) {
   submitForm.env.PORT = `Port ${form.port}`
+}
+
+function formatVolume (form, submitForm) {
+  submitForm.container.volumes = [
+    {
+      hostPath: form.hostPath,
+      containerPath: form.containerPath,
+      mode: form.volumeMode
+    }
+  ]
+}
+
+function formatCMD (form, submitForm) {
+  submitForm.cmd = form.cmd ? form.cmd : null
 }

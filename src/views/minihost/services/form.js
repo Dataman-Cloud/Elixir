@@ -3,6 +3,8 @@ export const mcForm = {
   serviceName: 'demo1',
   instanceMode: 'local',
   instanceNumber: 1,
+  cmd: '',
+  network: 'bridge',
   containerSizeMode: 'low',
   gpu: 1,
   disk: 5,
@@ -12,7 +14,10 @@ export const mcForm = {
     uri: '',
     tag: ''
   },
-  port: 22
+  port: 22,
+  containerPath: '',
+  hostPath: '',
+  volumeMode: 'RW'
 }
 
 export const mcRules = {
@@ -86,7 +91,7 @@ export function getSubmitForm () {
       {
         "attribute": "vcluster",
         "operator": "==",
-        "value": "eams"
+        "value": "gzteam"
       }
     ],
     "container": {

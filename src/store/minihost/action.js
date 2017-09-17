@@ -2,9 +2,17 @@ import * as type from './mutations_types'
 import * as api from '../../api/minihost'
 
 export default {
-  async [type.FETCH_MINIHOST] (context) {
+  async [type.FETCH_MINIHOST] ({commit}) {
+    commit(type.RESET_MINIHOST)
     let data = await api.listApp()
-    context.commit(type.FETCH_MINIHOST, data.data)
-    return data.data
+    if (Array.isArray(data)) {
+      data.forEach(async app => {
+        if (app.name.indexOf('minihost-') > -1) {
+          await api.listTasks(app.id).then((task) => {
+            commit(type.FETCH_MINIHOST, task)
+          })
+        }
+      })
+    }
   }
 }
