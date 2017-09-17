@@ -4,6 +4,9 @@
       <router-link :to="createLink">
         <el-button type="primary">创建{{appPrefix}}</el-button>
       </router-link>
+      <el-button @click="reload" size="small" class="small-reload-btn">
+        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+      </el-button>
     </div>
     <div class="result-grid" v-if="List.length">
         <div :span="8" v-for="li in List" :key="li.name" class="app-item">
@@ -36,7 +39,10 @@ export default {
   methods: {
     ...mapActions({
       fetchEams: easmType.FETCH_EAMS
-    })
+    }),
+    reload () {
+      this.fetchEams()
+    }
   },
   data () {
     return {
@@ -82,5 +88,9 @@ export default {
   justify-content: center;
   align-items: center;
   height: 400px;
+}
+
+.small-reload-btn {
+  margin-left: 20px;
 }
 </style>

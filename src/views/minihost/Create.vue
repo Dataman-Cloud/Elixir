@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <el-row :gutter="12">
-      <el-col :span="12">
+      <el-col :span="14">
         <el-form ref="mcForm" :model="form" :rules="rules" label-width="150px" element-loading-text="数据加载中...">
           <!-- 主机名称 -->
           <el-form-item label="主机名称" prop="serviceName">
@@ -27,6 +27,17 @@
               <template slot="prepend">实例个数</template>
             </el-input>
           </el-form-item>
+
+          <!-- 网络模式 -->
+          <el-form-item label="网络模式" prop="network">
+            <el-radio-group v-model="form.network">
+              <el-tooltip class="item" effect="dark" content="BRIDGE模式" placement="top-start">
+                <el-radio label="bridge">BRIDGE</el-radio>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="HOST模式" placement="top-start">
+                <el-radio label="host">HOST</el-radio>
+              </el-tooltip>
+            </el-radio-group>
           </el-form-item>
 
           <!-- 服务器规格配置 -->
@@ -104,7 +115,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                  <el-form-item prop="port" label="端口">
+                  <el-form-item prop="port" label="SSH端口">
                     <el-row :gutter="8">
                       <el-col :span="8">
                         <el-input v-model.number="form.port" placeholder="默认 22" type="number"></el-input>
@@ -112,6 +123,50 @@
                     </el-row>
                   </el-form-item>
                 </el-col>
+              </el-row>
+              <el-row>
+                <el-form-item label="挂载" prop="cmd">
+                  <el-row :gutter="10">
+                    <el-col :span="20">
+                      <el-form-item prop="containerPath" :rules="[{ required: true, message: '容器路径不能为空' }]">
+                        <el-input v-model="form.containerPath">
+                          <template slot="prepend">容器路径</template>
+                        </el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form-item>
+              </el-row>
+              <el-row>
+                <el-form-item label=" ">
+                  <el-row :gutter="10">
+                    <el-col :span="20">
+                      <el-form-item prop="hostPath" :rules="[{ required: true, message: '主机路径不能为空' }]">
+                        <el-input v-model="form.hostPath">
+                          <template slot="prepend">主机路径</template>
+                        </el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form-item>
+              </el-row>
+              <el-row>
+                <el-form-item prop="volumeMode">
+                  <el-row :gutter="10">
+                    <el-col :span="5">
+                      <el-select v-model="form.volumeMode">
+                        <el-option value="RW">RW</el-option>
+                        <el-option value="RD">RD</el-option>
+                      </el-select>
+                    </el-col>
+                  </el-row>
+                </el-form-item>
+              </el-row>
+              <el-row>
+                <el-form-item label="CMD" prop="cmd">
+                  <el-input v-model.number="form.cmd">
+                  </el-input>
+                </el-form-item>
               </el-row>
             </el-collapse-item>
           </el-collapse>

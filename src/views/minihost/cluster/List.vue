@@ -4,9 +4,6 @@
       <router-link :to="createLink">
         <el-button type="primary">创建{{appPrefix}}</el-button>
       </router-link>
-      <el-button @click="reload" size="small" class="small-reload-btn">
-        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-      </el-button>
     </div>
     <div class="result-grid" v-if="List.length">
         <div :span="8" v-for="li in List" :key="li.name" class="app-item">
@@ -15,7 +12,7 @@
     </div>
     <div class="empty-page" v-else>
       <span>
-        暂无迷你主机
+        暂无迷你集群
       </span>
     </div>
   </div>
@@ -39,16 +36,13 @@ export default {
   methods: {
     ...mapActions({
       fetchMh: mhType.FETCH_MINIHOST
-    }),
-    reload () {
-      this.fetchMh()
-    }
+    })
   },
   data () {
     return {
       imgSrc: require('../../../assets/minihost.svg'),
-      appPrefix: '迷你主机',
-      createLink: 'mh-up'
+      appPrefix: '迷你集群',
+      createLink: 'mc-up'
     }
   },
   created () {
@@ -88,9 +82,5 @@ export default {
   justify-content: center;
   align-items: center;
   height: 400px;
-}
-
-.small-reload-btn {
-  margin-left: 20px;
 }
 </style>

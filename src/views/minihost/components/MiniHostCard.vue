@@ -16,16 +16,16 @@
       <hr>
       <div class="margin--top--10">
         <span class="margin--right--10">状态:</span>
-        <status-indicator :status="item.op_status" />
+        <status-indicator :status="item.status" />
       </div>
       <div class="margin--top--10">
-        <span class="margin--right--10">名称:</span> {{item.name}}
+        <span class="margin--right--10">ip:</span> {{`${item.ip}:${item.ports?item.ports[0]:''}`}}
       </div>
       <div class="margin--top--10">
-        <span class="margin--right--10">创建时间:</span> {{item.created_at | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}
+        <span class="margin--right--10">创建时间:</span> {{item.created | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}
       </div>
       <div class="margin--top--10">
-        <span class="margin--right--10">更新时间:</span> {{item.updated_at | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}
+        <span class="margin--right--10">更新时间:</span> {{item.updated | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}
       </div>
       <div class="margin--top--10 ">
         <span class="margin--right--10">描述:</span> {{item.desc}}
@@ -50,6 +50,15 @@ export default {
   data () {
     return {
       name: 'demo'
+    }
+  },
+  computed: {
+    IP () {
+      let {item} = this
+      if (Array.isArray(item.ports) && item.ports.length > 0) {
+        return `${item.ip}:${item.ports[0]}`
+      }
+      return '-'
     }
   },
   methods: {

@@ -1,8 +1,16 @@
 import fetch from '@/utils/fetch'
+import _fetch from '@/utils/swanFetch'
 
 export function listApp () {
-  return fetch({
+  return _fetch({
     url: 'v1/apps',
+    method: 'get'
+  })
+}
+
+export function listTasks (appId) {
+  return _fetch({
+    url: `/v1/apps/${appId}/tasks`,
     method: 'get'
   })
 }
@@ -52,7 +60,7 @@ export function extend (id, instances) {
 }
 
 export function create (data) {
-  return fetch({
+  return _fetch({
     url: `v1/apps`,
     method: 'post',
     data: data

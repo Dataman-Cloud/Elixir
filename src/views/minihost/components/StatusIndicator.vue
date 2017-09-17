@@ -36,6 +36,9 @@ export default {
     vertical-align: middle;
     line-height: 1;
     display: inline-block;
+    background-color: #eef1f6;
+    border-color: #eef1f6;
+    box-shadow: 01px 0 0 0 #eef1f6;
   }
   .creating {
     background-color: #eef1f6;
@@ -47,7 +50,7 @@ export default {
     border-color: #ff5a5f;
     box-shadow: 01px 0 0 0 #ff5a5f;
   }
-  .abc {
+  .TASK_RUNNING {
     background-color: #48e245;
     border-color: #48e245;
     box-shadow: 01px 0 0 0 #48e245;

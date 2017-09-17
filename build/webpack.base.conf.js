@@ -28,7 +28,8 @@ module.exports = {
   },
   externals: {
     baseUrl: 'BASE_URL',
-    elasticUrl: 'ELASTIC_URL'
+    elasticUrl: 'ELASTIC_URL',
+    swanUrl: 'SWAN_URL'
   },
   module: {
     rules: [
