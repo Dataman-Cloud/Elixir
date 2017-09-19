@@ -15,5 +15,9 @@ export default {
   [type.FETCH_TENANT_HOSTS] (state, hosts = []) {
     state.hosts.hosts = transformHost(hosts)
     state.hosts.total = state.hosts.hosts.length
+  },
+  [type.FETCH_SUBNETLIST] (state, subnets = []) {
+    state.subnets.subnets = subnets
+    state.subnets.total = subnets.length
   }
 }

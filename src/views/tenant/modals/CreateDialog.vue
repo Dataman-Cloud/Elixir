@@ -4,14 +4,20 @@
       <el-form-item label="租户名称" prop="name">
         <el-input v-model="form.name" auto-complete="off"></el-input>
       </el-form-item>
-      <el-form-item label="管理员名称" prop="username" v-show="!isUpdate">
+      <el-form-item label="管理员名称" prop="username" v-if="!isUpdate">
         <el-input v-model="form.username"></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="password" v-show="!isUpdate">
+      <el-form-item label="密码" prop="password" v-if="!isUpdate">
         <el-input type="password" v-model="form.password"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱" prop="email" v-show="!isUpdate">
+      <el-form-item label="邮箱" prop="email" v-if="!isUpdate">
         <el-input v-model="form.email"></el-input>
+      </el-form-item>
+      <el-form-item label="子网">
+        <el-select v-model="checkedSubnet" multiple placeholder="请选择子网">
+          <el-option v-for="item in subnetList" :key="item.netname" :value="item.id" :label="item.netname">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="备注" prop="desc">
         <el-input type="textarea" v-model="form.desc"></el-input>
@@ -26,16 +32,20 @@
 
 <script>
 import * as tenant from '@/api/tenant'
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
+      checkedSubnet: [],
       dialogVisible: false,
       form: {
         desc: '',
         email: '',
         name: '',
         password: '',
-        username: ''
+        username: '',
+        network: []
       },
       rules: {
         email: [
@@ -62,16 +72,17 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      subnetList (state) {
+        return state.tenant.subnets.subnets
+      }
+    }),
     isUpdate: function () {
       return !!this.tenant
     }
   },
   methods: {
-    close () {
-      this.resetForm()
-      this.submitLoading = false
-    },
-    open (tenant) {
+    async open (tenant) {
       this.form = tenant ? {
         name: tenant.name,
         desc: tenant.desc
@@ -79,14 +90,20 @@ export default {
         name: '',
         desc: ''
       }
+      this.checkedSubnet = tenant.mapper
       this.tenant = tenant
       this.$refs.dialog.open()
+    },
+    close () {
+      this.resetForm()
+      this.submitLoading = false
     },
     onSubmit () {
       this.$refs.form.validate(async (valid) => {
         if (valid) {
           this.submitLoading = true
           try {
+            this.form.network = this.checkedSubnet
             this.isUpdate ? await tenant.updateTenant(this.tenant.id, this.form) : await tenant.createTenant(this.form)
             this.dialogVisible = false
             this.$notify({ message: this.isUpdate ? '更新成功' : '创建成功' })

@@ -12,6 +12,10 @@ const state = {
   hosts: {
     hosts: [],
     total: 0
+  },
+  subnets: {
+    subnets: [],
+    total: 0
   }
 }
 
