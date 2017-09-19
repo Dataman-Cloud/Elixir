@@ -59,3 +59,21 @@ export function delHost (data) {
     data: data
   })
 }
+
+export function getSubnets () {
+  return fetch({
+    url: 'v1/tenants/getSubnets',
+    method: 'get'
+  })
+}
+
+export function getStaticIp (cidr, vclusterLabel) {
+  return fetch({
+    url: 'v1/tenants/getStaticIp',
+    method: 'get',
+    params: {
+      cidr: cidr,
+      vclusterLabel: vclusterLabel
+    }
+  })
+}
