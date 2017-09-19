@@ -90,7 +90,7 @@ export default {
         name: '',
         desc: ''
       }
-      this.checkedSubnet = tenant.mapper
+      this.checkedSubnet = tenant ? tenant.mapper : []
       this.tenant = tenant
       this.$refs.dialog.open()
     },

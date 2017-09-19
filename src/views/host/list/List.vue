@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table stripe :data="hostList" border tooltip-effect="dark" style="width: 100%">
-        <el-table-column prop="label" label="主机" show-overflow-tooltip>
+        <el-table-column prop="label.ip" label="主机" show-overflow-tooltip>
         </el-table-column>
       </el-table>
   </div>
