@@ -59,3 +59,10 @@ export function delHost (data) {
     data: data
   })
 }
+
+export function subnetList () {
+  return fetch({
+    url: `v1/simple/network`,
+    method: 'get'
+  })
+}

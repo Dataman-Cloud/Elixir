@@ -101,7 +101,8 @@ export default {
     ...mapActions({
       fetchTenants: type.FETCH_TENANTS,
       tenantHosts: type.FETCH_TENANT_HOSTS,
-      listHosts: hostType.FETCH_HOSTS
+      listHosts: hostType.FETCH_HOSTS,
+      subnetList: type.FETCH_SUBNETLIST
     }),
     async delTenant (id) {
       await Confirm.open(`确认删除该租户?`)
@@ -137,6 +138,7 @@ export default {
     },
     openCreate () {
       this.$refs.createDialog.open()
+      this.subnetList()
     },
     reload () {
       this.getTenants()
@@ -153,6 +155,7 @@ export default {
     },
     updateTenant (name) {
       this.$refs.createDialog.open(name)
+      this.subnetList()
     }
   },
   created () {

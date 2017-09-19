@@ -10,5 +10,9 @@ export default {
     let { data } = await api.hostList()
     commit(type.FETCH_TENANT_HOSTS, data)
     return data
+  },
+  async [type.FETCH_SUBNETLIST] ({ commit }) {
+    let { data } = await api.subnetList()
+    commit(type.FETCH_SUBNETLIST, data)
   }
 }
