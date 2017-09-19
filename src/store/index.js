@@ -15,6 +15,8 @@ import eams from './eams'
 import tenant from './tenant'
 import minihost from './minihost'
 import host from './host'
+import ipPools from './ip-pools'
+import networks from './networks'
 
 Vue.use(Vuex)
 
@@ -34,6 +36,8 @@ export default new Vuex.Store({
     eams,
     tenant,
     minihost,
-    host
+    host,
+    ipPools,
+    networks
   }
 })

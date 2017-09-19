@@ -43,6 +43,12 @@ const TenantList = () => import('../views/tenant/list/List')
 const UserLayout = () => import('../views/user')
 const UserList = () => import('../views/user/list/List')
 
+const IppoolsLayout = () => import('../views/ippools')
+const IppoolsList = () => import('../views/ippools/list/List')
+
+const NetworksLayout = () => import('../views/networks')
+const NetworksList = () => import('../views/networks/list/List')
+
 const OctCreate = () => import('../views/eams/octopus/Create')
 const SqdCreate = () => import('../views/eams/squid/Create')
 const OctList = () => import('../views/eams/octopus/List')
@@ -235,6 +241,36 @@ export const asyncRouterMap = [
         meta: { role: ['tenant-manager'] },
         children: [
           { path: 'list', component: TenantList, name: '租户列表' }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/network',
+    redirect: '/network/ippools',
+    name: '网络',
+    icon: 'fa fa-user-o',
+    component: Layout,
+    hasDropdown: true,
+    children: [
+      {
+        path: '/network/ippools',
+        redirect: '/network/ippools/list',
+        name: 'IP 池',
+        component: IppoolsLayout,
+        meta: { role: ['post-subnets'] },
+        children: [
+          { path: 'list', component: IppoolsList, name: 'IP池列表' }
+        ]
+      },
+      {
+        path: '/network/networks',
+        redirect: '/network/networks/list',
+        name: '子网络',
+        component: NetworksLayout,
+        meta: { role: ['post-network'] },
+        children: [
+          { path: 'list', component: NetworksList, name: '网络列表' }
         ]
       }
     ]

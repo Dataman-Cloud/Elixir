@@ -1,0 +1,2 @@
+export const FETCH_NETWORKS = 'FETCH_NETWORKS'
+

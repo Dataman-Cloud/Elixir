@@ -1,0 +1,2 @@
+export const FETCH_IPPOOLS = 'FETCH_IPPOOLS'
+
