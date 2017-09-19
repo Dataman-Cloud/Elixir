@@ -41,8 +41,8 @@
                 <i class="el-icon-caret-bottom el-icon--right"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :command="{type: 'distribute'}" v-if="scope.row.status === 0">分配</el-dropdown-item>
-                <el-dropdown-item :command="{type: 'delHost', data: scope.row.hostname}" v-if="scope.row.status === 3">回收</el-dropdown-item>
+                <el-dropdown-item :command="{type: 'distribute'}" v-if="scope.row.status === '0'">分配</el-dropdown-item>
+                <el-dropdown-item :command="{type: 'delHost', data: scope.row.hostname}" v-if="scope.row.status === '3'">回收</el-dropdown-item>
                 <el-dropdown-item :command="{type: 'maintain', data: scope.row.hostname}">维护</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
