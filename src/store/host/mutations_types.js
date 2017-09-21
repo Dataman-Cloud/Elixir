@@ -1,1 +1,2 @@
+export const FETCH_CLUSTER_HOSTS = 'FETCH_CLUSTER_HOSTS'
 export const FETCH_HOSTS = 'FETCH_HOSTS'
