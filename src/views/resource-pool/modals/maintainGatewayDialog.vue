@@ -50,6 +50,7 @@ export default {
           try {
             await resourcePool.maintain(this.form)
             this.dialogVisible = false
+            this.$emit('close')
           } catch (error) {
             this.submitLoading = false
           }
