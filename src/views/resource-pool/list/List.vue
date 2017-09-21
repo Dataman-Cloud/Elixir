@@ -55,6 +55,7 @@
 <script>
 import * as resourcePools from '@/api/resource-pool'
 import maintainGatewayDialog from '@/views/resource-pool/modals/maintainGatewayDialog'
+import Confirm from '@/utils/confirm'
 
 export default {
   components: {
@@ -79,8 +80,11 @@ export default {
     closeMaintain () {
       this.listHost()
     },
-    delHost (ip) {
+    async delHost (ip) {
+      await Confirm.open(`确认移除该主机吗?`)
       resourcePools.delHost({'ip': ip})
+      this.$notify({ message: '移除成功' })
+      await this.listHost()
     },
     distribute () {
       this.$router.push({name: '租户管理'})

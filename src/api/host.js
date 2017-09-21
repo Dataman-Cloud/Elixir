@@ -28,3 +28,11 @@ export function hostList () {
     method: 'get'
   })
 }
+
+export function removeHost (data) {
+  return fetch({
+    url: 'v1/tenants/giveupHost',
+    method: 'post',
+    data: data
+  })
+}
