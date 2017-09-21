@@ -5,32 +5,32 @@
       </el-table-column>
       <el-table-column label="集群">
         <template scope="scope">
-          <span v-if="scope.row.attributes.vcluster !== undefined">{{scope.row.attributes.vcluster}}</span>
-          <span v-else>-</span>
+          <span>{{scope.row.attributes.vcluster || '-'}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="version" label="Mesos版本" sortable width="130">
         <template scope="scope">
-          <span v-if="scope.row.version">{{scope.row.version}}</span>
-          <span v-else>-</span>
+          <span>{{scope.row.version || '-'}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="tenant" label="所属租户" sortable>
         <template scope="scope">
-          <span v-if="scope.row.tenantName">{{scope.row.tenantName}}</span>
-          <span v-else>-</span>
+          <span>{{scope.row.tenantName || '-'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="tenant" label="网卡" sortable>
+        <template scope="scope">
+          <span>{{scope.row.networkCard || '-'}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" sortable>
         <template scope="scope">
-          <span v-if="scope.row.createTime">{{scope.row.createTime | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-          <span v-else>-</span>
+          <span>{{scope.row.createTime | formatTime('{y}-{m}-{d} {h}:{i}:{s}') || '-'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="分配时间" sortable>
         <template scope="scope">
-          <span v-if="scope.row.assignTime">{{scope.row.assignTime | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
-          <span v-else>-</span>
+          <span>{{scope.row.assignTime | formatTime('{y}-{m}-{d} {h}:{i}:{s}') || '-'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -49,7 +49,7 @@
           </template>
         </el-table-column>
     </el-table>
-    <maintain-gateway-dialog ref="maintain"></maintain-gateway-dialog>
+    <maintain-gateway-dialog ref="maintain" @close="closeMaintain"></maintain-gateway-dialog>
   </div>
 </template>
 <script>
@@ -75,6 +75,9 @@ export default {
       } finally {
         this.listLoading = false
       }
+    },
+    closeMaintain () {
+      this.listHost()
     },
     delHost (ip) {
       resourcePools.delHost({'ip': ip})
