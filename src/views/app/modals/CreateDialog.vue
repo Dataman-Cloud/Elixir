@@ -21,6 +21,7 @@
           <el-radio-group v-model="form.container.docker.network" @change="networkChange">
             <el-radio label="bridge">网桥模式</el-radio>
             <el-radio label="host">HOST 模式</el-radio>
+            <el-radio label="swan">Static Ip</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="容器规格" class="spec">
@@ -78,6 +79,18 @@
               <i class="el-icon-delete"></i>
             </el-button>
           </el-row>
+        </el-form-item>
+
+        <el-form-item v-if="form.container.docker.network !=='host' && form.container.docker.network !=='bridge'" label="子网" prop="subnet">
+          <el-select v-model="form.subnet" @visible-change="selectSubnet" @change="getIps">
+            <el-option v-for="(subnet, index) in subnets" :key="index" :value="subnet" :label="subnet.netname"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item v-if="form.container.docker.network !=='host' && form.container.docker.network !=='bridge' && form.subnet" label="IP 池" prop="ips">
+          <el-select value-key="id" v-model="form.ips" multiple filterable placeholder="请输入关键词">
+            <el-option v-for="(staticIp, index) in staticIps" :key="index" :value="staticIp"></el-option>
+          </el-select>
         </el-form-item>
 
         <el-collapse accordion class="advance" v-model="activeCollapse">
@@ -311,6 +324,7 @@ import * as appUtil from '@/views/app/services/app'
 import * as fetchApp from '@/api/app'
 import * as type from '@/store/app/mutations_types'
 import * as cluster from '@/api/cluster'
+import * as tenant from '@/api/tenant'
 
 export default {
   data () {
@@ -322,7 +336,9 @@ export default {
       loading: false,
       id: null,
       activeCollapse: '',
-      clusters: []
+      clusters: [],
+      subnets: [],
+      staticIps: []
     }
   },
   computed: {
@@ -373,10 +389,6 @@ export default {
         })
       }
     },
-    setClusterConstraints () {
-      let clusterIndex = this.form.constraints.findIndex(item => item.attribute === 'vcluster')
-      this.form.constraints[clusterIndex].value = this.form.selectCluster
-    },
     close () {
       this.resetForm()
       this.submitLoading = false
@@ -385,6 +397,12 @@ export default {
       if (flag) {
         let {data} = await cluster.clusterList()
         this.clusters = data
+      }
+    },
+    async getIps (value) {
+      if (this.form.selectCluster && this.form.subnet) {
+        let { data } = await tenant.getStaticIp(value.cidr, this.form.selectCluster)
+        this.staticIps = data
       }
     },
     networkChange (netowrk) {
@@ -398,6 +416,9 @@ export default {
           this.setClusterConstraints()
           this.form.env = appUtil.transformEnvstoObj(this.form.envs)
           this.submitLoading = true
+          if (this.form.container.docker.network !== 'host' && this.form.container.docker.network !== 'bridge') {
+            this.form.container.docker.network = this.form.subnet.netname
+          }
           try {
             this.isUpdate ? await fetchApp.update(this.id, this.form) : await fetchApp.create(this.form)
             this.dialogVisible = false
@@ -436,8 +457,17 @@ export default {
       this.$delete(this.form, 'healthCheck')
     },
     resetForm () {
-      this.id = null
       this.$refs.form.resetFields()
+    },
+    setClusterConstraints () {
+      let clusterIndex = this.form.constraints.findIndex(item => item.attribute === 'vcluster')
+      this.form.constraints[clusterIndex].value = this.form.selectCluster
+    },
+    async selectSubnet (flag) {
+      if (flag) {
+        let { data } = await tenant.getSubnets()
+        this.subnets = data
+      }
     },
     uniqueHostname () {
       // TODO: 一容器一主机
@@ -456,6 +486,10 @@ export default {
       this.form.envs = appUtil.transformEnvtoArray(this.form.env)
       let vClusterConstraint = this.form.constraints.filter(item => item.attribute === 'vcluster')[0]
       this.form.selectCluster = vClusterConstraint ? vClusterConstraint.value : ''
+      if (formTemp.container.docker.network !== 'host' && formTemp.container.docker.network !== 'bridge') {
+        this.form.subnet = formTemp.container.docker.network
+        this.form.container.docker.network = 'swan'
+      }
     }
   },
   watch: {

@@ -49,6 +49,8 @@ export const APP_BASE = {
   instances: '',
   envs: [],
   env: {},
+  ips: [],
+  subnet: '',
   container: {
     type: 'DOCKER',
     docker: {
@@ -121,6 +123,12 @@ export const APP_FORM_RULES = {
   ],
   'container.docker.image': [
     { required: true, message: '镜像地址不能为空' }
+  ],
+  subnet: [
+    { required: true, message: '请选择子网' }
+  ],
+  ips: [
+    { required: true, message: 'IP 池不能为空' }
   ],
   cpus: [
     { required: true, message: 'cpu不能为空' },
