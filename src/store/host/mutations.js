@@ -8,8 +8,12 @@ function transformHost (hosts = []) {
 }
 
 export default {
+  [type.FETCH_CLUSTER_HOSTS] (state, clusterHosts = []) {
+    state.clusterHosts.clusterHosts = transformHost(clusterHosts)
+    state.clusterHosts.total = state.clusterHosts.clusterHosts.length
+  },
   [type.FETCH_HOSTS] (state, hosts = []) {
-    state.hosts.hosts = transformHost(hosts)
-    state.hosts.total = state.hosts.hosts.length
+    state.hosts.hosts = hosts
+    state.hosts.total = hosts.length
   }
 }

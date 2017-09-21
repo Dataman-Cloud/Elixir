@@ -107,7 +107,7 @@ export default {
         return state.cluster.clusters.clusters
       },
       hostList (state) {
-        return state.host.hosts.hosts
+        return state.host.clusterHosts.clusterHosts
       }
     }),
     filterClusters: function () {
@@ -118,7 +118,7 @@ export default {
     ...mapActions({
       fetchClusters: type.FETCH_CLUSTERS,
       fetchDelCluster: type.FETCH_DEL_CLUSTER,
-      listHosts: hostType.FETCH_HOSTS
+      listHosts: hostType.FETCH_CLUSTER_HOSTS
     }),
     async addHost (name) {
       this.name = name

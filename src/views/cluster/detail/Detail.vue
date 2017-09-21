@@ -89,14 +89,14 @@ export default {
   computed: {
     ...mapState({
       hostList (state) {
-        return state.host.hosts.hosts
+        return state.host.clusterHosts.clusterHosts
       }
     })
   },
   methods: {
     ...mapActions({
       fetchCluster: type.FETCH_CLUSTER,
-      listHosts: hostType.FETCH_HOSTS
+      listHosts: hostType.FETCH_CLUSTER_HOSTS
     }),
     async addHost () {
       await this.listHosts()
