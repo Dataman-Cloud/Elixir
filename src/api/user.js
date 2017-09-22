@@ -95,9 +95,9 @@ export function getUser (accountId) {
   })
 }
 
-export function updatePwd (data) {
+export function updatePwd (accountId, data) {
   return fetch({
-    url: 'v1/accounts/password',
+    url: `v1/accounts/${accountId}/resetpassword`,
     method: 'put',
     data: data
   })

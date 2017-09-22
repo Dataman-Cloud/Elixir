@@ -45,7 +45,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="{type: 'updateUser', data: scope.row}">编辑</el-dropdown-item>
               <el-dropdown-item v-if="isTenant" :command="{type: 'updateGroup', data: scope.row}">编辑组</el-dropdown-item>
-              <el-dropdown-item :command="{type: 'updatePsd'}">修改密码</el-dropdown-item>
+              <el-dropdown-item :command="{type: 'updatePsd', data: scope.row.id}">修改密码</el-dropdown-item>
               <el-dropdown-item :command="{type: 'delUser', data: scope.row}">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -126,7 +126,7 @@ export default {
           this.updateGroup(data)
           break
         case 'updatePsd':
-          this.updatePsd()
+          this.updatePsd(data)
           break
         case 'delUser':
           this.delUser(data)
@@ -147,8 +147,8 @@ export default {
     updateGroup (row) {
       this.$refs.EditorGroupDialog.open(row.id)
     },
-    updatePsd () {
-      this.$refs.ChangePasswordDialog.open()
+    updatePsd (id) {
+      this.$refs.ChangePasswordDialog.open(id)
     }
   },
   mounted () {
