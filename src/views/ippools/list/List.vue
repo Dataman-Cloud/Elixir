@@ -17,13 +17,21 @@
     <Create-Dialog ref="CreateDialog" @close="reload"></Create-Dialog>
 
     <el-table ref="ippoolsTable" :data="filterIpPools" border tooltip-effect="dark" style="width: 100%" v-loading="listLoading">
+      <el-table-column type="expand">
+        <template scope="ippools">
+          <el-table :data="ippools.row.ips" border tooltip-effect="dark" style="width: 100%">
+            <el-table-column prop="ip" label="ip" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="status" label="使用情况" show-overflow-tooltip>
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-table-column>
       <el-table-column prop="id" label="id">
       </el-table-column>
       <el-table-column prop="cidr" label="cidr">
       </el-table-column>
-      <el-table-column prop="ip_start" label="ip_start">
-      </el-table-column>
-      <el-table-column prop="ip_end" label="ip_end">
+      <el-table-column prop="ips.length" label="总数">
       </el-table-column>
     </el-table>
   </div>
@@ -76,9 +84,18 @@ export default {
     transformObjToArr (obj) {
       var arr = []
       for (var i in obj) {
-        arr.push(obj[i].subnet)
+        arr[arr.length] = obj[i].subnet
+        arr[arr.length - 1].ips = this.transformArrToObj(obj[i].ips)
       }
       return arr
+    },
+    transformArrToObj (arr) {
+      return arr.map(item => {
+        return {
+          ip: item[0],
+          status: item[1] === 'true' ? '已使用' : '未使用'
+        }
+      })
     }
   },
   mounted () {
