@@ -1,66 +1,31 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="6">
-        <el-card :body-style="{ padding: '0px' }">
+      <el-col :span="10">
           <div style="padding: 14px;">
             <div class="card-title">主机</div>
             <div>
               <pie-chart id="host" height='290px' width='100%' :legend="legend" :serieDatas="serieDatas"></pie-chart>
             </div>
           </div>
-        </el-card>
-      </el-col>
-      <el-col :span="6" :offset="2">
-        <el-card :body-style="{ padding: '0px' }">
-          <div style="padding: 14px;">
-            <div class="card-title">应用</div>
-            <div style="width:100%;height:290px;">
-              <h2 class="card-num">1</h2>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="6" :offset="2">
-        <el-card :body-style="{ padding: '0px' }">
-          <div style="padding: 14px;">
-            <div class="card-title">容器</div>
-            <div style="width:100%;height:290px;">
-              <h1 class="card-num">2</h1>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-row style="margin-top:20px;">
-      <el-col :span="24">
-        <h1 class="dashboard-title">
-          资源使用量
-        </h1>
-      </el-col>
-      <el-col :span="10">
-        <el-card :body-style="{ padding: '0px' }">
-          <div style="padding: 14px;">
-            <div class="card-title">CPU使用量</div>
-            <bar-chart id="cpu" width='100%' height='300px'></bar-chart>
-          </div>
-        </el-card>
       </el-col>
       <el-col :span="10" :offset="2">
-        <el-card :body-style="{ padding: '0px' }">
           <div style="padding: 14px;">
-            <div class="card-title">内存使用量</div>
-            <bar-chart id="mem" width='100%' height='300px'></bar-chart>
+            <div class="card-title">集群</div>
+            <div style="width:100%;height:290px;">
+              <h2 class="card-num">{{clusterNumber}}</h2>
+            </div>
           </div>
-        </el-card>
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
 import LineChart from '@/components/charts/Line'
 import PieChart from '@/components/charts/Pie'
 import BarChart from '@/components/charts/Bar'
+import * as type from '@/store/host/mutations_types'
 
 export default {
   components: {
@@ -71,16 +36,46 @@ export default {
   data () {
     return {
       currentDate: new Date(),
-      legend: ['正常数', '异常数', '健康'],
+      legend: ['有集群', '无集群'],
       serieDatas: [
-        { value: 335, name: '正常数' },
-        { value: 310, name: '异常数' },
-        { value: 200, name: '健康' }
+        { value: 335, name: '有集群' },
+        { value: 310, name: '无集群' }
       ],
-      title: '主机数',
       bar: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      cpuSeries: [10, 52, 200, 334, 390, 330, 220]
+      cpuSeries: [10, 52, 200, 334, 390, 330, 220],
+      clusterNumber: 0
     }
+  },
+  computed: {
+    ...mapState({
+      hostList (state) {
+        return state.host.hosts.hosts
+      }
+    })
+  },
+  methods: {
+    ...mapActions({
+      listHosts: type.FETCH_HOSTS
+    }),
+    async init () {
+      await this.listHosts()
+      let clusterArr = []
+      let hasCluster = 0
+      this.hostList.forEach(function (item, index) {
+        if (clusterArr.indexOf(item.clusterLabel) === -1) {
+          clusterArr.push(item.clusterLabel)
+        }
+        hasCluster += item.clusterLabel ? 1 : 0
+      })
+      this.clusterNumber = clusterArr.length
+      this.serieDatas = [
+        { value: hasCluster, name: '有集群' },
+        { value: this.hostList.length - hasCluster, name: '无集群' }
+      ]
+    }
+  },
+  mounted () {
+    this.init()
   }
 }
 </script>

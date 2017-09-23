@@ -3,11 +3,11 @@
   </component>
 </template>
 <script>
-import { Member, Owner, Platform, Tenant } from './pages/index'
+import { Owner, Platform, Tenant } from './pages/index'
 import { mapGetters } from 'vuex'
 export default {
   components: {
-    member: Member,
+    member: Owner,
     owner: Owner,
     platform: Platform,
     tenant: Tenant
