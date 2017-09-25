@@ -19,22 +19,30 @@
             首页
           </el-dropdown-item>
         </router-link>
+        <el-dropdown-item v-if="isPlatform" divided>
+          <span @click="openDialog" style="display:block;">权限管理</span>
+        </el-dropdown-item>
         <el-dropdown-item divided>
           <span @click="exit" style="display:block;">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+
+    <Rights-Management-Dialog ref="rightsManagement"></Rights-Management-Dialog>
+
   </el-menu>
 </template>
 
 <script>
 import Breadcrumb from './Breadcrumb'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import * as type from '@/store/user/mutations_types'
+import RightsManagementDialog from '@/views/layout/modals/RightsManagementDialog'
 
 export default {
   components: {
-    Breadcrumb
+    Breadcrumb,
+    RightsManagementDialog
   },
   data () {
     return {
@@ -46,7 +54,10 @@ export default {
       isCollapse: state => state.user.isCollapse,
       accountGroups: state => state.user.accountGroups,
       currentGroupId: state => state.user.currentGroupId
-    })
+    }),
+    ...mapGetters([
+      'isPlatform'
+    ])
   },
   methods: {
     ...mapActions({
@@ -54,15 +65,18 @@ export default {
       setCollapse: type.SET_COLLAPSE,
       switchGroup: type.SWITCH_USER_GROUP
     }),
-    changeGroup (groupId) {
-      this.switchGroup(groupId)
-    },
-    toggleSideBar () {
-      this.setCollapse(!this.isCollapse)
-    },
     async exit () {
       await this.logout()
       location.reload()
+    },
+    changeGroup (groupId) {
+      this.switchGroup(groupId)
+    },
+    openDialog () {
+      this.$refs.rightsManagement.open()
+    },
+    toggleSideBar () {
+      this.setCollapse(!this.isCollapse)
     }
   }
 }
@@ -85,7 +99,7 @@ export default {
     margin-left: 15px;
     cursor: pointer;
   }
-  .userGroup{
+  .userGroup {
     width: 180px;
   }
   .avatar-container {
