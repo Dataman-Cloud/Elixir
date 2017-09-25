@@ -1,6 +1,20 @@
 <template>
   <div>
     <el-table stripe :data="hostList" border tooltip-effect="dark" style="width: 100%">
+      <el-table-column type="expand">
+        <template scope="resourcepools">
+          <el-table :data="resourcepools.row.detail" border tooltip-effect="dark" style="width: 100%">
+            <el-table-column prop="name" label="名称" width="120">
+            </el-table-column>
+            <el-table-column prop="sum" label="总量" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="used" label="使用量" show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column prop="rest" label="剩余量" show-overflow-tooltip>
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-table-column>
       <el-table-column prop="hostname" label="IP">
       </el-table-column>
       <el-table-column label="集群">
@@ -72,7 +86,7 @@ export default {
       this.listLoading = true
       try {
         let {data} = await resourcePools.hostList()
-        this.hostList = data
+        this.hostList = this.transformObjToArr(data)
       } finally {
         this.listLoading = false
       }
@@ -94,6 +108,23 @@ export default {
     },
     maintain (ip) {
       this.$refs.maintain.open(ip)
+    },
+    transformObjToArr (obj, attr) {
+      return obj.map(item => {
+        item.detail = [{
+          name: 'cpus',
+          sum: item.resources.cpus,
+          used: item.used_resources.cpus,
+          rest: item.resources.cpus - item.used_resources.cpus
+        },
+        {
+          name: '内存(MB)',
+          sum: item.resources.mem,
+          used: item.used_resources.mem,
+          rest: item.resources.mem - item.used_resources.mem
+        }]
+        return item
+      })
     }
   },
   mounted () {
