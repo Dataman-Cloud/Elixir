@@ -83,15 +83,15 @@
     <dl class="detail-config">
       <dt>健康检查</dt>
       <dd>
-        <template v-if="version.healthChecks.length">
-          <el-table :data="version.healthChecks" stripe style="width: 100%;">
+        <template v-if="version.healthCheck.length">
+          <el-table :data="version.healthCheck" stripe style="width: 100%;">
             <el-table-column prop="protocol" label="协议"></el-table-column>
             <el-table-column prop="gracePeriodSeconds" label="宽限时间" width="100"></el-table-column>
             <el-table-column prop="intervalSeconds" label="检查间隔" width="100"></el-table-column>
             <el-table-column prop="timeoutSeconds" label="检查超时" width="100"></el-table-column>
-            <el-table-column prop="maxConsecutiveFailures" label="最多持续失败次数" width="150"></el-table-column>
-            <el-table-column prop="ignoreHttp1xx" label="端口类型" width="100"></el-table-column>
-            <el-table-column prop="portIndex" label="端口号" width="80"></el-table-column>
+            <el-table-column prop="maxConsecutiveFailures" label="最多持续失败次数" width="160"></el-table-column>
+            <el-table-column prop="delaySeconds" label="延迟时间" width="100"></el-table-column>
+            <el-table-column prop="path" label="路径" width="80"></el-table-column>
           </el-table>
         </template>
         <span v-else>-</span>
@@ -157,6 +157,7 @@ export default {
   computed: {
     ...mapState({
       version ({app}) {
+        app.app.version.healthCheck = [app.app.version.healthCheck]
         return app.app.version
       }
     })
