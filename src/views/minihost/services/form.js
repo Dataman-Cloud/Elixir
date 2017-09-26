@@ -91,7 +91,7 @@ export function getSubmitForm () {
       {
         "attribute": "vcluster",
         "operator": "==",
-        "value": "gzteam"
+        "value": "eams"
       }
     ],
     "container": {

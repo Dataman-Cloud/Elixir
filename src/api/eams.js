@@ -60,3 +60,10 @@ export function deleteComposeNg (name) {
     method: 'delete'
   })
 }
+
+export function clusterList () {
+  return fetch({
+    url: 'v1/clusters',
+    method: 'get'
+  })
+}
