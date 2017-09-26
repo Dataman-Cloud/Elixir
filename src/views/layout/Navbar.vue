@@ -12,6 +12,7 @@
       <div class="avatar-wrapper">
         <i style="font-size:24px;" class="fa fa-user-circle" aria-hidden="true"></i>
         <i class="el-icon-caret-bottom el-icon-caret-center"></i>
+        <span class="userName">{{user.name}}</span>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class='inlineBlock' to="/">
@@ -53,7 +54,10 @@ export default {
     ...mapState({
       isCollapse: state => state.user.isCollapse,
       accountGroups: state => state.user.accountGroups,
-      currentGroupId: state => state.user.currentGroupId
+      currentGroupId: state => state.user.currentGroupId,
+      user (state) {
+        return state.user
+      }
     }),
     ...mapGetters([
       'isPlatform'
@@ -101,6 +105,16 @@ export default {
   }
   .userGroup {
     width: 180px;
+  }
+  .userName {
+    display: inline-block;
+    padding: 0 5px;
+    width: 60px;
+    overflow: hidden;
+    height: 30px;
+    line-height: 43px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .avatar-container {
     height: 50px;
