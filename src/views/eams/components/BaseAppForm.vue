@@ -37,6 +37,13 @@
             </el-radio-group>
           </el-form-item>
 
+          <!-- 集群 -->
+          <el-form-item label="选择集群" prop="cluster">
+            <el-select @visible-change="selectCluster" v-model="form.cluster">
+              <el-option v-for="(cluster,index) in clusters" :key="index" :value="cluster.clusterLabel" :label="cluster.clusterLabel"></el-option>
+            </el-select>
+          </el-form-item>
+
           <!-- zookeeper地址 -->
           <!-- <el-form-item label="zookeeper地址">
             <el-button type="primary" size="small" @click="addZK('parameters')">添加 zookeeper 地址</el-button>
@@ -189,6 +196,7 @@
 import * as form from '@/views/eams/services/form'
 import * as eams from '@/api/eams'
 import * as handle from '@/views/eams/services/handle'
+import { mapState } from 'vuex'
 export default {
   name: 'base-app-form',
   data () {
@@ -206,10 +214,15 @@ export default {
       imgBackloading: false,
       imgTagBackloading: false,
       ipRule: form.ipRule,
-      routerAfterSubmit: 'app'
+      routerAfterSubmit: 'app',
+      clusters: []
     }
   },
   computed: {
+    ...mapState({
+      userId: state => state.user.id,
+      currentGroupId: state => state.user.currentGroupId
+    }),
     zkDelete () {
       return this.form.zookeeperList.length < 2
     }
@@ -263,6 +276,10 @@ export default {
         this.tagsBack = data
       })
     },
+    async selectCluster () {
+      let { data } = await eams.clusterList()
+      this.clusters = data
+    },
     submit () {
       this.$refs.form.validate((valid) => {
         console.log(valid)
@@ -276,7 +293,7 @@ export default {
     },
     formatYmlForm (pageForm) {
       let submitForm = form.newComposeForm()
-      return handle.formatYmlOctForm(pageForm, submitForm)
+      return handle.formatYmlOctForm(pageForm, submitForm, this)
     }
   }
 }

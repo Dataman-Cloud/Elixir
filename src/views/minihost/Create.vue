@@ -128,7 +128,7 @@
                 <el-form-item label="挂载" prop="cmd">
                   <el-row :gutter="10">
                     <el-col :span="20">
-                      <el-form-item prop="containerPath" :rules="[{ required: true, message: '容器路径不能为空' }]">
+                      <el-form-item prop="containerPath">
                         <el-input v-model="form.containerPath">
                           <template slot="prepend">容器路径</template>
                         </el-input>
@@ -141,7 +141,7 @@
                 <el-form-item label=" ">
                   <el-row :gutter="10">
                     <el-col :span="20">
-                      <el-form-item prop="hostPath" :rules="[{ required: true, message: '主机路径不能为空' }]">
+                      <el-form-item prop="hostPath">
                         <el-input v-model="form.hostPath">
                           <template slot="prepend">主机路径</template>
                         </el-input>

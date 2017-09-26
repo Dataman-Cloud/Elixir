@@ -61,13 +61,15 @@ function formatPort (form, submitForm) {
 }
 
 function formatVolume (form, submitForm) {
-  submitForm.container.volumes = [
-    {
-      hostPath: form.hostPath,
-      containerPath: form.containerPath,
-      mode: form.volumeMode
-    }
-  ]
+  if (form.containerPath && form.hostPath) {
+    submitForm.container.volumes = [
+      {
+        hostPath: form.hostPath,
+        containerPath: form.containerPath,
+        mode: form.volumeMode
+      }
+    ]
+  }
 }
 
 function formatCMD (form, submitForm) {
