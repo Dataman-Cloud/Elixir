@@ -195,10 +195,12 @@ export default {
 .link-button {
   color: #fff;
   text-decoration: none;
+  background-color: #20a0ff;
+  border-color: #20a0ff;
 }
 
 .link-button:hover {
-  background-color: #358577;
-  border-color: #358577;
+    background: #4db3ff;
+    border-color: #4db3ff;
 }
 </style>
