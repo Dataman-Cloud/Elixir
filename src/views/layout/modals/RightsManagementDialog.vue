@@ -1,5 +1,6 @@
 <template>
   <el-dialog title="权限管理" v-model="dialogVisible" size="small" ref="dialog">
+
     <el-form ref="form" :model="form" label-width="50px">
       <el-form-item label="角色" style="width:283px">
         <el-select v-model="form.role" placeholder="请选择" @change="listLimits(form.role)">
@@ -8,6 +9,10 @@
         </el-select>
       </el-form-item>
     </el-form>
+    <el-alert
+    title="友情提示:该操作仅限平台管理员，对权限管理，请谨慎操作"
+    type="info" :closable="false" show-icon style="position:absolute;right:20px;top:90px;width:43%;height:20px;line-height:15px;margin-bottom:10px;">
+  </el-alert>
     <div>
       <el-transfer v-model="rightLimit" :data="limitsList" :titles="['选择权限','已有权限']"></el-transfer>
     </div>
@@ -66,3 +71,4 @@ export default {
   }
 }
 </script>
+

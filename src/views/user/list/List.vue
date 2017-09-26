@@ -5,7 +5,7 @@
         <el-button type="primary" @click="reload">
           <i class="glyphicon glyphicon-repeat"></i>
         </el-button>
-        <el-button type="primary" @click="openCreate">
+        <el-button type="primary" @click="openCreate" :disabled="isPlatform">
           <i class="ion-ios-plus-outline"></i> 新建用户
         </el-button>
       </span>
@@ -21,6 +21,11 @@
     <el-table ref="userTable" :data="filterUsers" border tooltip-effect="dark" style="width: 100%" v-loading="listLoading">
       <el-table-column prop="userName" label="用户名" width="120">
       </el-table-column>
+      <el-table-column label="姓名" width="120">
+        <template scope="name">
+          <span>{{ name.row.name || '-'}}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="email" label="邮箱">
       </el-table-column>
       <el-table-column prop="currentGroupName" label="所属组">
@@ -33,7 +38,12 @@
           <span>{{scope.row.createAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="250">
+      <el-table-column label="操作" width="250" v-if="isPlatform">
+        <template scope="scope">
+          <el-button size="small" @click="updatePsd(scope.row.id)">修改密码</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="250" v-else>
         <template scope="scope">
           <el-button v-if="scope.row.status === 0" size="small" @click="enableUser(scope.row)">启动</el-button>
           <el-button v-else size="small" @click="disableUser(scope.row)">停止</el-button>
@@ -78,6 +88,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'isPlatform',
       'isTenant'
     ]),
     ...mapState({
@@ -86,7 +97,7 @@ export default {
       }
     }),
     filterUsers: function () {
-      return this.searchWord ? this.users.filter(user => user.name.toLowerCase().includes(this.searchWord)) : this.users
+      return this.searchWord ? this.users.filter(user => user.userName.toLowerCase().includes(this.searchWord)) : this.users
     }
   },
   methods: {
