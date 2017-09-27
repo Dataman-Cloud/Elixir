@@ -43,7 +43,6 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import LineChart from '@/components/charts/Line'
 import PieChart from '@/components/charts/Pie'
 import BarChart from '@/components/charts/Bar'
 import * as clusterType from '@/store/cluster/mutations_types'
@@ -52,14 +51,10 @@ import * as appType from '@/store/app/mutations_types'
 export default {
   components: {
     PieChart,
-    LineChart,
     BarChart
   },
   data () {
     return {
-      bar: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      cpuSeries: [10, 52, 200, 334, 390, 330, 220],
-      currentDate: new Date(),
       legend: ['使用中', '未使用'],
       name: '应用个数',
       serieDatas: [

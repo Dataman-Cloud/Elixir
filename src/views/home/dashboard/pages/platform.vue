@@ -45,23 +45,16 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import LineChart from '@/components/charts/Line'
 import PieChart from '@/components/charts/Pie'
-import BarChart from '@/components/charts/Bar'
 import * as tenantType from '@/store/tenant/mutations_types'
 import * as resourcePools from '@/api/resource-pool'
 
 export default {
   components: {
-    PieChart,
-    LineChart,
-    BarChart
+    PieChart
   },
   data () {
     return {
-      bar: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      cpuSeries: [10, 52, 200, 334, 390, 330, 220],
-      currentDate: new Date(),
       hostLoading: false,
       legend: ['未分配', '正在使用', '可回收'],
       serieDatas: [

@@ -22,16 +22,12 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import LineChart from '@/components/charts/Line'
 import PieChart from '@/components/charts/Pie'
-import BarChart from '@/components/charts/Bar'
 import * as type from '@/store/host/mutations_types'
 
 export default {
   components: {
-    PieChart,
-    LineChart,
-    BarChart
+    PieChart
   },
   data () {
     return {
@@ -41,8 +37,6 @@ export default {
         { value: 335, name: '有集群' },
         { value: 310, name: '无集群' }
       ],
-      bar: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      cpuSeries: [10, 52, 200, 334, 390, 330, 220],
       clusterNumber: 0
     }
   },
@@ -62,7 +56,7 @@ export default {
       let clusterArr = []
       let hasCluster = 0
       this.hostList.forEach(function (item, index) {
-        if (clusterArr.indexOf(item.clusterLabel) === -1) {
+        if (item.clusterLabel && clusterArr.indexOf(item.clusterLabel) === -1) {
           clusterArr.push(item.clusterLabel)
         }
         hasCluster += item.clusterLabel ? 1 : 0
