@@ -64,22 +64,24 @@ function formatZookeeperList (form, submitForm) {
 }
 
 function formatMysql (form, submitForm) {
-  submitForm.envs.MYSQL_URL = `jdbc:mysql://${form.mysql.ip}:${form.mysql.port}/saturn_console?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true`
+  submitForm.envs.MYSQL_URL = `jdbc:mysql://${form.mysql.ip}:${form.mysql.port}/Octopus_Test?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true`
   submitForm.envs.SPRING_DATASOURCE_USERNAME = form.mysql.username
-  submitForm.envs.SRPING_DATASOURCE_PASSWORD = form.mysql.password
+  submitForm.envs.SPRING_DATASOURCE_PASSWORD = form.mysql.password
 }
 
 function formatImage (form, submitForm) {
-  console.log(form)
   let WEB_IMG = `${form.image.Image}:${form.image.tag}`
   let CONSOLE_IMG = `${form.imageB.Image}:${form.imageB.tag}`
-  submitForm.yamlText.replace(/octopus-console:1.2.1/g, WEB_IMG)
-  submitForm.yamlText.replace(/octopus-api:1.2.1/g, CONSOLE_IMG)
+  submitForm.yamlText = submitForm.yamlText.replace(/octopusconsoleimg/g, WEB_IMG)
+  submitForm.yamlText = submitForm.yamlText.replace(/octopusapiimg/g, CONSOLE_IMG)
 }
 
 function formatPort (form, submitForm) {
-  let portStr = `${form.port}\n`
-  submitForm.yamlText.replace(/39088\n/g, portStr)
+  // console.log(form.port)
+  let portStr = `${form.port}`
+  submitForm.envs.CONSOLE_PORT = portStr
+  // submitForm.yamlText.replace(/CONSOLEPORT/g, portStr)
+  // console.log(submitForm.yamlText)
 }
 
 function formatCluster (form, submitForm) {
