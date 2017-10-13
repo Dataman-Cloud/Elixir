@@ -13,19 +13,35 @@
         <el-button type="primary" @click="openExtend" :disabled="!currentRow">
           <i class="el-icon-edit"></i> 扩展应用
         </el-button>
-        <el-button type="primary" @click="start" :disabled="disableStart">
-          <i class="fa fa-play-circle-o"></i> 启动
-        </el-button>
-        <el-button type="primary" @click="stop" :disabled="disableStop">
-          <i class="fa fa-power-off"></i>停止
-        </el-button>
-        <el-button type="primary" @click="openGrayReleased" :disabled="disableCanary">
-          <i class="fa fa-adjust"></i>灰度发布
-        </el-button>
-        <el-button type="primary" @click="openWeight" :disabled="disableWeight">
-          <i class="fa fa-balance-scale"></i> 权重</el-button>
         <el-button type="danger" @click="openDelete" :disabled="!currentRows.length">
           <i class="ion-ios-minus-outline"></i> 删除应用</el-button>
+        <el-dropdown trigger="click" style="margin-left:10px">
+          <el-button type="primary">
+            更多操作
+            <i class="el-icon-more el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <el-button @click="start" :disabled="disableStart" style="width:100%;text-align:left">
+                <i class="fa fa-play-circle-o"></i> 启动
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <el-button @click="stop" :disabled="disableStop" style="width:100%;text-align:left">
+                <i class="fa fa-power-off"></i> 停止
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <el-button @click="openGrayReleased" :disabled="disableCanary" style="width:100%;text-align:left">
+                <i class="fa fa-adjust"></i> 灰度发布
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <el-button @click="openWeight" :disabled="disableWeight" style="width:100%;text-align:left">
+                <i class="fa fa-balance-scale"></i> 权重</el-button>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </span>
 
       <el-button-group style="display: flex">
