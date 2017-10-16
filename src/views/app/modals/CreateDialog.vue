@@ -6,7 +6,7 @@
           <el-input :disabled="isUpdate" v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="集群" prop="selectCluster">
-          <el-select @visible-change="clusterList" v-model="form.selectCluster" :disabled="isUpdate" >
+          <el-select @visible-change="clusterList" v-model="form.selectCluster" :disabled="isUpdate">
             <el-option v-for="(cluster, index) in clusters" :key="index" :value="cluster.clusterLabel" :label="cluster.clusterLabel"></el-option>
           </el-select>
         </el-form-item>
@@ -43,8 +43,8 @@
             </el-col>
           </el-row>
         </el-form-item>
-        <el-form-item label="容器个数" prop="instances">
-          <el-input type="number" v-model.number="form.instances" :disabled="isUpdate"></el-input>
+        <el-form-item label="容器个数" :prop="taskCount">
+          <el-input type="number" v-model.number="taskCount" :disabled="isUpdate"></el-input>
           <!-- <el-checkbox v-model="form.oneContainer" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox> -->
         </el-form-item>
         <el-form-item label="挂载路径">
@@ -92,7 +92,45 @@
             <el-option v-for="(staticIp, index) in staticIps" :key="index" :value="staticIp"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="服务端口">
+          <el-row :gutter="5">
+            <el-col :span="9">
+              <el-button type="primary" size="small" @click="addConfig('portMappings')">添加应用端口地址</el-button>
+            </el-col>
+          </el-row>
+        </el-form-item>
 
+        <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings" :key="index" class="wrapContainerRow">
+          <el-row :gutter="12">
+            <el-col :span="9">
+              <el-form-item :prop="'container.docker.portMappings.' + index + '.' + hostPort" :key="portMapping.index" :rules="[{ required: true, message: '容器端口不能为空' },{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
+                <el-input v-model.number="portMapping[hostPort]">
+                  <template slot="prepend">端口号</template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="9">
+              <el-form-item :prop="'container.docker.portMappings.' + index + '.protocol'" :key="portMapping.index">
+                <el-select v-model="portMapping.protocol">
+                  <el-option value="tcp">tcp</el-option>
+                  <el-option value="udp">udp</el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="9">
+              <el-form-item :prop="'container.docker.portMappings.' + index + '.name'" :key="portMapping.index" :rules="[{ required: true, message: '端口名不能为空' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
+                <el-input v-model="portMapping.name">
+                  <template slot="prepend">端口名</template>
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="2">
+              <el-button @click.prevent="removeConfig(index, 'portMappings')">
+                <i class="el-icon-delete"></i>
+              </el-button>
+            </el-col>
+          </el-row>
+        </el-form-item>
         <el-collapse accordion class="advance" v-model="activeCollapse">
           <el-collapse-item name="advance" title="高级设置">
 
@@ -120,47 +158,6 @@
                 </el-col>
               </el-row>
             </el-form-item>
-
-            <el-form-item label="端口映射">
-              <el-row :gutter="5">
-                <el-col :span="9">
-                  <el-button type="primary" size="small" @click="addConfig('portMappings')">添加应用端口地址</el-button>
-                </el-col>
-              </el-row>
-            </el-form-item>
-
-            <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings" :key="index" class="wrapContainerRow">
-              <el-row :gutter="12">
-                <el-col :span="9">
-                  <el-form-item :prop="'container.docker.portMappings.' + index + '.containerPort'" :key="portMapping.index" :rules="[{ required: true, message: '容器端口不能为空' },{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
-                    <el-input v-model.number="portMapping.containerPort">
-                      <template slot="prepend">容器端口</template>
-                    </el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="9">
-                  <el-form-item :prop="'container.docker.portMappings.' + index + '.protocol'" :key="portMapping.index">
-                    <el-select v-model="portMapping.protocol">
-                      <el-option value="tcp">tcp</el-option>
-                      <el-option value="udp">udp</el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="9">
-                  <el-form-item :prop="'container.docker.portMappings.' + index + '.name'" :key="portMapping.index" :rules="[{ required: true, message: '端口名不能为空' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
-                    <el-input v-model="portMapping.name">
-                      <template slot="prepend">端口名</template>
-                    </el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="2">
-                  <el-button @click.prevent="removeConfig(index, 'portMappings')">
-                    <i class="el-icon-delete"></i>
-                  </el-button>
-                </el-col>
-              </el-row>
-            </el-form-item>
-
             <el-form-item label="健康检查" v-if="form.container.docker.portMappings.length">
               <el-row :gutter="5">
                 <el-col :span="9">
@@ -342,11 +339,17 @@ export default {
     }
   },
   computed: {
+    hostPort () {
+      return this.form.container.docker.network === 'host' ? 'hostPort' : 'containerPort'
+    },
     hasPortMapping: function () {
       return !!this.form.container.docker.portMappings.length
     },
     isUpdate: function () {
       return !!this.id
+    },
+    taskCount () {
+      return this.isUpdate ? this.form.task_count : this.form.instances
     }
   },
   directives: {
@@ -395,7 +398,7 @@ export default {
     },
     async clusterList (flag) {
       if (flag) {
-        let {data} = await cluster.clusterList()
+        let { data } = await cluster.clusterList()
         this.clusters = data
       }
     },
@@ -417,7 +420,7 @@ export default {
           this.form.env = appUtil.transformEnvstoObj(this.form.envs)
           this.submitLoading = true
           if (this.form.container.docker.network !== 'host' && this.form.container.docker.network !== 'bridge') {
-            this.form.container.docker.network = this.form.subnet.netname
+            this.form.container.docker.network = typeof this.form.subnet === 'object' ? this.form.subnet.netname : this.form.subnet
           }
           try {
             this.isUpdate ? await fetchApp.update(this.id, this.form) : await fetchApp.create(this.form)
@@ -486,6 +489,7 @@ export default {
       this.form.envs = appUtil.transformEnvtoArray(this.form.env)
       let vClusterConstraint = this.form.constraints.filter(item => item.attribute === 'vcluster')[0]
       this.form.selectCluster = vClusterConstraint ? vClusterConstraint.value : ''
+      this.form.task_count = initFetchData.data.task_count + ''
       if (formTemp.container.docker.network !== 'host' && formTemp.container.docker.network !== 'bridge') {
         this.form.subnet = formTemp.container.docker.network
         this.form.container.docker.network = 'swan'
