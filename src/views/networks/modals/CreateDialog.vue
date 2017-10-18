@@ -36,13 +36,16 @@ export default {
       },
       rules: {
         cidr: [
-          { required: true }
+          { required: true, message: '请输入cidr' },
+          { pattern: /^((1[0-9][0-9]\.)|(2[0-4][0-9]\.)|(25[0-5]\.)|([1-9][0-9]\.)|([0-9]\.)){3}((1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])|([1-9][0-9])|([0-9]))\/(3[0-6]|[12][0-9]|[1-9])$/, message: '请输入正确的格式,如：192.168.1.12/24' }
         ],
         subnetsName: [
-          { required: true }
+          { required: true, message: '请输入subnetsName' },
+          { max: 200, message: 'subnetsName不能超过200个字符' }
         ],
         gateway: [
-          { required: true }
+          { required: true, message: '请输入gateway' },
+          { pattern: /^((1[0-9][0-9]\.)|(2[0-4][0-9]\.)|(25[0-5]\.)|([1-9][0-9]\.)|([0-9]\.)){3}((1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])|([1-9][0-9])|([0-9]))$/, message: '请输入正确的格式,如：192.168.1.12' }
         ]
       },
       submitLoading: false

@@ -19,7 +19,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="备注" prop="desc">
+      <el-form-item label="描述" prop="desc">
         <el-input type="textarea" v-model="form.desc"></el-input>
       </el-form-item>
     </el-form>
@@ -49,22 +49,27 @@ export default {
       },
       rules: {
         email: [
-          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+          { required: true, message: '请输入邮箱地址' },
+          { type: 'email', message: '请输入正确的邮箱地址' }
         ],
         name: [
-          { required: true, message: '名称不能为空' },
-          { pattern: /^[^\u4e00-\u9fa5]*$/, message: '名称不能包含中文' }
+          { required: true, message: '租户名不能为空' },
+          { pattern: /^[^\u4e00-\u9fa5]*$/, message: '租户名不能包含中文' },
+          { max: 20, message: '租户名不能超过20个字符' }
         ],
         password: [
           { required: true, message: '请输入密码' },
-          { pattern: /^\w{6,16}$/, message: '密码只能包含英文字母、数字且必须包含大写字母，长度为6-16位', trigger: 'blur' },
-          { min: 6, max: 16, message: '密码为6-16个字符', trigger: 'blur' }
+          { pattern: /[A-Z][a-z\d]*$/, message: '密码只能包含英文字母或数字且必须包含大写字母' },
+          { min: 6, message: '密码不能少于6个字符' },
+          { max: 16, message: '密码不能超过16个字符' }
         ],
         username: [
-          { required: true, message: '请输入用户名' },
-          { pattern: /^[A-Za-z0-9]+$/, message: '用户名必须为英文或者数字' },
-          { max: 255, message: '用户名不能超过255个字符' }
+          { required: true, message: '请输入管理员名称' },
+          { pattern: /^[A-Za-z0-9]+$/, message: '管理员名称必须为英文或者数字' },
+          { max: 20, message: '管理员名称不能超过20个字符' }
+        ],
+        desc: [
+          { max: 255, message: '描述不能超过255个字符' }
         ]
       },
       submitLoading: false,
