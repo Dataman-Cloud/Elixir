@@ -2,7 +2,7 @@
   <el-dialog :title="isUpdate ? '更新用户组' : '创建用户组'" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
     <el-form :model="form" ref="form" :rules="rules" label-width="100px">
       <el-form-item label="名称" prop="name">
-        <el-input v-model.number="form.name" auto-complete="off"></el-input>
+        <el-input v-model="form.name" auto-complete="off"></el-input>
       </el-form-item>
       <el-form-item label="用户描述" prop="description">
         <el-input type="textarea" v-model="form.description"></el-input>
@@ -33,7 +33,11 @@ export default {
       rules: {
         name: [
           { required: true, message: '名称不能为空' },
-          { pattern: /^[^\u4e00-\u9fa5]*$/, message: '名称不能包含中文' }
+          { pattern: /^[^\u4e00-\u9fa5]*$/, message: '名称不能包含中文' },
+          { max: 20, message: '用户名不能超过20个字符' }
+        ],
+        description: [
+          { max: 255, message: '描述不能超过255个字符' }
         ]
       }
     }
