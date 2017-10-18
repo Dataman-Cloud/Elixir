@@ -29,7 +29,9 @@ export default {
       rules: {
         password: [
           { required: true, message: '请输入密码' },
-          { pattern: /^\w{6,16}$/, message: '密码只能包含英文字母、数字、标点符号且必须包含大写字母，长度为6-16位' }
+          { pattern: /[A-Z][a-z\d]*$/, message: '密码只能包含英文字母或数字且必须包含大写字母' },
+          { min: 6, message: '用户名不能少于6个字符' },
+          { max: 16, message: '用户名不能超过16个字符' }
         ]
       }
     }
