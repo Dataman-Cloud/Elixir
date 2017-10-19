@@ -63,7 +63,10 @@ export default {
         userName: [
           { required: true, message: '请输入用户名' },
           { pattern: /^[A-Za-z0-9]+$/, message: '用户名必须为英文或者数字' },
-          { max: 255, message: '用户名不能超过255个字符' }
+          { max: 20, message: '用户名不能超过20个字符' }
+        ],
+        name: [
+          { max: 20, message: '姓名不能超过20个字符' }
         ],
         email: [
           { required: true, message: '请输入邮箱地址' },
@@ -71,15 +74,13 @@ export default {
         ],
         password: [
           { required: true, message: '请输入密码' },
-          { pattern: /^\w{6,16}$/, message: '密码只能包含英文字母、数字、标点符号且必须包含大写字母，长度为6-16位' },
-          { max: 16, message: '用户名密码不能超过16个字符' }
-        ],
-        confirmPsd: [
-          { required: true, message: '请确认密码' }
+          { pattern: /[A-Z][a-z\d]*$/, message: '密码只能包含英文字母或数字且必须包含大写字母' },
+          { min: 6, message: '密码不能少于6个字符' },
+          { max: 16, message: '密码不能超过16个字符' }
         ],
         phone: [
           { required: true, message: '请输入手机号' },
-          { pattern: /^1[3|4|5|8][0-9]\d{4,8}$/, message: '请输入正确的手机号' }
+          { pattern: /^1[3|4|5|8]\d{9}$/, message: '请输入正确的手机号' }
         ]
       }
     }

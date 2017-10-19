@@ -26,7 +26,8 @@ export default {
       },
       rules: {
         networkCard: [
-          { required: true, trigger: 'blur' }
+          { required: true, trigger: 'blur' },
+          { max: 100, message: '网卡名称不能超过100个字符' }
         ]
       }
     }

@@ -2,7 +2,7 @@
   <el-dialog title="创建集群" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
     <el-form :model="form" ref="form" :rules="rules" label-width="120px">
       <el-form-item label="集群名称" prop="clusterLabel">
-        <el-input v-model.number="form.clusterLabel" auto-complete="off"></el-input>
+        <el-input v-model="form.clusterLabel" auto-complete="off"></el-input>
       </el-form-item>
       <el-form-item label="所属用户组">
         <el-input type="input"  v-model="currentGroupName" disabled></el-input>
@@ -36,10 +36,15 @@ export default {
       },
       rules: {
         clusterLabel: [
-          { required: true, message: '集群名称不能为空' }
+          { required: true, message: '集群名称不能为空' },
+          { pattern: /\d*[A-Za-z]+\d*/, message: '集群名为数字和字母的组合且不能为纯数字' },
+          { max: 200, message: '集群名不能超过200个字符' }
         ],
         userGroup: [
           { required: true, message: '请选择所属用户组' }
+        ],
+        description: [
+          { max: 255, message: '描述不能超过255个字符' }
         ]
       }
     }
