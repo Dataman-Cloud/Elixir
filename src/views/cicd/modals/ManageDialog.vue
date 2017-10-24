@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="仓库认证管理" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
-    <el-form ref="form" :model="form" label-width="80px">
+    <el-form ref="form" :model="form" label-width="80px" :rules="rule">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="form.username"></el-input>
       </el-form-item>
@@ -31,6 +31,17 @@ export default {
         username: '',
         password: '',
         id: ''
+      },
+      rule: {
+        username: [
+          { required: true, message: '请输入用户名' }
+        ],
+        password: [
+          { required: true, message: '请输入密码' }
+        ],
+        id: [
+          { required: true, message: '请输入编号' }
+        ]
       }
     }
   },
