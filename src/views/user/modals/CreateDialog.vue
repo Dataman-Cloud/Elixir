@@ -20,9 +20,9 @@
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="form.phone"></el-input>
         </el-form-item>
-        <el-form-item label="所属用户组" v-if="!isUpdate">
+        <el-form-item label="所属用户组" v-if="!isUpdate" prop="accountGroups">
           <el-input v-if="isOwner" type="input" v-model="currentGroupName" disabled></el-input>
-          <el-select v-if="isTenant" value-key="id" v-model="selectedGroups" multiple placeholder="请选择">
+          <el-select v-if="isTenant" value-key="id" v-model="selectedGroups" multiple placeholder="请选择" @change="transformGroupsToAccountGroups">
             <el-option v-for="group in userGroups" :key="group.id" :label="group.name" :value="group">
             </el-option>
           </el-select>
@@ -81,6 +81,9 @@ export default {
         phone: [
           { required: true, message: '请输入手机号' },
           { pattern: /^1[3|4|5|8]\d{9}$/, message: '请输入正确的手机号' }
+        ],
+        accountGroups: [
+          { required: true, message: '请输入手机号' }
         ]
       }
     }
@@ -133,7 +136,6 @@ export default {
         if (valid) {
           this.submitLoading = true
           try {
-            this.transformGroupsToAccountGroups()
             this.isUpdate ? await user.updateUser(this.form) : await user.createUser(this.form)
             this.dialogVisible = false
             this.fetchUsers()
