@@ -26,7 +26,6 @@
           <router-link :title="scope.row.id" class="ellipsis" :to="{name: '编排详情', params:{id : scope.row.id}}">{{scope.row.name}}</router-link>
         </template>
       </el-table-column>
-      <el-table-column property="desc" label="介绍"></el-table-column>
       <el-table-column prop="op_status" label="状态"></el-table-column>
       <el-table-column property="created_at" label="创建时间">
         <template scope="scope">
