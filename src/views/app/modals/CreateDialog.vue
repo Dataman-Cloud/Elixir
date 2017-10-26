@@ -43,8 +43,8 @@
             </el-col>
           </el-row>
         </el-form-item>
-        <el-form-item label="容器个数" :prop="taskCount">
-          <el-input type="number" v-model.number="taskCount" :disabled="isUpdate"></el-input>
+        <el-form-item label="容器个数" :prop="form[taskCount]">
+          <el-input type="number" v-model="form[taskCount]" :disabled="isUpdate"></el-input>
           <!-- <el-checkbox v-model="form.oneContainer" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox> -->
         </el-form-item>
         <el-form-item label="挂载路径">
@@ -103,7 +103,7 @@
         <el-form-item v-for="(portMapping, index) in form.container.docker.portMappings" :key="index" class="wrapContainerRow">
           <el-row :gutter="12">
             <el-col :span="9">
-              <el-form-item :prop="'container.docker.portMappings.' + index + '.' + hostPort" :key="portMapping.index" :rules="[{ required: true, message: '容器端口不能为空' },{ type: 'integer', min: 1, max: 65535, message: '端口号不在 0 - 65535 范围内' }]">
+              <el-form-item :prop="'container.docker.portMappings.' + index + '.' + hostPort" :key="portMapping.index" :rules="[{ required: true, message: '容器端口不能为空' },{ type: 'integer', min: 1, max: 65535, message: '端口号不在 1 - 65535 范围内' }]">
                 <el-input v-model.number="portMapping[hostPort]">
                   <template slot="prepend">端口号</template>
                 </el-input>
@@ -168,9 +168,8 @@
             <el-form-item class="wrapContainerRow" v-if="form.healthCheck">
               <el-row :gutter="20">
                 <el-col :span="10">
-                  <el-form-item :prop="'healthCheck.protocol'" :rules="[{ required: true, message: 'protocol is required' }]">
+                  <el-form-item :prop="'healthCheck.protocol'">
                     <el-select v-model="form.healthCheck.protocol">
-                      <el-option value="">空</el-option>
                       <el-option value="TCP">TCP</el-option>
                       <el-option value="HTTP">HTTP</el-option>
                     </el-select>
@@ -349,7 +348,7 @@ export default {
       return !!this.id
     },
     taskCount () {
-      return this.isUpdate ? this.form.task_count : this.form.instances
+      return this.isUpdate ? 'task_count' : 'instances'
     }
   },
   directives: {
@@ -393,8 +392,10 @@ export default {
       }
     },
     close () {
-      this.resetForm()
-      this.submitLoading = false
+      if (!this.isUpdate) {
+        this.resetForm()
+        this.submitLoading = false
+      }
     },
     async clusterList (flag) {
       if (flag) {
@@ -426,7 +427,7 @@ export default {
             this.isUpdate ? await fetchApp.update(this.id, this.form) : await fetchApp.create(this.form)
             this.dialogVisible = false
             this.fetchApps()
-          } catch (error) {
+          } finally {
             this.submitLoading = false
           }
         } else {
