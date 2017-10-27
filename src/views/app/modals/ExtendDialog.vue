@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="扩展应用" v-model="dialogVisible" size="tiny" ref="dialog">
+  <el-dialog title="扩展应用" v-model="dialogVisible" size="tiny" ref="dialog" :close-on-click-modal="false">
     <el-form :model="form" ref="form" :rules="rules">
       <el-form-item label="容器个数" prop="instances">
         <el-input v-model.number="form.instances" auto-complete="off"></el-input>

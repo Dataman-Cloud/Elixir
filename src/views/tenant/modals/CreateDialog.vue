@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="isUpdate ? '更新租户' : '创建租户'" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
+  <el-dialog :title="isUpdate ? '更新租户' : '创建租户'" v-model="dialogVisible" size="tiny" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form :model="form" ref="form" :rules="rules" label-width="120px">
       <el-form-item label="租户名称" prop="name">
         <el-input v-model="form.name" auto-complete="off"></el-input>

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="创建IP 池" v-model="dialogVisible" size="small" ref="dialog">
+  <el-dialog title="创建IP 池" v-model="dialogVisible" size="small" ref="dialog" :close-on-click-modal="false">
       <el-form ref="form" :model="form" style="overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
         <el-form-item prop="ipPoolsStr">
           <json-editor v-model="form.ipPoolsStr"></json-editor>

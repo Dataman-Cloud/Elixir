@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="权重" v-model="dialogVisible" size="small" ref="dialog" @close="close">
+  <el-dialog title="权重" v-model="dialogVisible" size="small" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="权重" prop="value">
         <div class="block">

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="权限管理" v-model="dialogVisible" size="small" ref="dialog">
+  <el-dialog title="权限管理" v-model="dialogVisible" size="small" ref="dialog" :close-on-click-modal="false">
 
     <el-form ref="form" :model="form" label-width="50px">
       <el-form-item label="角色" style="width:283px">

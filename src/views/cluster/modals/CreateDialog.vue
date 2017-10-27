@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="创建集群" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
+  <el-dialog title="创建集群" v-model="dialogVisible" size="tiny" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form :model="form" ref="form" :rules="rules" label-width="120px">
       <el-form-item label="集群名称" prop="clusterLabel">
         <el-input v-model="form.clusterLabel" auto-complete="off"></el-input>

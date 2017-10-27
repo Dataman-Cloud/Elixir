@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新建项目" v-model="dialogVisible" size="small" ref="dialog" @close="close">
+  <el-dialog title="新建项目" v-model="dialogVisible" size="small" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form ref="form" :model="form" label-width="80px" :rules="rules">
       <div style="height: 60vh; overflow-y:scroll; overflow-x: hidden" v-scroll="dialogVisible">
         <el-form-item label="项目名称" prop="projectName">

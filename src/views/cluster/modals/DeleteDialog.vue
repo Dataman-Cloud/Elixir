@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="提示信息" v-model="dialogVisible" size="tiny" ref="dialog">
+  <el-dialog title="提示信息" v-model="dialogVisible" size="tiny" ref="dialog" :close-on-click-modal="false">
     <div>该集群中有<span v-if="cluster.machineNum>0">主机{{cluster.machineNum}}台</span><span v-if="cluster.appNum>0">,应用{{cluster.appNum}}个</span>
     </div>
     <div slot="footer" class="dialog-footer">

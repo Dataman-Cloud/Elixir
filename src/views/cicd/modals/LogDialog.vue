@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="日志详情" v-model="dialogVisible" size="small" ref="dialog" @close="close">
+  <el-dialog title="日志详情" v-model="dialogVisible" size="small" ref="dialog" @close="close" :close-on-click-modal="false">
     <div style="width: 37vw; height: 60vh; overflow-y:scroll; overflow-x: hidden" v-scroll="dialogVisible" v-loading="loading" element-loading-text="数据加载中..." v-html="log">
     </div>
   </el-dialog>
