@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="isUpdate ? '更新策略' : '创建策略'" v-model="dialogVisible" size="small" ref="dialog" @close="close">
+  <el-dialog :title="isUpdate ? '更新策略' : '创建策略'" v-model="dialogVisible" size="small" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form ref="form" :model="form" :rules="rules" label-width="100px">
       <div style="height: 60vh; overflow-y:scroll; overflow-x: hidden" v-scroll="dialogVisible">
         <el-form-item label="应用名称" prop="app_id">

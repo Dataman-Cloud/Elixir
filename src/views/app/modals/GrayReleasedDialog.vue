@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="灰度发布" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
+  <el-dialog title="灰度发布" v-model="dialogVisible" size="tiny" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="镜像地址" prop="version.container.docker.image">
         <el-input v-model="form.version.container.docker.image"></el-input>

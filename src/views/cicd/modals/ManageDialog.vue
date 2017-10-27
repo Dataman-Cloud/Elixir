@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="仓库认证管理" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
+  <el-dialog title="仓库认证管理" v-model="dialogVisible" size="tiny" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form ref="form" :model="form" label-width="80px" :rules="rule">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="form.username"></el-input>

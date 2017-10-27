@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="添加成员" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
+  <el-dialog title="添加成员" v-model="dialogVisible" size="tiny" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form :model="form" ref="form" :rules="rules" label-width="60px">
       <el-form-item label="用户" prop="accountId">
         <el-select v-model="form.accountId" @visible-change="listAllUser" v-loading="loading">

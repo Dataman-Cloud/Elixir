@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" size="small" ref="dialog" @close="close">
+  <el-dialog v-model="dialogVisible" size="small" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form :model="form" ref="form" label-width="100px" :rules="rules">
       <div style="overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
         <el-form-item label="cidr" prop="cidr">

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="isUpdate ? '修改用户' : '创建用户'" v-model="dialogVisible" size="small" ref="dialog" @close="close">
+  <el-dialog :title="isUpdate ? '修改用户' : '创建用户'" v-model="dialogVisible" size="small" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form :model="form" :rules="rules" ref="form" label-width="100px">
       <div style="overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
         <el-form-item v-if="!isUpdate" label="用户名" prop="userName">

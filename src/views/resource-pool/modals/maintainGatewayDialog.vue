@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="维护网卡" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
+  <el-dialog title="维护网卡" v-model="dialogVisible" size="tiny" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form :model="form" ref="form" :rules="rules" label-width="80px" style="padding-right:15px">
       <el-form-item label="网卡名称" prop="networkCard">
         <el-input v-model="form.networkCard"></el-input>

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="构建" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
+  <el-dialog title="构建" v-model="dialogVisible" size="tiny" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form ref="form" :model="form" label-width="80px" :rules="rules">
       <el-form-item label="镜像名称" prop="imageName" required>
         <el-input v-model="form.imageName"></el-input>

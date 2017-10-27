@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="部署" v-model="dialogVisible" size="small" ref="dialog" @close="close">
+  <el-dialog title="部署" v-model="dialogVisible" size="small" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form ref="form" :model="form" :rules="rules" style="overflow-y: scroll; overflow-x: hidden;" label-width="80px" v-scroll="dialogVisible">
       <el-form-item label="编排名称" prop="name">
         <el-input v-model="form.name" placeholder="请填写编排名称"></el-input>

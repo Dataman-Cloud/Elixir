@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="isUpdate ? '更新用户组' : '创建用户组'" v-model="dialogVisible" size="tiny" ref="dialog" @close="close">
+  <el-dialog :title="isUpdate ? '更新用户组' : '创建用户组'" v-model="dialogVisible" size="tiny" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form :model="form" ref="form" :rules="rules" label-width="100px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name" auto-complete="off"></el-input>

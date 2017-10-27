@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="isUpdate ? '更新应用' : '创建应用'" v-model="dialogVisible" size="small" ref="dialog" @close="close">
+  <el-dialog :title="isUpdate ? '更新应用' : '创建应用'" v-model="dialogVisible" size="small" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form ref="form" :model="form" :rules="rules" label-width="100px" v-loading="loading" element-loading-text="数据加载中...">
       <div style="height: 50vh; overflow-y:scroll; overflow-x: hidden;" v-scroll="dialogVisible">
         <el-form-item label="应用名称" prop="name">
