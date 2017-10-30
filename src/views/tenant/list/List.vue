@@ -94,7 +94,7 @@ export default {
       ])
     }),
     filterTenants: function () {
-      return this.searchWord ? this.tenants.filter(tenant => tenant.name.toLowerCase().includes(this.searchWord)) : this.tenants
+      return this.searchWord ? this.tenants.filter(tenant => tenant.name.toLowerCase().includes(this.searchWord.toLowerCase())) : this.tenants
     }
   },
   methods: {
