@@ -157,6 +157,7 @@ export default {
   margin-top: 18px!important;
   font-size: 16px;
   background: rgba(0, 0, 0, 0);
+  color: #fff;
 }
 
 .dm-login-box .el-button--primary {
