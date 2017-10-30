@@ -115,3 +115,11 @@
   width: 10%;
   padding: 0;
 }
+.dm-login-input .el-input-group__append{
+  border: none;
+}
+.dm-con-box .el-form-item__error{
+  font-size: 14px!important;
+  color: #f76260!important;
+  left: 48px!important;
+}
