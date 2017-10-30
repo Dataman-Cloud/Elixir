@@ -111,7 +111,7 @@ export default {
       }
     }),
     filterClusters: function () {
-      return this.searchCluster ? this.clusters.filter(cluster => cluster.clusterLabel.toLowerCase().includes(this.searchCluster)) : this.clusters
+      return this.searchCluster ? this.clusters.filter(cluster => cluster.clusterLabel.toLowerCase().includes(this.searchCluster.toLowerCase())) : this.clusters
     }
   },
   methods: {
