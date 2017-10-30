@@ -19,16 +19,19 @@ export function countHealthyState (app) {
       state: HealthStatus.UNKNOWN
     })
   }
-  switch (app.version.container.docker.network) {
-    case 'bridge':
-      app.version.container.docker.network = '网桥模式'
-      break
-    case 'host':
-      app.version.container.docker.network = 'HOST 模式'
-      break
-    default :
-      app.version.container.docker.network = 'Static Ip'
+  if (app.version) {
+    switch (app.version.container.docker.network) {
+      case 'bridge':
+        app.version.container.docker.network = '网桥模式'
+        break
+      case 'host':
+        app.version.container.docker.network = 'HOST 模式'
+        break
+      default:
+        app.version.container.docker.network = 'Static Ip'
+    }
   }
+
   return { ...app, healthData }
 }
 
