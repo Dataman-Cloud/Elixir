@@ -152,11 +152,14 @@ export default {
       this.listCluster()
     },
     transformHosts (hosts = []) {
-      return hosts.map((item, i) => {
+      const arr = []
+      hosts.forEach((item, i) => {
+        console.log(this.checkedHost.indexOf(i) !== -1)
         if (this.checkedHost.indexOf(i) !== -1) {
-          return item.label
+          arr.push(item.label)
         }
       })
+      return arr
     }
   },
   mounted () {
