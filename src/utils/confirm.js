@@ -9,10 +9,7 @@ export default {
       closeOnClickModal: false,
       confirmButtonText: confirm,
       cancelButtonText: cancelButtonText,
-      type: 'warning',
-      callback () {
-        return true
-      }
+      type: 'warning'
     })
   }
 }
