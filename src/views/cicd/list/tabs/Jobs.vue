@@ -74,7 +74,7 @@ export default {
         return state.cicd.cicds.cicds
       },
       filterCicds: function () {
-        return this.searchWord ? this.cicds.filter(cicd => cicd.name.toLowerCase().includes(this.searchWord)) : this.cicds
+        return this.searchWord ? this.cicds.filter(cicd => cicd.name.toLowerCase().includes(this.searchWord.toLowerCase())) : this.cicds
       },
       currentRow: function () {
         return this.currentRows.length === 1 ? this.currentRows[0] : null
