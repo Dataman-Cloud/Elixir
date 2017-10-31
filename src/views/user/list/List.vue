@@ -97,7 +97,7 @@ export default {
       }
     }),
     filterUsers: function () {
-      return this.searchWord ? this.users.filter(user => user.userName.toLowerCase().includes(this.searchWord)) : this.users
+      return this.searchWord ? this.users.filter(user => user.userName.toLowerCase().includes(this.searchWord.toLowerCase())) : this.users
     }
   },
   methods: {
