@@ -61,7 +61,7 @@
           <el-input v-model.number="form.max_instance"></el-input>
         </el-form-item>
         <el-form-item label="步长" prop="step">
-          <el-input v-model="form.step" placeholder="1"></el-input>
+          <el-input v-model.number="form.step" placeholder="1"></el-input>
         </el-form-item>
       </div>
     </el-form>
