@@ -68,7 +68,7 @@
           <router-link :title="app.row.id" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
         </template>
       </el-table-column>
-      <el-table-column property="cluster" label="集群" width="150"></el-table-column>
+      <el-table-column property="cluster" label="集群" width="150" sortable></el-table-column>
       <el-table-column property="task_count" label="实例" width="100">
         <template scope="app">
           <span v-if="app.row.progress === -1">{{app.row.task_count}}</span>
