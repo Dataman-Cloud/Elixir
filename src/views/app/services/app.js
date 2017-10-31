@@ -131,7 +131,7 @@ export const APP_FORM_RULES = {
   name: [
     { required: true, message: '应用名不能为空' },
     { pattern: /^[a-zA-Z0-9-]+$/, message: '应用名称只能包含数字、字母、中划线' },
-    { max: 48, message: '最大长度48个字符 (汉字占3个字符)' }
+    { max: 48, message: '最大长度48个字符' }
   ],
   selectCluster: [
     { required: true, message: '集群不能为空' }

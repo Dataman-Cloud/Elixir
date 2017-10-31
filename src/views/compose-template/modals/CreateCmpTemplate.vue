@@ -46,6 +46,9 @@ export default {
         name: [
           { required: true, message: '名称不能为空' }
         ],
+        description: [
+          { max: 100, message: '描述最多为100个字符' }
+        ],
         yaml: [
           { required: true, message: 'YAML 不能为空' }
         ]
