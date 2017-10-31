@@ -16,7 +16,7 @@
     <create-dialog ref="createDialog"></create-dialog>
     <add-user-dialog ref="addUserDialog"></add-user-dialog>
 
-    <el-table :data="groups" style="width: 100%" @expand="expand" v-loading="listLoading">
+    <el-table :data="filterUsers" style="width: 100%" @expand="expand" v-loading="listLoading">
       <el-table-column type="expand">
         <template scope="group">
           <div class="btn-group">
@@ -31,23 +31,6 @@
               </el-button>
             </span>
           </div>
-          <!-- <el-badge>集群列表</el-badge>
-            <el-row>
-              <el-col :span="6" v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 2 : 0">
-                <el-card :body-style="{ padding: '0px' }">
-                  <div style="padding: 14px;">
-                    <span>好吃的汉堡</span>
-                    <div class="bottom clearfix">
-                      <span class="time">正常主机 <i>1</i></span>
-                    </div>
-                    <div class="bottom clearfix">
-                      <span class="time">异常主机 <i>2</i></span>
-                      <el-button type="danger" class="button" icon="delete"></el-button>
-                    </div>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-row> -->
           <el-badge>用户列表</el-badge>
           <div class="btn-group">
             <span>
@@ -110,6 +93,9 @@ export default {
       },
       currentRow: function () {
         return this.currentRows.length === 1 ? this.currentRows[0] : null
+      },
+      filterUsers: function () {
+        return this.searchWord ? this.groups.filter(group => group.name.toLowerCase().includes(this.searchWord.toLowerCase())) : this.groups
       }
     })
   },
