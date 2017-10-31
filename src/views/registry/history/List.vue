@@ -5,12 +5,12 @@
         <el-button type="primary"><i class="glyphicon glyphicon-repeat"></i></el-button>
       </span>
       <el-button-group style="display: flex">
-        <el-input class="el-input-search" icon="search" placeholder="请输入内容"></el-input>
+        <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入内容"></el-input>
       </el-button-group>
     </div>
 
     <el-table
-      :data="logs"
+      :data="filteLogs"
       border
       v-loading="listLoading"
       style="width: 100%">
@@ -50,7 +50,8 @@
   export default {
     data () {
       return {
-        listLoading: false
+        listLoading: false,
+        searchWord: ''
       }
     },
     computed: {
@@ -58,7 +59,10 @@
         logs (state) {
           return state.registry.logs.logs
         }
-      })
+      }),
+      filteLogs: function () {
+        return this.searchWord ? this.logs.filter(log => log.username.toLowerCase().includes(this.searchWord.toLowerCase())) : this.logs
+      }
     },
     methods: {
       ...mapActions({
