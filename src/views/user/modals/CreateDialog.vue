@@ -83,7 +83,7 @@ export default {
           { pattern: /^1[3|4|5|8]\d{9}$/, message: '请输入正确的手机号' }
         ],
         accountGroups: [
-          { required: true, message: '请输入手机号' }
+          { required: true, message: '请选择所属用户组' }
         ]
       }
     }
@@ -128,6 +128,9 @@ export default {
       if (this.isUpdate) {
         let { data } = await user.getUser(this.id)
         this.updateInit(data)
+      }
+      if (this.isOwner) {
+        this.transformGroupsToAccountGroups()
       }
       this.$refs.dialog.open()
     },
