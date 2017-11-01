@@ -26,7 +26,7 @@
               </dl>
             </div>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-show="!isMember">
             <el-row :gutter="20" type="flex" class="row-bg" justify="end">
               <div class="btn-group">
                 <span>
@@ -58,7 +58,7 @@
         </el-table-column>
         <el-table-column label="操作" width="250">
           <template scope="scope">
-            <el-button size="small" @click="delHost(scope.row.hostname)">删除</el-button>
+            <el-button size="small" @click="delHost(scope.row.hostname)" :disabled="isMember">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,7 +68,7 @@
 <script>
 import DeleteClusterDialog from '@/views/cluster/modals/DeleteDialog'
 import AddHostDialog from '@/components/addHostDialog'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import * as type from '@/store/cluster/mutations_types'
 import * as hostType from '@/store/host/mutations_types'
 import * as cluster from '@/api/cluster'
@@ -87,6 +87,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'isMember'
+    ]),
     ...mapState({
       hostList (state) {
         return state.host.clusterHosts.clusterHosts

@@ -5,7 +5,7 @@
         <el-button type="primary" @click="reload">
           <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
         </el-button>
-        <el-button type="primary" @click="openCreate">
+        <el-button type="primary" @click="openCreate" v-show="!isMember">
           <i class="ion-ios-plus-outline"></i> 创建集群
         </el-button>
       </span>
@@ -64,7 +64,7 @@
                 </el-row>
               </el-col>
             </el-row>
-            <el-button-group>
+            <el-button-group v-show="!isMember">
               <el-button type="danger" icon="delete" @click="openDelete(cluster)"></el-button>
               <el-button type="primary" @click="addHost(cluster.clusterLabel)" icon="plus"></el-button>
             </el-button-group>
@@ -78,7 +78,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import * as cluster from '@/api/cluster'
 import Confirm from '@/utils/confirm'
 import * as type from '@/store/cluster/mutations_types'
@@ -102,6 +102,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'isMember'
+    ]),
     ...mapState({
       clusters (state) {
         return state.cluster.clusters.clusters
