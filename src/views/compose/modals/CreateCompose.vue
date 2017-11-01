@@ -103,7 +103,8 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '编排名称不能为空' }
+          { required: true, message: '编排名称不能为空' },
+          { max: 50, message: '编排名最多为50个字符' }
         ],
         cluster: [
           { required: true, message: '请选择集群' }
