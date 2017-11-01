@@ -37,7 +37,6 @@
               <el-button type="primary" @click="addUser(group.row)">
                 <i class="el-icon-plus"></i> 添加新用户
               </el-button>
-
               <el-button type="danger" :disabled="!currentRow" @click="delUser(group.row)">
                 <i class="el-icon-minus"></i> 移除用户
               </el-button>
@@ -48,7 +47,12 @@
             </el-table-column>
             <el-table-column prop="userName" label="用户名称" width="130">
             </el-table-column>
-            <el-table-column prop="currentPerms" label="权限" width="120">
+            <el-table-column label="权限" width="120">
+              <template scope="perms">
+                <p v-for="(perm, index) in perms.row.accountGroups" :key="index">
+                  <span v-show="perm.groupId === group.row.id">{{perm.role}}</span>
+                </p>
+              </template>
             </el-table-column>
             <el-table-column prop="createAt" label="创建时间" show-overflow-tooltip>
             </el-table-column>
