@@ -7,6 +7,13 @@ export function clusterList () {
   })
 }
 
+export function availableClusterList () {
+  return fetch({
+    url: 'v1/clusters/available',
+    method: 'get'
+  })
+}
+
 export function clusterDetail (vclusterLabel) {
   return fetch({
     url: `v1/clusters/${vclusterLabel}/details`,
