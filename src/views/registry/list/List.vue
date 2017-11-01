@@ -65,7 +65,7 @@
         }
       }),
       filterRegistries: function () {
-        return this.searchWord ? this.registries.filter(reistry => reistry.name.toLowerCase().includes(this.searchWord)) : this.registries
+        return this.searchWord ? this.registries.filter(reistry => reistry.name.toLowerCase().includes(this.searchWord.toLowerCase())) : this.registries
       },
       currentRow: function () {
         return this.currentRows.length === 1 ? this.currentRows[0] : null
