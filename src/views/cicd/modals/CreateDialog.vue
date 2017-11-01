@@ -75,7 +75,8 @@ export default {
       rules: {
         projectName: [
           { required: true, message: '项目名称不能为空' },
-          { pattern: /^[a-z0-9]+$/, message: '项目名称只能包含数字、小写字母' }
+          { pattern: /^[a-z0-9]+$/, message: '项目名称只能包含数字、小写字母' },
+          { max: 50, message: '项目名称最多为50个字符' }
         ],
         sourceUrl: [
           { required: true, message: '代码地址不能为空' }
@@ -86,7 +87,8 @@ export default {
         ],
         tagName: [
           { required: true, message: '标签名称不能为空' },
-          { pattern: /^[a-z0-9.]+$/, message: '标签名称只能包含数字、小写字母和小数点' }
+          { pattern: /^[a-z0-9.]+$/, message: '标签名称只能包含数字、小写字母和小数点' },
+          { max: 50, message: '标签名称最多为50个字符' }
         ],
         projectDesc: [
           { max: 256, message: '最大长度256个字符' }

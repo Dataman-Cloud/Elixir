@@ -36,7 +36,8 @@ export default {
       rules: {
         tagName: [
           { required: true, message: '镜像 Tag 不能为空' },
-          { pattern: /^[a-z0-9]+$/, message: '镜像 Tag 只能包含数字、小写字母' }
+          { pattern: /^[a-z0-9]+$/, message: '镜像 Tag 只能包含数字、小写字母' },
+          { max: 50, message: '标签名称最多为50个字符' }
         ],
         imageName: [
           { required: true, message: '镜像名称不能为空' },

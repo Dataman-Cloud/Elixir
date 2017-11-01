@@ -51,7 +51,7 @@ export default {
         return state.cicd.jenkins.jenkins
       },
       filterJenkins: function () {
-        return this.searchWord ? this.jenkins.filter(jenkin => jenkin.displayName.toLowerCase().includes(this.searchWord)) : this.jenkins
+        return this.searchWord ? this.jenkins.filter(jenkin => jenkin.displayName.toLowerCase().includes(this.searchWord.toLowerCase())) : this.jenkins
       },
       currentRow: function () {
         return this.currentRows.length === 1 ? this.currentRows[0] : null
