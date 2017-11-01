@@ -5,10 +5,10 @@
         <el-form-item label="cidr" prop="cidr">
           <el-input v-model="form.cidr"></el-input>
         </el-form-item>
-        <el-form-item label="subnetsName" prop="subnetsName">
+        <el-form-item label="子网名称" prop="subnetsName">
           <el-input v-model="form.subnetsName"></el-input>
         </el-form-item>
-        <el-form-item label="gateway" prop="gateway">
+        <el-form-item label="网关" prop="gateway">
           <el-input v-model="form.gateway"></el-input>
         </el-form-item>
       </div>
@@ -36,16 +36,16 @@ export default {
       },
       rules: {
         cidr: [
-          { required: true, message: '请输入cidr' },
-          { pattern: /^((1[0-9][0-9]\.)|(2[0-4][0-9]\.)|(25[0-5]\.)|([1-9][0-9]\.)|([0-9]\.)){3}((1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])|([1-9][0-9])|([0-9]))\/(3[0-6]|[12][0-9]|[1-9])$/, message: '请输入正确的格式,如：192.168.1.12/24' }
+          { required: true, message: 'cidr不能为空' },
+          { pattern: /^((1[0-9][0-9]\.)|(2[0-4][0-9]\.)|(25[0-5]\.)|([1-9][0-9]\.)|([0-9]\.)){3}((1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])|([1-9][0-9])|([0-9]))\/(3[0-6]|[12][0-9]|[1-9])$/, message: '正确的格式,如：192.168.1.12/24' }
         ],
         subnetsName: [
-          { required: true, message: '请输入subnetsName' },
-          { max: 200, message: 'subnetsName不能超过200个字符' }
+          { required: true, message: '子网名称不能为空' },
+          { max: 200, message: '子网名称不能超过200个字符' }
         ],
         gateway: [
-          { required: true, message: '请输入gateway' },
-          { pattern: /^((1[0-9][0-9]\.)|(2[0-4][0-9]\.)|(25[0-5]\.)|([1-9][0-9]\.)|([0-9]\.)){3}((1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])|([1-9][0-9])|([0-9]))$/, message: '请输入正确的格式,如：192.168.1.12' }
+          { required: true, message: '网关不能为空' },
+          { pattern: /^((1[0-9][0-9]\.)|(2[0-4][0-9]\.)|(25[0-5]\.)|([1-9][0-9]\.)|([0-9]\.)){3}((1[0-9][0-9])|(2[0-4][0-9])|(25[0-5])|([1-9][0-9])|([0-9]))$/, message: '正确的格式,如：192.168.1.12' }
         ]
       },
       submitLoading: false
