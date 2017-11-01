@@ -108,7 +108,7 @@
           return state.elastic.policies.policies
         },
         filterPolicies: function () {
-          return this.searchWord ? this.policies.filter(policy => policy.app_id.toLowerCase().includes(this.searchWord)) : this.policies
+          return this.searchWord ? this.policies.filter(policy => policy.app_id.toLowerCase().includes(this.searchWord.toLowerCase())) : this.policies
         },
         currentRow: function () {
           return this.currentRows.length === 1 ? this.currentRows[0] : null

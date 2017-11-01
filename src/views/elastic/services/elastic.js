@@ -38,8 +38,9 @@ export const ELASTIC_FORM_RULES = {
   requesturi: [
     {required: true, message: '请求的值不能为空'}
   ],
-  阈值: [
-    {required: true, message: '阈值不能为空'}
+  threshold: [
+    {required: true, message: '阈值不能为空'},
+    {type: 'number', min: 1, message: '阈值最小值为1'}
   ],
   status: [
     {required: true, message: '请选择是否激活'}
@@ -48,18 +49,18 @@ export const ELASTIC_FORM_RULES = {
     {required: true, message: '最小实例数不能为空'}
   ],
   max_instance: [
-    {required: true, message: '最大实例数不能为空不能为空'}
+    {required: true, message: '最大实例数不能为空不能为空'},
+    {type: 'number', min: 1, message: '最大实例数最小值为1'}
   ],
   step: [
-    {required: true, message: '步长不能为空'}
+    {required: true, message: '步长不能为空'},
+    {type: 'number', min: 1, message: '步长最小值为1'}
   ],
   monitor_cycle: [
-    {required: true, message: '监控周期不能为空'}
+    {required: true, message: '监控周期不能为空'},
+    {type: 'number', min: 1, message: '监控周期最小值为1'}
   ],
   action: [
-    {required: true, message: '请选择或还是缩'}
-  ],
-  threshold: [
-    {required: true, message: '请选择或还是缩'}
+    {required: true, message: '请选择阔还是缩'}
   ]
 }
