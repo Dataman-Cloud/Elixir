@@ -26,7 +26,7 @@ export default {
       },
       rules: {
         networkCard: [
-          { required: true, trigger: 'blur' },
+          { required: true, message: '网卡不能为空', trigger: 'blur' },
           { max: 100, message: '网卡名称不能超过100个字符' }
         ]
       }
