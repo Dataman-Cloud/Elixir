@@ -176,49 +176,49 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="10" v-if="form.healthCheck.protocol === 'HTTP'">
-                  <el-form-item :prop="'healthCheck.path'" :rules="[{ required: form.healthCheck.protocol, message: 'path is required' }]">
+                  <el-form-item :prop="'healthCheck.path'" :rules="[{ required: form.healthCheck.protocol, message: '路径不能为空' }]">
                     <el-input v-model="form.healthCheck.path">
                       <template slot="prepend">路径</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthCheck.gracePeriodSeconds'" :rules="[{ type: 'integer', min: 1, message: '宽限时间为正整数' },{ required: form.healthCheck.protocol, message: 'gracePeriodSeconds is required' }]">
+                  <el-form-item :prop="'healthCheck.gracePeriodSeconds'" :rules="[{ type: 'integer', min: 1, message: '宽限时间为正整数' },{ required: form.healthCheck.protocol, message: '宽限时间不能为空' }]">
                     <el-input type="number" v-model.number="form.healthCheck.gracePeriodSeconds">
                       <template slot="prepend">宽限时间(秒)</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthCheck.intervalSeconds'" :rules="[{ type: 'integer', min: 1, message: '检查间隔为正整数' },{ required: form.healthCheck.protocol, message: 'intervalSeconds is required' }]">
+                  <el-form-item :prop="'healthCheck.intervalSeconds'" :rules="[{ type: 'integer', min: 1, message: '检查间隔为正整数' },{ required: form.healthCheck.protocol, message: '检查间隔不能为空' }]">
                     <el-input type="number" v-model.number="form.healthCheck.intervalSeconds">
                       <template slot="prepend">检查间隔(秒)</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthCheck.delaySeconds'" :rules="[{ type: 'integer', min: 1, message: '延迟时间为正整数' },{ required: form.healthCheck.protocol, message: 'delaySeconds is required' }]">
+                  <el-form-item :prop="'healthCheck.delaySeconds'" :rules="[{ type: 'integer', min: 1, message: '延迟时间为正整数' },{ required: form.healthCheck.protocol, message: '延迟时间不能为空' }]">
                     <el-input type="number" v-model.number="form.healthCheck.delaySeconds">
                       <template slot="prepend">延迟时间(秒)</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthCheck.timeoutSeconds'" :rules="[{ type: 'integer', min: 1, message: '检查超时时间为正整数' },{ required: form.healthCheck.protocol, message: 'timeoutSeconds is required' }]">
+                  <el-form-item :prop="'healthCheck.timeoutSeconds'" :rules="[{ type: 'integer', min: 1, message: '检查超时时间为正整数' },{ required: form.healthCheck.protocol, message: '检查超时不能为空' }]">
                     <el-input type="number" v-model.number="form.healthCheck.timeoutSeconds">
                       <template slot="prepend">检查超时(秒)</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthCheck.consecutiveFailures'" :rules="[{ type: 'integer', min: 1, message: '最多失败次数为正整数' },{ required: form.healthCheck.protocol, message: 'consecutiveFailures is required' }]">
+                  <el-form-item :prop="'healthCheck.consecutiveFailures'" :rules="[{ type: 'integer', min: 1, message: '最多失败次数为正整数' },{ required: form.healthCheck.protocol, message: '最多失败次数不能为空' }]">
                     <el-input type="number" v-model.number="form.healthCheck.consecutiveFailures">
                       <template slot="prepend">最多失败次数</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item :prop="'healthCheck.portName'" :rules="[{ required: form.healthCheck.protocol, message: 'portName is required' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
+                  <el-form-item :prop="'healthCheck.portName'" :rules="[{ required: form.healthCheck.protocol, message: '端口名不能为空' },{ pattern: /^[a-zA-Z]+$/, message: '端口名称只能包含字母' }]">
                     <el-input type="text" v-model.number="form.healthCheck.portName">
                       <template slot="prepend">端口名</template>
                     </el-input>
