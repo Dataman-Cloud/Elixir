@@ -89,7 +89,7 @@
             <el-table-column prop="gracePeriodSeconds" label="宽限时间" width="100"></el-table-column>
             <el-table-column prop="intervalSeconds" label="检查间隔" width="100"></el-table-column>
             <el-table-column prop="timeoutSeconds" label="检查超时" width="100"></el-table-column>
-            <el-table-column prop="maxConsecutiveFailures" label="最多持续失败次数" width="160"></el-table-column>
+            <el-table-column prop="consecutiveFailures" label="最多持续失败次数" width="160"></el-table-column>
             <el-table-column prop="delaySeconds" label="延迟时间" width="100"></el-table-column>
             <el-table-column prop="path" label="路径" width="80"></el-table-column>
           </el-table>
