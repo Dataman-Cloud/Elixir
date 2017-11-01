@@ -5,7 +5,7 @@
         <el-input v-model="form.name" placeholder="请填写编排名称"></el-input>
       </el-form-item>
       <el-form-item label="选择集群" prop="cluster">
-        <el-select @visible-change="selectCluster" v-model="form.cluster">
+        <el-select @visible-change="selectCluster" v-model="form.cluster" :loading="chooseCluster">
           <el-option v-for="(cluster,index) in clusters" :key="index" :value="cluster.clusterLabel" :label="cluster.clusterLabel"></el-option>
         </el-select>
       </el-form-item>
@@ -77,6 +77,7 @@ import * as cluster from '@/api/cluster'
 export default {
   data () {
     return {
+      chooseCluster: false,
       dialogVisible: false,
       isUpdate: false,
       submitLoading: false,
@@ -158,7 +159,9 @@ export default {
     },
     async selectCluster (flag) {
       if (flag) {
-        let { data } = await cluster.clusterList()
+        this.chooseCluster = true
+        let { data } = await cluster.availableClusterList()
+        this.chooseCluster = false
         this.clusters = data
       }
     }

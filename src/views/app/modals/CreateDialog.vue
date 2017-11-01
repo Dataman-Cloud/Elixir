@@ -6,7 +6,7 @@
           <el-input :disabled="isUpdate" v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="集群" prop="selectCluster">
-          <el-select @visible-change="clusterList" v-model="form.selectCluster" :disabled="isUpdate">
+          <el-select @visible-change="clusterList" v-model="form.selectCluster" :loading="chooseCluster" :disabled="isUpdate">
             <el-option v-for="(cluster, index) in clusters" :key="index" :value="cluster.clusterLabel" :label="cluster.clusterLabel"></el-option>
           </el-select>
         </el-form-item>
@@ -325,6 +325,7 @@ import * as tenant from '@/api/tenant'
 export default {
   data () {
     return {
+      chooseCluster: false,
       dialogVisible: false,
       form: this._.merge({}, appUtil.APP_BASE, { selectCluster: '' }),
       rules: appUtil.APP_FORM_RULES,
@@ -399,7 +400,9 @@ export default {
     },
     async clusterList (flag) {
       if (flag) {
-        let { data } = await cluster.clusterList()
+        this.chooseCluster = true
+        let { data } = await cluster.availableClusterList()
+        this.chooseCluster = false
         this.clusters = data
       }
     },
