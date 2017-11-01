@@ -179,7 +179,9 @@ export default {
     async selectCluster (flag) {
       if (flag) {
         let { data } = await cluster.clusterList()
-        this.clusters = data
+        this.clusters = data.filter(item => {
+          return item.machineNum
+        })
       }
     },
     transformLabelstoObj (labels = []) {
