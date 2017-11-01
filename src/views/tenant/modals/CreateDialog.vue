@@ -88,12 +88,11 @@ export default {
   },
   methods: {
     async open (tenant) {
-      this.form = tenant ? {
-        name: tenant.name,
-        desc: tenant.desc
-      } : {
-        name: '',
-        desc: ''
+      if (tenant) {
+        this.form = {
+          name: tenant.name,
+          desc: tenant.desc
+        }
       }
       this.checkedSubnet = tenant ? tenant.mapper : []
       this.tenant = tenant
