@@ -18,6 +18,7 @@
 <script>
 import * as userGroup from '@/api/user-group'
 import * as type from '@/store/user-group/mutations_types'
+import * as user from '@/store/user/mutations_types'
 export default {
   data () {
     return {
@@ -70,6 +71,7 @@ export default {
             this.isUpdate ? this.$notify({ message: '更新成功' }) : this.$notify({ message: '创建成功' })
             this.dialogVisible = false
             this.$store.dispatch(type.FETCH_USER_GROUPS)
+            this.$store.dispatch(user.FETCH_USER_INFO)
           } catch (error) {
             this.submitLoading = false
           }
