@@ -26,10 +26,14 @@
         <el-dropdown-item divided>
           <span @click="exit" style="display:block;">退出登录</span>
         </el-dropdown-item>
+        <el-dropdown-item divided>
+          <span @click="openPassword" style="display:block;">修改密码</span>
+        </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
 
     <Permission-Dialog ref="permission"></Permission-Dialog>
+    <Change-Password-Dialog ref="ChangePasswordDialog"></Change-Password-Dialog>
 
   </el-menu>
 </template>
@@ -39,11 +43,13 @@ import Breadcrumb from './Breadcrumb'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import * as type from '@/store/user/mutations_types'
 import PermissionDialog from '@/views/layout/modals/PermissionDialog'
+import ChangePasswordDialog from '@/views/user/modals/ChangePasswordDialog'
 
 export default {
   components: {
     Breadcrumb,
-    PermissionDialog
+    PermissionDialog,
+    ChangePasswordDialog
   },
   data () {
     return {
@@ -78,6 +84,9 @@ export default {
     },
     openDialog () {
       this.$refs.permission.open()
+    },
+    openPassword () {
+      this.$refs.ChangePasswordDialog.open()
     },
     toggleSideBar () {
       this.setCollapse(!this.isCollapse)
