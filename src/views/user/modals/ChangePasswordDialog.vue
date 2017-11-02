@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import * as type from '@/store/user/mutations_types'
 import * as user from '@/api/user'
 
@@ -36,6 +36,13 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState({
+      userId (state) {
+        return state.user.id
+      }
+    })
+  },
   methods: {
     ...mapActions({
       fetchUsers: type.FETCH_USERS
@@ -46,13 +53,13 @@ export default {
     },
     open (id) {
       this.$refs.dialog.open()
-      this.id = id
+      this.id = id || this.userId
     },
     resetForm () {
       this.$refs.form.resetFields()
     },
     submitForm () {
-      this.$refs.form.validate(async (valid) => {
+      this.$refs.form.validate(async valid => {
         if (valid) {
           this.submitLoading = true
           try {
