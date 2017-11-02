@@ -29,7 +29,7 @@
       </el-dropdown-menu>
     </el-dropdown>
 
-    <Rights-Management-Dialog ref="rightsManagement"></Rights-Management-Dialog>
+    <Permission-Dialog ref="permission"></Permission-Dialog>
 
   </el-menu>
 </template>
@@ -38,12 +38,12 @@
 import Breadcrumb from './Breadcrumb'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import * as type from '@/store/user/mutations_types'
-import RightsManagementDialog from '@/views/layout/modals/RightsManagementDialog'
+import PermissionDialog from '@/views/layout/modals/PermissionDialog'
 
 export default {
   components: {
     Breadcrumb,
-    RightsManagementDialog
+    PermissionDialog
   },
   data () {
     return {
@@ -77,7 +77,7 @@ export default {
       this.switchGroup(groupId)
     },
     openDialog () {
-      this.$refs.rightsManagement.open()
+      this.$refs.permission.open()
     },
     toggleSideBar () {
       this.setCollapse(!this.isCollapse)

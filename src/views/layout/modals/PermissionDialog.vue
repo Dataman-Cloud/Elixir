@@ -18,7 +18,7 @@
     </div>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="addRights">确 定</el-button>
+      <el-button type="primary" @click="onSubmit">确 定</el-button>
     </div>
 
   </el-dialog>
@@ -49,10 +49,21 @@ export default {
     }
   },
   methods: {
-    async addRights () {
-      await type.updateLimits({role: this.form.role, resources: this.rightLimit})
-      this.dialogVisible = false
-      this.$notify({ message: '权限修改成功' })
+    onSubmit () {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          try {
+            await type.updateLimits({role: this.form.role, resources: this.rightLimit})
+            this.dialogVisible = false
+            this.$notify({ message: '权限修改成功' })
+          } catch (error) {
+
+          }
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     async listLimits (name) {
       let { data } = await type.limitsList(name)
