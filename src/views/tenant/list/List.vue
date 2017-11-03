@@ -144,14 +144,16 @@ export default {
       this.getTenants()
     },
     transformHosts (hosts = []) {
-      return hosts.map((item, i) => {
+      let arr = []
+      hosts.forEach((item, i) => {
         if (this.checkedIps.indexOf(i) !== -1) {
-          return {
+          arr.push({
             'ip': item.label,
             'tenantId': this.tenantId
-          }
+          })
         }
       })
+      return arr
     },
     updateTenant (name) {
       this.$refs.createDialog.open(name)
