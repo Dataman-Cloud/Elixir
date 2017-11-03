@@ -140,11 +140,13 @@ export default {
       this.getCluster()
     },
     transformHosts (hosts = []) {
-      return hosts.map((item, i) => {
+      let arr = []
+      hosts.forEach((item, i) => {
         if (this.checkedHost.indexOf(i) !== -1) {
-          return item.label
+          arr.push(item.label)
         }
       })
+      return arr
     }
   },
   created () {
