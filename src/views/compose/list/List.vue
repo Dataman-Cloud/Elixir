@@ -21,9 +21,9 @@
 
     <el-table :data="filterComposes" border style="width: 100%" row-key="id" v-loading="listLoading" @selection-change="handleCurrentChange">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="name" label="名称" width="180">
+      <el-table-column prop="display_name" label="名称" width="300">
         <template scope="scope">
-          <router-link :title="scope.row.id" class="ellipsis" :to="{name: '编排详情', params:{id : scope.row.id}}">{{scope.row.name}}</router-link>
+          <router-link :title="scope.row.id" class="ellipsis" :to="{name: '编排详情', params:{id : scope.row.id}}">{{scope.row.display_name}}</router-link>
         </template>
       </el-table-column>
       <el-table-column prop="op_status" label="状态"></el-table-column>
