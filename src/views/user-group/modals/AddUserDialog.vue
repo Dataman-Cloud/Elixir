@@ -38,9 +38,11 @@ export default {
         groupId: ''
       },
       rules: {
-        name: [
-          { required: true, message: '名称不能为空' },
-          { pattern: /^[^\u4e00-\u9fa5]*$/, message: '名称不能包含中文' }
+        accountId: [
+          { required: true, message: '名称不能为空' }
+        ],
+        role: [
+          { required: true, message: '成员类型不能为空' }
         ]
       }
     }
