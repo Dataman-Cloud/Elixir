@@ -36,7 +36,7 @@ export default {
   computed: {
     ...mapState({
       composeName (state) {
-        return state.compose.compose.name
+        return state.compose.compose.display_name
       }
     })
   },
