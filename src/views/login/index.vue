@@ -80,7 +80,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
 .dm-box {
   width: 100%;
   height: 100%;
