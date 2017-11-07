@@ -80,7 +80,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
 .dm-box {
   width: 100%;
   height: 100%;
@@ -204,10 +204,6 @@ export default {
   box-shadow: 0 0 24px rgba(0, 204, 255, .3);
 }
 
-.el-input-group .el-input__inner {
-  border: none!important;
-  height: 100%;
-}
 
 .dm-login-input .el-input-group__append {
   border: 0;
