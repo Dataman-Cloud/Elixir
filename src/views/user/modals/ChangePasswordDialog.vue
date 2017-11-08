@@ -26,6 +26,7 @@ export default {
         password: ''
       },
       id: null,
+      loadingList: null,
       rules: {
         password: [
           { required: true, message: '请输入密码' },
@@ -54,6 +55,7 @@ export default {
     open (id) {
       this.$refs.dialog.open()
       this.id = id || this.userId
+      this.loadingList = id || null
     },
     resetForm () {
       this.$refs.form.resetFields()
@@ -66,7 +68,9 @@ export default {
             await user.updatePwd(this.id, this.form)
             this.dialogVisible = false
             this.$notify({ message: '修改成功' })
-            this.fetchUsers()
+            if (this.loadingList) {
+              this.fetchUsers()
+            }
           } catch (error) {
             this.submitLoading = false
           }

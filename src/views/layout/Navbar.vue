@@ -24,10 +24,10 @@
           <span @click="openDialog" style="display:block;">权限管理</span>
         </el-dropdown-item>
         <el-dropdown-item divided>
-          <span @click="exit" style="display:block;">退出登录</span>
+          <span @click="openPassword" style="display:block;">修改密码</span>
         </el-dropdown-item>
         <el-dropdown-item divided>
-          <span @click="openPassword" style="display:block;">修改密码</span>
+          <span @click="exit" style="display:block;">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
