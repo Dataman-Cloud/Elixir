@@ -9,13 +9,13 @@
       </div>
       <el-form class="dm-login-box" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px">
         <el-form-item prop="username" class="dm-login-label">
-          <el-input class="dm-login-input" name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="账号"></el-input>
+          <el-input class="dm-login-input" name="username" type="text" v-model="loginForm.username" autoComplete="off" placeholder="账号"></el-input>
           <template slot="append">
             <img src="../../assets/user.svg" style="width:32px;height:32px" />
           </template>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input class="dm-login-input" name="password" type="password" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="密码"></el-input>
+          <el-input class="dm-login-input" name="password" type="password" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="off" placeholder="密码"></el-input>
           <template slot="append">
             <img src="../../assets/lock.svg" style="width:32px;height:32px" />
           </template>
