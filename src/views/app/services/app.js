@@ -155,10 +155,6 @@ export const APP_FORM_RULES = {
   ],
   instances: [
     { required: true, message: '容器个数不能为空' },
-    { type: 'integer', min: 1, message: '容器个数instances最小为 1' }
-  ],
-  task_count: [
-    { required: true, message: '容器个数不能为空' },
-    { type: 'number', min: 1, message: '容器个数task_count最小为 1' }
+    { type: 'integer', min: 1, message: '容器个数最小为 1' }
   ]
 }
