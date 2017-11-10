@@ -22,6 +22,13 @@ export function delHost (vclusterLabel, slaveNodeIp) {
   })
 }
 
+export function hostsList () {
+  return fetch({
+    url: `v1/tenants/hosts`,
+    method: 'get'
+  })
+}
+
 export function hostList () {
   return fetch({
     url: `v1/tenants/selectHostTenant`,

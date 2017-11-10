@@ -3,7 +3,7 @@ import * as api from '../../api/host'
 
 export default {
   async [type.FETCH_HOSTS] ({ commit }, name) {
-    let { data } = await api.hostList()
+    let { data } = await api.hostsList()
     commit(type.FETCH_HOSTS, data)
     return data
   },
