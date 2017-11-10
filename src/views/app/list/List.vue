@@ -75,7 +75,7 @@
           <span v-else>{{app.row.progress}} / {{app.row.task_count}}</span>
         </template>
       </el-table-column>
-      <el-table-column property="version.container.docker.network" label="网络模式" width="110"></el-table-column>
+      <el-table-column property="version.container.docker.networkname" label="网络模式" width="110"></el-table-column>
       <el-table-column property="status" label="运行状态" width="100">
         <template scope="app">
           <p>{{app.row.status}}</p>

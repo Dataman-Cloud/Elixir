@@ -22,13 +22,13 @@ export function countHealthyState (app) {
   if (app.version) {
     switch (app.version.container.docker.network) {
       case 'bridge':
-        app.version.container.docker.network = '网桥模式'
+        app.version.container.docker.networkname = '网桥模式'
         break
       case 'host':
-        app.version.container.docker.network = 'HOST 模式'
+        app.version.container.docker.networkname = 'HOST 模式'
         break
       default:
-        app.version.container.docker.network = 'Static Ip'
+        app.version.container.docker.networkname = 'Static Ip'
     }
   }
 
@@ -59,8 +59,8 @@ export const APP_BASE = {
   runAs: 'admin',
   cpus: 0.01,
   mem: 16,
-  instances: '',
-  task_count: '',
+  instances: 1,
+  task_count: 1,
   envs: [],
   env: {},
   ips: [],
@@ -129,15 +129,15 @@ export const DYNAMIC_CONFIG = {
 
 export const APP_FORM_RULES = {
   name: [
-    { required: true, message: '应用名不能为空' },
+    { required: true, message: '应用名不能为空', trigger: 'blur' },
     { pattern: /^[a-zA-Z0-9-]+$/, message: '应用名称只能包含数字、字母、中划线' },
     { max: 48, message: '最大长度48个字符' }
   ],
   selectCluster: [
-    { required: true, message: '集群不能为空' }
+    { required: true, message: '集群不能为空', trigger: 'blur' }
   ],
   'container.docker.image': [
-    { required: true, message: '镜像地址不能为空' }
+    { required: true, message: '镜像地址不能为空', trigger: 'blur' }
   ],
   subnet: [
     { required: true, message: '请选择子网' }
@@ -155,6 +155,10 @@ export const APP_FORM_RULES = {
   ],
   instances: [
     { required: true, message: '容器个数不能为空' },
-    { type: 'number', min: 0, message: '容器个数最小为 0' }
+    { type: 'integer', min: 1, message: '容器个数instances最小为 1' }
+  ],
+  task_count: [
+    { required: true, message: '容器个数不能为空' },
+    { type: 'number', min: 1, message: '容器个数task_count最小为 1' }
   ]
 }

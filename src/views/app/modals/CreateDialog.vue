@@ -18,11 +18,22 @@
           <el-checkbox v-model="form.container.docker.forcePullImage">强制拉取镜像</el-checkbox>
         </el-form-item>
         <el-form-item label="网络模式" prop="container.docker.network">
-          <el-radio-group v-model="form.container.docker.network" @change="networkChange">
+          <el-radio-group v-model="form.container.docker.network">
             <el-radio label="bridge">网桥模式</el-radio>
             <el-radio label="host">HOST 模式</el-radio>
             <el-radio label="swan">Static Ip</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item v-if="form.container.docker.network !=='host' && form.container.docker.network !=='bridge'" label="子网" prop="subnet">
+          <el-select v-model="form.subnet" @visible-change="selectSubnet" @change="getIps">
+            <el-option v-for="(subnet, index) in subnets" :key="index" :value="subnet" :label="subnet.netname"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item v-if="form.container.docker.network !=='host' && form.container.docker.network !=='bridge' && form.subnet" label="IP 池" prop="ips">
+          <el-select value-key="id" v-model="form.ips" multiple filterable placeholder="请输入关键词">
+            <el-option v-for="(staticIp, index) in staticIps" :key="index" :value="staticIp"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="容器规格" class="spec">
           <el-row :gutter="12">
@@ -43,8 +54,8 @@
             </el-col>
           </el-row>
         </el-form-item>
-        <el-form-item label="容器个数" :prop="form[taskCount]">
-          <el-input type="number" v-model="form[taskCount]" :disabled="isUpdate"></el-input>
+        <el-form-item label="容器个数" :prop="taskCount">
+          <el-input type="number" v-model.number="form[taskCount]" :disabled="isUpdate"></el-input>
           <!-- <el-checkbox v-model="form.oneContainer" @change="uniqueHostname">1容器：1主机（如果勾选那么容器的数目将与集群中主机数目保持一致）</el-checkbox> -->
         </el-form-item>
         <el-form-item label="挂载路径">
@@ -79,18 +90,6 @@
               <i class="el-icon-delete"></i>
             </el-button>
           </el-row>
-        </el-form-item>
-
-        <el-form-item v-if="form.container.docker.network !=='host' && form.container.docker.network !=='bridge'" label="子网" prop="subnet">
-          <el-select v-model="form.subnet" @visible-change="selectSubnet" @change="getIps">
-            <el-option v-for="(subnet, index) in subnets" :key="index" :value="subnet" :label="subnet.netname"></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item v-if="form.container.docker.network !=='host' && form.container.docker.network !=='bridge' && form.subnet" label="IP 池" prop="ips">
-          <el-select value-key="id" v-model="form.ips" multiple filterable placeholder="请输入关键词">
-            <el-option v-for="(staticIp, index) in staticIps" :key="index" :value="staticIp"></el-option>
-          </el-select>
         </el-form-item>
         <el-form-item label="服务端口">
           <el-row :gutter="5">
@@ -134,21 +133,21 @@
         <el-collapse accordion class="advance" v-model="activeCollapse">
           <el-collapse-item name="advance" title="高级设置">
 
-            <el-form-item label="访问网关" class="proxy-label">
+            <el-form-item label="访问代理" class="proxy-label">
               <el-row :gutter="12">
                 <el-col :span="20" class="proxy-spec">
-                  <el-form-item prop="proxy.enabled" label="网关开关">
+                  <el-form-item prop="proxy.enabled" label="开关">
                     <el-switch on-color="#01C4BC" v-model="form.proxy.enabled"></el-switch>
                   </el-form-item>
                 </el-col>
-                <el-col :span="10">
-                  <el-form-item prop="proxy.alias">
-                    <el-input v-model="form.proxy.alias" placeholder="网关别名" :disabled="!form.proxy.enabled"></el-input>
+                <el-col :span="20">
+                  <el-form-item prop="proxy.alias" label="域名代理" style="margin-bottom:10px;">
+                    <el-input v-model="form.proxy.alias" :disabled="!form.proxy.enabled"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="10">
-                  <el-form-item prop="proxy.listen" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 1 - 65535 范围内' }]">
-                    <el-input v-model.number="form.proxy.listen" placeholder="端口" :disabled="!form.proxy.enabled"></el-input>
+                <el-col :span="20">
+                  <el-form-item prop="proxy.listen" label="端口代理" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 1 - 65535 范围内' }]">
+                    <el-input v-model.number="form.proxy.listen" :disabled="!form.proxy.enabled"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="20">
@@ -412,11 +411,6 @@ export default {
         this.staticIps = data
       }
     },
-    networkChange (netowrk) {
-      if (netowrk === 'host') {
-        this.form.container.docker.portMappings = []
-      }
-    },
     onSubmit () {
       this.$refs.form.validate(async (valid) => {
         if (valid) {
@@ -485,7 +479,7 @@ export default {
       this.loading = false
       return res
     },
-    updateInit (initFetchData) {
+    async updateInit (initFetchData) {
       let formTemp = this._.merge({}, appUtil.APP_BASE, initFetchData.data.version, {
         selectCluster: ''
       })
@@ -498,6 +492,14 @@ export default {
         this.form.subnet = formTemp.container.docker.network
         this.form.container.docker.network = 'swan'
       }
+      let { data } = await tenant.getSubnets()
+      this.subnets = data
+      let selectSubnet = data.map(item => {
+        if (item.netname === this.form.subnet) {
+          return item
+        }
+      })
+      await this.getIps(selectSubnet[0], this.form.selectCluster)
     }
   },
   watch: {
