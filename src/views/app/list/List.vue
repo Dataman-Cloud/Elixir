@@ -8,7 +8,7 @@
         <el-button type="primary" @click="openCreate">
           <i class="ion-ios-plus-outline"></i> 创建应用
         </el-button>
-        <el-button type="primary" @click="openUpdate" :disabled="!currentRow">
+        <el-button type="primary" @click="openUpdate" :disabled="(currentRow && (currentRow.operationStatus === 'canary_updating' || currentRow.operationStatus === 'canary_unfinished')) || !currentRow">
           <i class="fa fa-refresh"></i> 更新应用
         </el-button>
         <el-button type="danger" @click="openDelete" :disabled="!currentRows.length">
@@ -21,7 +21,7 @@
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item :disabled="!currentRow">
-              <el-button type="text" @click="openExtend" :disabled="!currentRow">
+              <el-button type="text" @click="openExtend" :disabled="(currentRow && (currentRow.operationStatus === 'canary_updating' || currentRow.operationStatus === 'canary_unfinished')) || !currentRow">
                 <i class="el-icon-edit"></i> 扩展应用
               </el-button>
             </el-dropdown-item>
@@ -48,7 +48,7 @@
           </el-dropdown-menu>
         </el-dropdown>
         <!-- <el-button type="primary" :disabled="!currentRow">
-                  <i class="fa fa-balance-scale"></i> 全部权重</el-button> -->
+                      <i class="fa fa-balance-scale"></i> 全部权重</el-button> -->
       </span>
 
       <el-button-group style="display: flex">
