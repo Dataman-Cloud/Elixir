@@ -31,7 +31,5 @@ export default {
   },
   async [type.SWITCH_USER_GROUP] ({ dispatch, context }, id) {
     await user.switchGroup(id)
-    // 切换成功后 reload 页面, 重新调用全局 beforeEach 校验 权限
-    location.reload()
   }
 }
