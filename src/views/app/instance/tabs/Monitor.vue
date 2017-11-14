@@ -64,9 +64,9 @@
       },
       getNowTime (time) {
         let nowTime = new Date(time)
-        let s = nowTime.getSeconds()
-        let m = nowTime.getMinutes()
-        let h = nowTime.getHours()
+        let s = nowTime.getSeconds() > 9 ? nowTime.getSeconds() : '0' + nowTime.getSeconds()
+        let m = nowTime.getMinutes() > 9 ? nowTime.getMinutes() : '0' + nowTime.getMinutes()
+        let h = nowTime.getHours() > 9 ? nowTime.getHours() : '0' + nowTime.getHours()
         return `${h}:${m}:${s}`
       },
       pickMonitorData (monitorKey, pointData) {
