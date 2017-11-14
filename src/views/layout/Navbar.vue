@@ -79,8 +79,9 @@ export default {
       await this.logout()
       location.reload()
     },
-    changeGroup (groupId) {
-      this.switchGroup(groupId)
+    async changeGroup (groupId) {
+      await this.switchGroup(groupId)
+      this.$router.push({ name: '首页' })
     },
     openDialog () {
       this.$refs.permission.open()
