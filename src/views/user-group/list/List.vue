@@ -25,7 +25,6 @@
               <el-button type="primary" @click="editorGroup(group.row)">
                 <i class="el-icon-edit"></i> 修改用户组
               </el-button>
-
               <el-button type="danger" @click="delGroup(group.row)">
                 <i class="el-icon-delete"></i> 删除用户组
               </el-button>
@@ -37,14 +36,9 @@
               <el-button type="primary" @click="addUser(group.row)">
                 <i class="el-icon-plus"></i> 添加新用户
               </el-button>
-              <el-button type="danger" :disabled="!currentRow" @click="delUser(group.row)">
-                <i class="el-icon-minus"></i> 移除用户
-              </el-button>
             </span>
           </div>
-          <el-table ref="multipleTable" :data="group.row.users" @selection-change="handleCurrentChange" border tooltip-effect="dark" style="width: 100%">
-            <el-table-column type="selection" width="55">
-            </el-table-column>
+          <el-table :data="group.row.users" border tooltip-effect="dark" style="width: 100%">
             <el-table-column prop="userName" label="用户名称" width="130">
             </el-table-column>
             <el-table-column label="权限" width="120">
@@ -56,6 +50,11 @@
             </el-table-column>
             <el-table-column prop="createAt" label="创建时间" show-overflow-tooltip>
             </el-table-column>
+            <el-table-column label="操作" width="250">
+              <template scope="scope">
+                <el-button size="small" @click="delUser(scope.row.id, group.row)">移除用户</el-button>
+              </template>
+            </el-table-column>
           </el-table>
         </template>
       </el-table-column>
@@ -65,6 +64,7 @@
       </el-table-column>
       <el-table-column label="创建时间" prop="createAt">
       </el-table-column>
+    </el-table>
     </el-table>
   </div>
 </template>
@@ -86,17 +86,13 @@ export default {
     return {
       listLoading: false,
       searchWord: '',
-      groupId: '',
-      currentRows: []
+      groupId: ''
     }
   },
   computed: {
     ...mapState({
       groups (state) {
         return state.userGroup.groups.groups
-      },
-      currentRow: function () {
-        return this.currentRows.length === 1 ? this.currentRows[0] : null
       },
       filterUsers: function () {
         return this.searchWord ? this.groups.filter(group => group.name.toLowerCase().includes(this.searchWord.toLowerCase())) : this.groups
@@ -110,9 +106,9 @@ export default {
     addUser (groupId) {
       this.$refs.addUserDialog.open(groupId)
     },
-    async delUser (group) {
+    async delUser (userid, group) {
       await Confirm.open(`确认移除改用户?`)
-      await user.removeUser(this.currentRows.map(user => user.id), group.id)
+      await user.removeUser(userid, group.id)
       this.$notify({ message: '删除成功' })
       let { data } = await userGroups.groupUsersList(group.id)
       group.users = data
@@ -131,9 +127,6 @@ export default {
     },
     editorGroup (group) {
       this.$refs.createDialog.open(group.id)
-    },
-    handleCurrentChange (val) {
-      this.currentRows = val
     },
     async listGroup () {
       this.listLoading = true
