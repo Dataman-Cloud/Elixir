@@ -9,10 +9,6 @@
           <el-option v-for="(cluster,index) in clusters" :key="index" :value="cluster.clusterLabel" :label="cluster.clusterLabel"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="runas" prop="runas">
-        <el-input v-model="form.runas" placeholder="请填写runas"></el-input>
-      </el-form-item>
-
       <el-form-item label="labels">
         <el-button type="primary" size="small" @click="addLabel">添加label</el-button>
       </el-form-item>
@@ -109,9 +105,6 @@ export default {
         ],
         cluster: [
           { required: true, message: '请选择集群' }
-        ],
-        runas: [
-          { required: true, message: 'runas 不能为空' }
         ],
         yamlText: [
           { required: true, message: 'yamlText 不能为空' }

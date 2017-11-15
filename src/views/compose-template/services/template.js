@@ -2,42 +2,35 @@ export const YAML_BASE =
 `version: "3"
 services:
   wordpress:
-    image: "wordpress"
+    image: "offlineregistry.dataman-inc.com:5000/library/wordpress"
     network_mode: "bridge"
     deploy:
       replicas: 1
-      constraints:
-        - attribute: "vcluster"
-          operator: "=="
-          value: "eams"
     environment:
-      - WORDPRESS_DB_HOST=mariadb:3343
+      - WORDPRESS_DB_HOST=mariadb:3333
       - WORDPRESS_DB_PASSWORD=Password
+    extra_hosts:
+      - "mariadb:192.168.1.182"
     ports:
       - "80/tcp"
     depends_on:
       - mariadb
-    proxy:
-      enabled: true
-      alias: "x.cn"
-      listen: 8888
-      sticky: false
+    resource:
+      cpus: 0.1
+      mem: 16
   mariadb:
-    image: "mariadb"
+    image: "offlineregistry.dataman-inc.com:5000/library/mariadb"
     network_mode: "bridge"
     deploy:
       replicas: 1
       wait_delay: 20
-      constraints:
-        - attribute: "vcluster"
-          operator: "=="
-          value: "eams"
     environment:
       - MYSQL_ROOT_PASSWORD=Password
     ports:
-      - 3343
+      - 3306
+    resource:
+      cpus: 0.2
+      mem: 100
     proxy:
       enabled: true
-      alias: "i.cn"
-      listen: 3343
-      sticky: false`
+      listen: 3333`
