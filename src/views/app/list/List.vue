@@ -85,14 +85,15 @@
       </el-table-column>
       <el-table-column label="健康状态">
         <template scope="app">
-          <span>总数: </span>
-          <i class="app-style">{{app.row.health.total}} </i>
-          <span> 健康: </span>
-          <i class="app-style">{{app.row.health.healthy}} </i>
-          <span> 不健康: </span>
-          <i class="app-style">{{app.row.health.unhealthy}} </i>
-          <span> 未设置: </span>
-          <i>{{app.row.health.unset}} </i>
+          <p v-if="app.row.health.unset > 0">
+            <span> 未设置 </span>
+          </p>
+          <p v-else>
+            <span> 健康: </span>
+            <i class="app-style">{{app.row.health.healthy}} </i>
+            <span> 不健康: </span>
+            <i class="app-style">{{app.row.health.unhealthy}} </i>
+          </p>
         </template>
       </el-table-column>
       <el-table-column property="updated" label="更新时间" min-width="80">
