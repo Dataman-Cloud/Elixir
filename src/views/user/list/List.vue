@@ -19,31 +19,36 @@
     <Editor-Group-Dialog ref="EditorGroupDialog"></Editor-Group-Dialog>
 
     <el-table ref="userTable" :data="filterUsers" border tooltip-effect="dark" style="width: 100%" v-loading="listLoading">
-      <el-table-column prop="userName" label="用户名" width="120">
+      <el-table-column prop="userName" label="用户名" min-width="80">
       </el-table-column>
-      <el-table-column label="姓名" width="120">
+      <el-table-column label="姓名" min-width="80">
         <template scope="name">
           <span>{{ name.row.name || '-'}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="email" label="邮箱">
+      <el-table-column prop="email" label="邮箱" min-width="120">
       </el-table-column>
-      <el-table-column prop="currentGroupName" label="所属组">
+      <el-table-column prop="currentGroupName" label="所属组" min-width="120">
         <template scope="user">
           <p v-for="(group, index) in user.row.accountGroups" :key="index">{{group.group.name}} / {{group.role}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="200">
+      <el-table-column label="所属租户" min-width="120">
+        <template scope="tenant">
+          <span>{{ tenant.row.tenantName || '-'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" min-width="120">
         <template scope="scope">
           <span>{{scope.row.createAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="250" v-if="isPlatform">
+      <el-table-column label="操作" min-width="160" v-if="isPlatform">
         <template scope="scope">
           <el-button size="small" @click="updatePsd(scope.row.id)">修改密码</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="250" v-else>
+      <el-table-column label="操作" min-width="160" v-else>
         <template scope="scope">
           <el-button v-if="scope.row.status === 0" size="small" @click="enableUser(scope.row)">启动</el-button>
           <el-button v-else size="small" @click="disableUser(scope.row)">停止</el-button>
