@@ -2,7 +2,7 @@
   <el-dialog title="添加成员" v-model="dialogVisible" size="tiny" ref="dialog" @close="close" :close-on-click-modal="false">
     <el-form :model="form" ref="form" :rules="rules" label-width="60px">
       <el-form-item label="用户" prop="accountId">
-        <el-select v-model="form.accountId" @visible-change="listAllUser" v-loading="loading">
+        <el-select v-model="form.accountId" @visible-change="listAllUser" :loading="loading">
           <el-option v-for="(user, index) in users" :key="index" :value="user.id" :label="user.userName">{{user.userName}}</el-option>
         </el-select>
       </el-form-item>
@@ -23,7 +23,6 @@
 <script>
 import * as userGroup from '@/api/user-group'
 import * as user from '@/api/user'
-// import * as type from '@/store/user-group/mutations_types'
 export default {
   data () {
     return {
@@ -59,8 +58,10 @@ export default {
     },
     async listAllUser (flag) {
       if (flag) {
+        this.loading = true
         let { data } = await user.userAll()
         this.users = data
+        this.loading = false
       }
     },
     onSubmit () {
