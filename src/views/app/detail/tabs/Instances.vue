@@ -6,11 +6,11 @@
           <i class="glyphicon glyphicon-repeat"></i>
         </el-button>
         <a class="pan-btn pink-btn margin-10" :href="stdObj.stdout">
-          <el-button type="primary" :disabled="!currentRow">
+          <el-button type="primary" :disabled="!(currentRow && currentRow.status === 'TASK_RUNNING')">
             <i class="el-icon-plus"></i> stdout 日志</el-button>
         </a>
         <a class="pan-btn pink-btn margin-10" :href="stdObj.stderr">
-          <el-button type="primary" :disabled="!currentRow">
+          <el-button type="primary" :disabled="!(currentRow && currentRow.status === 'TASK_RUNNING')">
             <i class="el-icon-plus"></i> stderr 日志</el-button>
         </a>
       </span>
