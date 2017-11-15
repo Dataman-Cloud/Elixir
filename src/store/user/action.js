@@ -31,5 +31,6 @@ export default {
   },
   async [type.SWITCH_USER_GROUP] ({ dispatch, context }, id) {
     await user.switchGroup(id)
+    location.reload()
   }
 }
