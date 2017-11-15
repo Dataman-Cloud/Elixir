@@ -83,8 +83,8 @@ export default {
         let undistributed = 0
         let recycled = 0
         data.forEach(function (item, index) {
-          undistributed += item.status === 0 ? 1 : 0
-          recycled += item.status === 3 ? 1 : 0
+          undistributed += item.status === '0' ? 1 : 0
+          recycled += item.status === '3' ? 1 : 0
         })
         this.serieDatas = [
           { value: undistributed, name: '未分配' },
