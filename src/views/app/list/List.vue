@@ -62,28 +62,28 @@
     <weight-dialog @ok="weightOk" ref="weightDialog"></weight-dialog>
 
     <el-table :data="filterApps" border row-key="id" v-loading="listLoading" @selection-change="handleCurrentChange" style="width: 100%">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column property="id" label="应用" width="180" sortable show-overflow-tooltip>
+      <el-table-column type="selection" min-width="55"></el-table-column>
+      <el-table-column property="id" label="应用" min-width="180" sortable show-overflow-tooltip>
         <template scope="app">
           <router-link :title="app.row.id" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
         </template>
       </el-table-column>
-      <el-table-column property="cluster" label="集群" width="150" sortable></el-table-column>
-      <el-table-column property="task_count" label="实例" width="100">
+      <el-table-column property="cluster" label="集群" min-width="120" sortable show-overflow-tooltip></el-table-column>
+      <el-table-column property="task_count" label="实例" min-width="80">
         <template scope="app">
           <span v-if="app.row.progress === -1">{{app.row.task_count}}</span>
           <span v-else>{{app.row.progress}} / {{app.row.task_count}}</span>
         </template>
       </el-table-column>
-      <el-table-column property="version.container.docker.networkname" label="网络模式" width="110"></el-table-column>
-      <el-table-column property="status" label="运行状态" width="100">
+      <el-table-column property="version.container.docker.networkname" label="网络模式" min-width="100"></el-table-column>
+      <el-table-column property="status" label="运行状态" min-width="110">
         <template scope="app">
           <p>{{app.row.status}}</p>
           <small v-if="app.row.operationStatus === 'canary_updating' || app.row.operationStatus === 'canary_unfinished'">(灰度中)</small>
           <small v-if="app.row.operationStatus === 'updating'">(更新中)</small>
         </template>
       </el-table-column>
-      <el-table-column label="健康状态">
+      <el-table-column label="健康状态"  min-width="180">
         <template scope="app">
           <p v-if="app.row.health.unset > 0">
             <span> 未设置 </span>
@@ -96,7 +96,7 @@
           </p>
         </template>
       </el-table-column>
-      <el-table-column property="updated" label="更新时间" min-width="80">
+      <el-table-column property="updated" label="更新时间" min-width="100">
         <template scope="scope">
           <span>{{scope.row.updated | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
