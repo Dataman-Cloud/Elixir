@@ -65,7 +65,7 @@ export default {
       return this.currentRows.length === 1 ? this.currentRows[0] : null
     },
     stdObj: function () {
-      return this.currentRow ? {
+      return this.currentRow && this.currentRow.status === 'TASK_RUNNING' ? {
         stderr: `${baseUrl}/v1/node/apps/stdlog?hostip=${this.currentRow.ip}&slaveid=${this.currentRow.agentId}&taskid=${this.currentRow.id}&logtype=stderr`,
         stdout: `${baseUrl}/v1/node/apps/stdlog?hostip=${this.currentRow.ip}&slaveid=${this.currentRow.agentId}&taskid=${this.currentRow.id}&logtype=stdout`
       } : {
