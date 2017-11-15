@@ -23,7 +23,7 @@
     <el-table ref="multipleTable" :data="filterCicds" border v-loading="listLoading" tooltip-effect="dark" style="width: 100%" @selection-change="handleCurrentChange">
       <el-table-column type="selection" width="55">
       </el-table-column>
-      <el-table-column label="项目">
+      <el-table-column label="工程名">
         <template scope="item">
           <router-link :title="item.row.name" class="ellipsis" :to="{name: '构建详情', params:{name : item.row.name}}">
             {{ item.row.name }}
