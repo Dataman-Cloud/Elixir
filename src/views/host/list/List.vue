@@ -49,7 +49,7 @@
       </el-table-column>
       <el-table-column label="操作" width="250">
         <template scope="scope">
-          <el-button size="small" @click="removeHost(scope.row.ip)" :disabled="scope.row.status !== '2'">移除</el-button>
+          <el-button size="small" @click="removeHost(scope.row.hostname)" :disabled="scope.row.status !== '2'">移除</el-button>
         </template>
       </el-table-column>
     </el-table>
