@@ -72,7 +72,7 @@ export default {
       }
     }),
     filterCmpTemplates: function () {
-      return this.searchWord ? this.cmpTemplates.filter(cmpTemplate => cmpTemplate.name.toLowerCase().includes(this.searchWord)) : this.cmpTemplates
+      return this.searchWord ? this.cmpTemplates.filter(cmpTemplate => cmpTemplate.name.toLowerCase().includes(this.searchWord.toLowerCase())) : this.cmpTemplates
     }
   },
   methods: {
