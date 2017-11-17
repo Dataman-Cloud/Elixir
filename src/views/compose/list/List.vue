@@ -68,7 +68,7 @@ export default {
       return this.currentRows.length === 1 ? this.currentRows[0] : null
     },
     filterComposes: function () {
-      return this.searchWord ? this.composes.filter(compose => compose.id.toLowerCase().includes(this.searchWord)) : this.composes
+      return this.searchWord ? this.composes.filter(compose => compose.display_name.toLowerCase().includes(this.searchWord.toLowerCase())) : this.composes
     }
   },
   methods: {
