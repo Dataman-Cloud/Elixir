@@ -222,7 +222,7 @@ export const asyncRouterMap = [
     path: '/system',
     redirect: '/system/usrgroup',
     name: '系统',
-    icon: 'fa fa-user-o',
+    icon: 'fa fa-rss',
     component: Layout,
     hasDropdown: true,
     children: [
@@ -262,7 +262,7 @@ export const asyncRouterMap = [
     path: '/network',
     redirect: '/network/ippools',
     name: '网络',
-    icon: 'fa fa-user-o',
+    icon: 'fa fa-th',
     component: Layout,
     hasDropdown: true,
     children: [

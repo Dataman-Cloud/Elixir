@@ -1,5 +1,6 @@
 <template>
   <el-menu :default-active="$route.path" class="el-menu-vertical-demo" router unique-opened theme="dark" :collapse="isCollapse">
+    <div class="logo"><div class="logo-inner"><img src="../../assets/logo.svg" alt=""></div></div>
     <sidebar-item :routes="routers"></sidebar-item>
   </el-menu>
 </template>
@@ -18,6 +19,27 @@ export default {
 }
 </script>
 <style>
+.logo{
+  height: 50px;
+  overflow: hidden;
+  padding-left: 0px;
+}
+.logo-inner{
+  width: 130px;
+  height: 40px;
+  margin: 10px auto;
+}
+.el-menu--collapse .logo{
+  padding-left: 12px;
+  width: 35px;
+}
+.el-menu--dark{
+  overflow: scroll;
+}
+.el-menu--dark::-webkit-scrollbar {display:none}
+.el-menu--collapse{
+  overflow: inherit!important;
+}
 .el-menu--collapse>div>.el-menu-item span,
 .el-menu--collapse>div>.el-submenu>.el-submenu__title span {
   height: 0;

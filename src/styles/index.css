@@ -79,10 +79,10 @@
 }
 .userGroup{
   position: absolute;
-  right: 148px;
+  right: 170px;
 }
 .userGroup .el-input__inner{
-  border: none;
+  border: 1px solid #eee;
 }
 .navbar .avatar-container .avatar-wrapper .el-icon-caret-center{
   top:15px!important;
@@ -122,4 +122,7 @@
   font-size: 14px!important;
   color: #f76260!important;
   left: 48px!important;
+}
+.el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active, .el-menu-item.is-active{
+  background: #222f42;
 }

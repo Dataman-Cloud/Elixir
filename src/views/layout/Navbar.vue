@@ -101,6 +101,7 @@ export default {
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
+  background: #f9fafc;
   .bread-header {
     height: 50px;
     line-height: 50px;

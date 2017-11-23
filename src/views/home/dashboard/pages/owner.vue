@@ -31,11 +31,8 @@
 
     <el-row style="margin-top:20px;">
       <el-col :span="24">
-        <h1 class="dashboard-title">
-          应用
-        </h1>
         <div>
-          <bar-chart id="host" height='290px' width='100%' :xAxisData="clusterName" :seriesData="appDatas" :name="name"></bar-chart>
+          <bar-chart id="host" height='290px' width='100%' :xAxisData="clusterName" :seriesData="appDatas" :name="name" :title="title"></bar-chart>
         </div>
       </el-col>
     </el-row>
@@ -60,7 +57,8 @@ export default {
       serieDatas: [
         { value: 335, name: '使用中' },
         { value: 310, name: '未使用' }
-      ]
+      ],
+      title: '应用分布'
     }
   },
   computed: {
