@@ -18,7 +18,7 @@
 
     <el-table :data="filterUsers" style="width: 100%" @expand="expand" v-loading="listLoading">
       <el-table-column type="expand">
-        <template scope="group">
+        <template slot-scope="group">
           <div class="btn-group">
             <span></span>
             <span>
@@ -42,7 +42,7 @@
             <el-table-column prop="userName" label="用户名称" width="130">
             </el-table-column>
             <el-table-column label="权限" width="120">
-              <template scope="perms">
+              <template slot-scope="perms">
                 <p v-for="(perm, index) in perms.row.accountGroups" :key="index">
                   <span v-show="perm.groupId === group.row.id">{{perm.role}}</span>
                 </p>
@@ -51,7 +51,7 @@
             <el-table-column prop="createAt" label="创建时间" show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="操作" width="250">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <el-button size="small" @click="delUser(scope.row.id, group.row)">移除用户</el-button>
               </template>
             </el-table-column>

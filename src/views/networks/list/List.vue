@@ -17,7 +17,7 @@
 
     <el-table :data="filterNetworks" style="width: 100%" v-loading="listLoading">
       <el-table-column type="expand">
-        <template scope="networks">
+        <template slot-scope="networks">
           <el-table :data="networks.row.subnets" border tooltip-effect="dark" style="width: 100%">
             <el-table-column prop="netname" label="netname" show-overflow-tooltip>
             </el-table-column>
@@ -43,7 +43,7 @@
       <el-table-column label="创建时间" prop="host.created" sortable>
       </el-table-column>
       <el-table-column label="分配时间" prop="host.assignTime" sortable>
-        <template scope="scope">
+        <template slot-scope="scope">
            <span v-if="scope.row.host.assignTime">{{scope.row.host.assignTime}}</span>
            <span v-else>-</span>
          </template>

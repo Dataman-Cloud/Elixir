@@ -1,7 +1,7 @@
 <template>
   <el-table :data="apps" border style="width: 100%">
     <el-table-column property="id" label="应用" width="180" sortable show-overflow-tooltip>
-        <template scope="app">
+        <template slot-scope="app">
           <router-link :title="app.row.id" class="ellipsis" :to="{name: '应用详情', params:{id : app.row.id}}">{{app.row.id}}</router-link>
         </template>
       </el-table-column>
@@ -22,7 +22,7 @@
             </ul>
           </el-tooltip>
         </template> -->
-        <template scope="app">
+        <template slot-scope="app">
           <span>总数: </span>
           <i>{{app.row.health.total}} </i>
           <span> 健康: </span>
@@ -34,7 +34,7 @@
         </template>
       </el-table-column>
       <el-table-column property="updated" label="更新时间" min-width="80">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.updated | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>

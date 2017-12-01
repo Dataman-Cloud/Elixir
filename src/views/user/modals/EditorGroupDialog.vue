@@ -38,7 +38,7 @@
       <el-table-column prop="role" label="角色">
       </el-table-column>
       <el-table-column prop="role" label="操作">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button size="small" @click="remoteGroup(scope.row)">删除</el-button>
         </template>
       </el-table-column>

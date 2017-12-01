@@ -35,7 +35,7 @@
       <el-table-column
         property="op_time"
         sortable label="时间戳">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.op_time | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>

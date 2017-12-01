@@ -57,7 +57,7 @@
         <el-table-column prop="hostname" label="主机" show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="操作" width="250">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-button size="small" @click="delHost(scope.row.hostname)" :disabled="isMember">删除</el-button>
           </template>
         </el-table-column>

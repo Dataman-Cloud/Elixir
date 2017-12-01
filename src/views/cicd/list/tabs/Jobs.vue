@@ -24,7 +24,7 @@
       <el-table-column type="selection" width="55">
       </el-table-column>
       <el-table-column label="工程名">
-        <template scope="item">
+        <template slot-scope="item">
           <router-link :title="item.row.name" class="ellipsis" :to="{name: '构建详情', params:{name : item.row.name}}">
             {{ item.row.name }}
           </router-link>
@@ -37,7 +37,7 @@
       <el-table-column prop="leatestVesion" label="最新版本">
       </el-table-column>
       <el-table-column label="最新构建时间" show-overflow-tooltip>
-        <template scope="cicd">
+        <template slot-scope="cicd">
           <span v-if="cicd.row.status === '构建成功'">{{cicd.row.leatestBuilderDate}}</span>
           <span v-else>--</span>
         </template>

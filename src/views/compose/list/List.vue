@@ -22,18 +22,18 @@
     <el-table :data="filterComposes" border style="width: 100%" row-key="id" v-loading="listLoading" @selection-change="handleCurrentChange">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="display_name" label="名称" width="300">
-        <template scope="scope">
+        <template slot-scope="scope">
           <router-link :title="scope.row.id" class="ellipsis" :to="{name: '编排详情', params:{id : scope.row.id}}">{{scope.row.display_name}}</router-link>
         </template>
       </el-table-column>
       <el-table-column prop="op_status" label="状态"></el-table-column>
       <el-table-column property="created_at" label="创建时间">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.created_at | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>
       <el-table-column property="updated_at" label="更新时间" min-width="80">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.updated_at | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>
