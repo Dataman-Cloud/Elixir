@@ -19,7 +19,7 @@
     <el-table :data="tasks" stripe border v-loading="listLoading" @selection-change="handleCurrentChange" style="width: 100%">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column property="name" label="实例名称" width="200">
-        <template scope="scope">
+        <template slot-scope="scope">
           <router-link v-if="scope.row.agentId" class="ellipsis" :to="{name: '实例详情', params: { host: scope.row.ip, id: scope.row.id, slaveId: scope.row.agentId}}">
             {{scope.row.name}}
           </router-link>
@@ -36,7 +36,7 @@
       <el-table-column property="version" label="版本">
       </el-table-column>
       <el-table-column label="创建" min-width="120">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.created | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>

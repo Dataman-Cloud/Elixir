@@ -47,7 +47,7 @@
       <el-table-column
         label="扩缩结果"
         width="120">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{actionMap[scope.row.action]}}</span>
         </template>
       </el-table-column>

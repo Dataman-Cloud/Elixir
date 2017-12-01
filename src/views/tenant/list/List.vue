@@ -18,7 +18,7 @@
 
     <el-table :data="filterTenants" style="width: 100%">
       <el-table-column type="expand">
-        <template scope="tenant">
+        <template slot-scope="tenant">
           <div class="btn-group">
             <span></span>
             <span>
@@ -44,7 +44,7 @@
             <el-table-column prop="created" label="添加时间" show-overflow-tooltip>
             </el-table-column>
             <el-table-column label="操作" width="250">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <el-button size="small" @click="delHost(scope.row.ip)" :disabled="scope.row.status !== '3'">回收主机</el-button>
               </template>
           </el-table-column>

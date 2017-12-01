@@ -24,7 +24,7 @@
         sortable show-overflow-tooltip
         property="name"
         label="名称">
-        <template scope="harbor">
+        <template slot-scope="harbor">
           <router-link :title="harbor.row.name" class="ellipsis" :to="{name: '镜像仓库', params:{name : harbor.row.name}}">{{harbor.row.name}}</router-link>
         </template>
       </el-table-column>

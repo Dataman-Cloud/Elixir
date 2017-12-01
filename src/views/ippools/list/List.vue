@@ -18,7 +18,7 @@
 
     <el-table ref="ippoolsTable" :data="filterIpPools" border tooltip-effect="dark" style="width: 100%" v-loading="listLoading">
       <el-table-column type="expand">
-        <template scope="ippools">
+        <template slot-scope="ippools">
           <el-table :data="ippools.row.ips" border tooltip-effect="dark" style="width: 100%">
             <el-table-column prop="ip" label="ip" show-overflow-tooltip>
             </el-table-column>

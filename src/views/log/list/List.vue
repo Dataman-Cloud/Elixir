@@ -34,7 +34,7 @@
     </el-form>
 
     <infinite-list :items="logs" ref="infiniteList" @onInfinite="infinite" class="log-list">
-      <template slot="item" scope="props">
+      <template slot="item" slot-scope="props">
         <p class="logItem">
           <span>{{props.row.fields.time[0] | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}} {{props.row.fields.log[0]}}</span>
         </p>

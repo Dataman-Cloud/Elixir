@@ -28,7 +28,7 @@
       </el-table-column>
       <el-table-column
         label="应用名称">
-        <template scope="scope">
+        <template slot-scope="scope">
           <!--{{ scope.row.app_id }}-->
           <router-link :title="scope.row.app_id" class="ellipsis" :to="{name: '扩缩历史', params:{name : scope.row.app_id}}">
             {{scope.row.app_id}}
@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column
           label="告警规则">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.type}} {{scope.row.operator}} {{scope.row.set_value}}</span>
         </template>
       </el-table-column>
@@ -52,14 +52,14 @@
       <el-table-column
         prop="action"
         label="扩缩方式">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span v-if="scope.row.action === 1">扩</span>
           <span v-if="scope.row.action === 2">缩</span>
         </template>
       </el-table-column>
       <el-table-column
         label="目标实例数">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span v-if="scope.row.action === 1">{{scope.row.max_instance}}</span>
           <span v-if="scope.row.action === 2">{{scope.row.min_instance}}</span>
         </template>
@@ -70,14 +70,14 @@
       </el-table-column>
       <el-table-column
         label="状态">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span v-if="scope.row.status === 'start'">开启</span>
           <span v-if="scope.row.status === 'disable'">关闭</span>
         </template>
       </el-table-column>
       <el-table-column
         label="更新时间">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span :title="scope.row.updated" class="ellipsis">{{scope.row.updated}}</span>
         </template>
       </el-table-column>

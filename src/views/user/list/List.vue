@@ -22,34 +22,34 @@
       <el-table-column prop="userName" label="用户名" min-width="80">
       </el-table-column>
       <el-table-column label="姓名" min-width="80">
-        <template scope="name">
+        <template slot-scope="name">
           <span>{{ name.row.name || '-'}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="email" label="邮箱" min-width="120">
       </el-table-column>
       <el-table-column prop="currentGroupName" label="所属组" min-width="120">
-        <template scope="user">
+        <template slot-scope="user">
           <p v-for="(group, index) in user.row.accountGroups" :key="index">{{group.group.name}} / {{group.role}}</p>
         </template>
       </el-table-column>
       <el-table-column label="所属租户" min-width="120">
-        <template scope="tenant">
+        <template slot-scope="tenant">
           <span>{{ tenant.row.tenantName || '-'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" min-width="120">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.createAt | formatTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="160" v-if="isPlatform">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button size="small" @click="updatePsd(scope.row.id)">修改密码</el-button>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="160" v-else>
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button v-if="scope.row.status === 0" size="small" @click="enableUser(scope.row)">启动</el-button>
           <el-button v-else size="small" @click="disableUser(scope.row)">停止</el-button>
           <el-dropdown style="margin-left: 10px" trigger="click" @command="handleCommand">
