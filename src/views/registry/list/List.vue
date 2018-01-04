@@ -7,12 +7,12 @@
         <router-link class="primary" to="/registry/histories" tag="el-button"><i class="fa fa-history"></i> 历史</router-link>
       </span>
       <el-button-group style="display: flex">
-        <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入内容"></el-input>
+        <el-input class="el-input-search" icon="search" v-model="searchWord" placeholder="请输入内容" @change="reload"></el-input>
       </el-button-group>
     </div>
 
     <el-table
-      :data="filterRegistries"
+      :data="registries"
       highlight-current-row
       border
       row-key="ID"
@@ -37,6 +37,13 @@
         sortable label="下载数">
       </el-table-column>
     </el-table>
+
+    <!--工具条-->
+    <el-col :span="24" class="toolbar">
+      <el-pagination layout="prev, pager, next" :current-page.sync="currentPage"  :page-size="pageSize" :total="total" @current-change="handlePageChange"
+                     style="float:right;margin-top: 10px;margin-bottom: 10px;">
+      </el-pagination>
+    </el-col>
   </div>
 </template>
 
@@ -52,21 +59,26 @@
         listLoading: false,
         currentRows: [],
         searchWord: '',
-        auth: 'dataman'
+        auth: 'dataman',
+        pageSize: 15,
+        page: 1
       }
     },
     computed: {
       ...mapState({
         registries (state) {
-          return state.registry.registries.registries
+          return state.registry.registries.registries.data
+        },
+        total (state) {
+          return state.registry.registries.registries.totalCount
+        },
+        currentPage (state) {
+          return state.registry.registries.registries.pageNum
         },
         projectid ({user}) {
           return user.projectid
         }
       }),
-      filterRegistries: function () {
-        return this.searchWord ? this.registries.filter(reistry => reistry.name.toLowerCase().includes(this.searchWord)) : this.registries
-      },
       currentRow: function () {
         return this.currentRows.length === 1 ? this.currentRows[0] : null
       }
@@ -77,6 +89,10 @@
       }),
       handleCurrentChange (val) {
         this.currentRows = val
+      },
+      handlePageChange (val) {
+        this.page = val
+        this.reload()
       },
       async openDelete () {
         if (this.currentRow) {
@@ -94,14 +110,14 @@
       },
       reload () {
         this.listLoading = true
-        this.fetchRegistries()
+        this.fetchRegistries({page: this.page, search: this.searchWord})
           .then(() => (this.listLoading = false))
           .catch(() => (this.listLoading = false))
       }
     },
     created () {
       this.listLoading = true
-      this.fetchRegistries()
+      this.fetchRegistries({page: 1, search: ''})
         .then(() => {
           this.listLoading = false
         })
