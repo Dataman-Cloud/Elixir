@@ -3,10 +3,14 @@
  */
 import fetch from '@/utils/fetch'
 
-export function listRegistry () {
+export function listRegistry (page, search) {
   return fetch({
     url: 'v1/api/repositories',
-    method: 'get'
+    method: 'get',
+    params: {
+      page: !page ? 1 : page,
+      q: !search ? '' : search
+    }
   })
 }
 

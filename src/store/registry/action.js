@@ -2,8 +2,8 @@ import * as type from './mutations_types'
 import * as api from '../../api/registry'
 
 export default {
-  async [type.FETCH_REGISTRIES] (context) {
-    let data = await api.listRegistry()
+  async [type.FETCH_REGISTRIES] (context, playload) {
+    let data = await api.listRegistry(playload.page, playload.search)
     context.commit(type.FETCH_REGISTRIES, data.data)
     return data
   },
