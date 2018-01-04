@@ -1,10 +1,11 @@
 import axios from 'axios'
 import {Notification} from 'element-ui'
-// import baseUrl from 'baseUrl'
+import baseUrl from 'baseUrl'
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: 'http://192.168.1.191:5013/sgcloud', // api的base_url
+  // baseURL: 'http://192.168.1.191:5013/sgcloud', // api的base_url
+  baseURL: baseUrl,
   timeout: 10000                  // 请求超时时间
 })
 
