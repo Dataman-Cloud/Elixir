@@ -25,9 +25,13 @@ export function tagDetail (name) {
 }
 
 export function listLogs () {
+  // 默认获取 500 条 然后前端 在 分页显示 和 过滤
   return fetch({
     url: 'v1/api/logs',
-    method: 'get'
+    method: 'get',
+    params: {
+      lines: 500
+    }
   })
 }
 
