@@ -5,12 +5,12 @@
         <el-button type="primary"><i class="glyphicon glyphicon-repeat"></i></el-button>
       </span>
       <el-button-group style="display: flex">
-        <el-input class="el-input-search" icon="search" placeholder="请输入内容"></el-input>
+        <el-input class="el-input-search"  v-model="searchName" icon="search" placeholder="请输入内容"></el-input>
       </el-button-group>
     </div>
 
     <el-table
-      :data="logs"
+      :data="filterLogs"
       border
       v-loading="listLoading"
       style="width: 100%">
@@ -40,6 +40,13 @@
         </template>
       </el-table-column>
     </el-table>
+    <!--工具条-->
+    <el-col :span="24" class="toolbar">
+      <el-pagination layout="prev, pager, next" :current-page.sync="currentPage"  :page-size="pageSize" :total="total" @current-change="handlePageChange"
+                     style="float:right;margin-top: 10px;margin-bottom: 10px;">
+      </el-pagination>
+    </el-col>
+
   </div>
 </template>
 
@@ -50,7 +57,13 @@
   export default {
     data () {
       return {
-        listLoading: false
+        listLoading: false,
+        list: [],
+        page: 1,
+        pageSize: 20,
+        total: 0,
+        searchName: '',
+        currentPage: 1
       }
     },
     computed: {
@@ -58,12 +71,35 @@
         logs (state) {
           return state.registry.logs.logs
         }
-      })
+      }),
+      filterLogs: function () {
+        if (this.searchName) {
+          let list = []
+          // 循环比对
+          for (let u of this.logs) {
+            if (u.repo_name.indexOf(this.searchName) > -1) {
+              list.push(u)
+            }
+          }
+          this.list = list.slice((this.page - 1) * this.pageSize, this.page * this.pageSize)
+          this.total = list.length
+          this.currentPage = 1
+          return this.list
+        } else {
+          this.list = this.logs.slice((this.page - 1) * this.pageSize, this.page * this.pageSize)
+          this.total = this.logs.length
+          return this.list
+        }
+      }
     },
     methods: {
       ...mapActions({
         fetchLogs: type.FETCH_LOGS
-      })
+      }),
+      handlePageChange (val) {
+        console.log(val)
+        this.page = val
+      }
     },
     created () {
       this.listLoading = true
