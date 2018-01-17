@@ -11,6 +11,7 @@ export function listApp () {
 }
 
 export function getApp (id) {
+  id = window.btoa(id)
   return fetch({
     url: `v1/apps/${id}`,
     method: 'get'
@@ -18,6 +19,7 @@ export function getApp (id) {
 }
 
 export function deleteApp (id) {
+  id = window.btoa(id)
   return fetch({
     url: `v1/apps/${id}`,
     method: 'delete'
@@ -33,6 +35,7 @@ export function deleteApps (appIds = []) {
 }
 
 export function start (id) {
+  id = window.btoa(id)
   return fetch({
     url: `v1/apps/${id}/start`,
     method: 'put'
@@ -40,6 +43,7 @@ export function start (id) {
 }
 
 export function stop (id) {
+  id = window.btoa(id)
   return fetch({
     url: `v1/apps/${id}/stop`,
     method: 'put'
@@ -47,6 +51,7 @@ export function stop (id) {
 }
 
 export function extend (id, instances) {
+  id = window.btoa(id)
   return fetch({
     url: `v1/apps/${id}/scale`,
     method: 'put',
@@ -63,6 +68,7 @@ export function create (data) {
 }
 
 export function update (id, data) {
+  id = window.btoa(id)
   return fetch({
     url: `v1/apps/${id}`,
     method: 'put',
@@ -71,6 +77,7 @@ export function update (id, data) {
 }
 
 export function createCanary (id, data) {
+  id = window.btoa(id)
   return fetch({
     url: `/v1/apps/${id}/canary`,
     method: 'put',
@@ -79,6 +86,7 @@ export function createCanary (id, data) {
 }
 
 export function changeWeight (id, data) {
+  id = window.btoa(id)
   return fetch({
     url: `/v1/apps/${id}/weights`,
     method: 'put',
