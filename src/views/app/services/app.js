@@ -73,9 +73,7 @@ export const APP_BASE = {
   },
   proxy: {
     enabled: false,
-    alias: null,
-    listen: null,
-    sticky: false
+    proxies: []
   },
   cmd: null
 }
@@ -107,6 +105,11 @@ export const DYNAMIC_CONFIG = {
     containerPath: '',
     hostPath: '',
     mode: 'RW'
+  },
+  proxies: {
+    alias: null,
+    listen: null,
+    sticky: false
   }
 }
 
