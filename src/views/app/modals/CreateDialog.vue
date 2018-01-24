@@ -83,28 +83,63 @@
 
             <el-form-item label="访问网关" class="proxy-label">
               <el-row :gutter="12">
-                <el-col :span="20" class="proxy-spec">
+                <el-col :span="10" class="proxy-spec">
                   <el-form-item prop="proxy.enabled" label="网关开关">
                     <el-switch on-color="#01C4BC" v-model="form.proxy.enabled"></el-switch>
                   </el-form-item>
                 </el-col>
+                <el-col :span="9">
+                  <el-button type="primary" size="small" v-show="form.proxy.enabled" @click="addConfig('proxies')" >添加应用网关</el-button>
+                </el-col>
+
+                <!--<el-col :span="10">-->
+                  <!--<el-form-item prop="proxy.alias">-->
+                    <!--<el-input v-model="form.proxy.alias" placeholder="网关别名" :disabled="!form.proxy.enabled"></el-input>-->
+                  <!--</el-form-item>-->
+                <!--</el-col>-->
+                <!--<el-col :span="10">-->
+                  <!--<el-form-item prop="proxy.listen" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 1 - 65535 范围内' }]">-->
+                    <!--<el-input v-model.number="form.proxy.listen" placeholder="端口" :disabled="!form.proxy.enabled"></el-input>-->
+                  <!--</el-form-item>-->
+                <!--</el-col>-->
+                <!--<el-col :span="20">-->
+                  <!--<el-form-item prop="proxy.sticky" label="会话保持">-->
+                    <!--<el-switch on-color="#01C4BC" v-model="form.proxy.sticky" :disabled="!form.proxy.enabled"></el-switch>-->
+                  <!--</el-form-item>-->
+                <!--</el-col>-->
+
+              </el-row>
+            </el-form-item>
+
+            <el-form-item v-for="(proxy, index) in form.proxy.proxies" :key="index" class="wrapContainerRow">
+              <el-row :gutter="12">
                 <el-col :span="10">
-                  <el-form-item prop="proxy.alias">
-                    <el-input v-model="form.proxy.alias" placeholder="网关别名" :disabled="!form.proxy.enabled"></el-input>
+                  <el-form-item prop="proxy.alias" :key="proxy.index">
+                    <el-input v-model="proxy.alias">
+                      <template slot="prepend">网关别名</template>
+                    </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item prop="proxy.listen" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 1 - 65535 范围内' }]">
-                    <el-input v-model.number="form.proxy.listen" placeholder="端口" :disabled="!form.proxy.enabled"></el-input>
+                  <el-form-item prop="proxy.listen" :key="proxy.index" :rules="[{ type: 'integer', min: 1, max: 65535, message: '端口号不在 1 - 65535 范围内' }]">
+                    <el-input v-model.number="proxy.listen">
+                      <template slot="prepend">端口</template>
+                    </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="20">
-                  <el-form-item prop="proxy.sticky" label="会话保持">
-                    <el-switch on-color="#01C4BC" v-model="form.proxy.sticky" :disabled="!form.proxy.enabled"></el-switch>
+                <el-col :span="10">
+                  <el-form-item prop="proxy.sticky" :key="proxy.index" label="会话保持">
+                    <el-switch on-color="#01C4BC" v-model="proxy.sticky"></el-switch>
                   </el-form-item>
+                </el-col>
+                <el-col :span="2">
+                  <el-button @click.prevent="removeConfig(index, 'proxies')">
+                    <i class="el-icon-delete"></i>
+                  </el-button>
                 </el-col>
               </el-row>
             </el-form-item>
+
 
             <el-form-item label="端口映射">
               <el-row :gutter="5">
@@ -351,6 +386,8 @@ export default {
         this.form.container.docker[configName].push(config[configName])
       } else if (this.form.container[configName]) {
         this.form.container[configName].push(config[configName])
+      } else if (this.form.proxy[configName]) {
+        this.form.proxy[configName].push(config[configName])
       } else {
         this.form[configName].push(config[configName])
       }
@@ -424,6 +461,8 @@ export default {
         this.form.container.docker[configName].splice(index, 1)
       } else if (this.form.container[configName]) {
         this.form.container[configName].splice(index, 1)
+      } else if (this.form.proxy[configName]) {
+        this.form.proxy[configName].splice(index, 1)
       } else {
         this.form[configName].splice(index, 1)
       }
@@ -464,10 +503,12 @@ export default {
       if (!newValue) {
         this.$set(this.form, 'proxy', {
           enabled: false,
-          alias: null,
-          listen: null,
-          sticky: false
+          proxies: []
         })
+      } else {
+        if (this.form.proxy.proxies.length === 0) {
+          this.form.proxy.proxies.push(appUtil.DYNAMIC_CONFIG.proxies)
+        }
       }
     }
   }
