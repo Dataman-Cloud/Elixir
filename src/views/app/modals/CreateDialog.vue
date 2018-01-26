@@ -122,7 +122,7 @@
                 </el-col>
                 <el-col :span="10">
                   <el-form-item :prop="'proxy.proxies.' + index + '.listen'" :key="proxy.index" :rules="[{ required: true, message: '端口不能为空' }]">
-                    <el-input v-model.number="proxy.listen">
+                    <el-input v-model="proxy.listen">
                       <template slot="prepend">端口</template>
                     </el-input>
                   </el-form-item>
