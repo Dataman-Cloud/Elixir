@@ -48,7 +48,19 @@
             <small>{{version.proxy.enabled ? '开启' : '关闭' }} </small>
           </dd>
         </dl>
-        <dl>
+        <template v-if="version.proxy.proxies.length">
+          <el-table :data="version.proxy.proxies" stripe style="width: 100%;">
+            <el-table-column prop="alias" label="别名" width="200"></el-table-column>
+            <el-table-column prop="sticky" label="会话保持" width="200">
+              <template scope="scope">
+                {{ scope.row.sticky ? '开启' : '关闭' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="listen" label="网关端口" width="200"></el-table-column>
+          </el-table>
+        </template>
+        <span v-else>-</span>
+        <!--<dl>
           <dt>别名: </dt>
           <dd>
             <small>{{ version.proxy.alias ? version.proxy.alias: '-'}} </small>
@@ -65,7 +77,7 @@
           <dd>
             <small>{{ version.proxy.listen ? version.proxy.listen : '-'}} </small>
           </dd>
-        </dl>
+        </dl>-->
       </dd>
     </dl>
 

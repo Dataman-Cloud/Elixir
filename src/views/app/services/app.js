@@ -107,8 +107,8 @@ export const DYNAMIC_CONFIG = {
     mode: 'RW'
   },
   proxies: {
-    alias: null,
-    listen: null,
+    alias: '',
+    listen: '',
     sticky: false
   }
 }
