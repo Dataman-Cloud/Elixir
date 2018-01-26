@@ -114,21 +114,21 @@
             <el-form-item v-for="(proxy, index) in form.proxy.proxies" :key="index" class="wrapContainerRow">
               <el-row :gutter="12">
                 <el-col :span="10">
-                  <el-form-item prop="proxy.alias" :key="proxy.index">
+                  <el-form-item :prop="'proxy.proxies.' + index + '.alias'" :key="proxy.index">
                     <el-input v-model="proxy.alias">
                       <template slot="prepend">网关别名</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item prop="proxy.listen" :key="proxy.index" :rules="[{ required: true, message: '端口不能为空' }]">
+                  <el-form-item :prop="'proxy.proxies.' + index + '.listen'" :key="proxy.index" :rules="[{ required: true, message: '端口不能为空' }]">
                     <el-input v-model.number="proxy.listen">
                       <template slot="prepend">端口</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="10">
-                  <el-form-item prop="proxy.sticky" :key="proxy.index" label="会话保持">
+                  <el-form-item :prop="'proxy.proxies.' + index + '.sticky'" :key="proxy.index" label="会话保持">
                     <el-switch on-color="#01C4BC" v-model="proxy.sticky"></el-switch>
                   </el-form-item>
                 </el-col>
