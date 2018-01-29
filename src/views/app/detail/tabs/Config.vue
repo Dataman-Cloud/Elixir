@@ -57,6 +57,14 @@
               </template>
             </el-table-column>
             <el-table-column prop="listen" label="网关端口" width="200"></el-table-column>
+            <template v-if="version.container.docker.portMappings.length">
+              <el-table-column label="目标端口" width="200">
+                <template scope="scope">
+                  {{ version.container.docker.portMappings[scope.$index].containerPort }}
+                </template>
+              </el-table-column>
+            </template>
+
           </el-table>
         </template>
         <span v-else>-</span>
