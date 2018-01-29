@@ -48,7 +48,7 @@
             <small>{{version.proxy.enabled ? '开启' : '关闭' }} </small>
           </dd>
         </dl>
-        <template v-if="version.proxy.proxies.length">
+        <template v-if="version.proxy.proxies">
           <el-table :data="version.proxy.proxies" stripe style="width: 100%;">
             <el-table-column prop="alias" label="别名" width="200"></el-table-column>
             <el-table-column prop="sticky" label="会话保持" width="200">
