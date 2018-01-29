@@ -48,7 +48,7 @@
             <small>{{version.proxy.enabled ? '开启' : '关闭' }} </small>
           </dd>
         </dl>
-        <template v-if="version.proxy.proxies.length">
+        <template v-if="version.proxy.proxies">
           <el-table :data="version.proxy.proxies" stripe style="width: 100%;">
             <el-table-column prop="alias" label="别名" width="200"></el-table-column>
             <el-table-column prop="sticky" label="会话保持" width="200">
@@ -57,6 +57,14 @@
               </template>
             </el-table-column>
             <el-table-column prop="listen" label="网关端口" width="200"></el-table-column>
+            <template v-if="version.container.docker.portMappings.length">
+              <el-table-column label="目标端口" width="200">
+                <template scope="scope">
+                  {{ version.container.docker.portMappings[scope.$index].containerPort }}
+                </template>
+              </el-table-column>
+            </template>
+
           </el-table>
         </template>
         <span v-else>-</span>
