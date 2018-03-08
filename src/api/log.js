@@ -15,6 +15,7 @@ export function selectApps (cluster) {
 }
 
 export function selectTasks (app) {
+  app = window.btoa(app)
   return fetch({
     url: `v2/apps/${app}/tasks`,
     method: 'get'
