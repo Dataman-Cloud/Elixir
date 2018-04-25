@@ -4,7 +4,7 @@ import * as api from '../../api/registry'
 export default {
   async [type.FETCH_REGISTRIES] (context, playload) {
     let data = await api.listRegistry(playload.page, playload.search)
-    context.commit(type.FETCH_REGISTRIES, data.data)
+    context.commit(type.FETCH_REGISTRIES, data)
     return data
   },
   async [type.FETCH_TAGDETAIL] (context, name) {
