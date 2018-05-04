@@ -5,7 +5,7 @@ import fetch from '@/utils/fetch'
 
 export function listRegistry (page, search) {
   return fetch({
-    url: 'v1/api/repositories',
+    url: 'v1/api/repositoriesSg',
     method: 'get',
     params: {
       page: !page ? 1 : page,
